@@ -59,6 +59,18 @@
                     <i class="fas fa-history mr-3"></i>
                     Logs
                 </button>
+                <button onclick="showSection('tools')" class="w-full text-left flex items-center px-4 py-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors">
+                    <i class="fas fa-tools mr-3"></i>
+                    Ferramentas
+                </button>
+                <button onclick="showSection('content')" class="w-full text-left flex items-center px-4 py-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors">
+                    <i class="fas fa-file-alt mr-3"></i>
+                    Conteúdo
+                </button>
+                <button onclick="showSection('workflow')" class="w-full text-left flex items-center px-4 py-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors">
+                    <i class="fas fa-tasks mr-3"></i>
+                    Workflow
+                </button>
             </nav>
         </div>
         
@@ -202,6 +214,130 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Content Section -->
+            <div id="content-section" class="hidden space-y-6">
+                <!-- Content management will be loaded dynamically -->
+            </div>
+
+            <!-- Workflow Section -->
+            <div id="workflow-section" class="hidden space-y-6">
+                <!-- Workflow management will be loaded dynamically -->
+            </div>
+
+            <!-- Tools Section -->
+            <div id="tools-section" class="hidden space-y-6">
+                <div class="card p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-6">Ferramentas Administrativas</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Editor de Conteúdo -->
+                        <div class="card p-6 border-2 border-dashed border-gray-200 hover:border-blue-300 transition-colors">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-edit text-blue-600 text-2xl"></i>
+                                </div>
+                                <h4 class="font-semibold text-gray-900 mb-2">Editor de Conteúdo</h4>
+                                <p class="text-sm text-gray-600 mb-4">Crie e edite posts, notícias e conteúdo</p>
+                                <button onclick="window.open('content-editor.html', '_blank')" class="btn-primary text-white px-4 py-2 rounded-lg w-full">
+                                    <i class="fas fa-external-link-alt mr-2"></i>
+                                    Abrir Editor
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Gerenciador de Mídia -->
+                        <div class="card p-6 border-2 border-dashed border-gray-200 hover:border-green-300 transition-colors">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-images text-green-600 text-2xl"></i>
+                                </div>
+                                <h4 class="font-semibold text-gray-900 mb-2">Gerenciador de Mídia</h4>
+                                <p class="text-sm text-gray-600 mb-4">Upload e gestão de imagens e vídeos</p>
+                                <button onclick="window.open('media-manager.html', '_blank')" class="bg-green-600 text-white px-4 py-2 rounded-lg w-full hover:bg-green-700">
+                                    <i class="fas fa-external-link-alt mr-2"></i>
+                                    Abrir Gerenciador
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Workflow de Aprovação -->
+                        <div class="card p-6 border-2 border-dashed border-gray-200 hover:border-yellow-300 transition-colors">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-tasks text-yellow-600 text-2xl"></i>
+                                </div>
+                                <h4 class="font-semibold text-gray-900 mb-2">Workflow de Aprovação</h4>
+                                <p class="text-sm text-gray-600 mb-4">Aprovar e publicar conteúdo</p>
+                                <button onclick="window.open('content-workflow.html', '_blank')" class="bg-yellow-600 text-white px-4 py-2 rounded-lg w-full hover:bg-yellow-700">
+                                    <i class="fas fa-external-link-alt mr-2"></i>
+                                    Abrir Workflow
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Termos de Uso -->
+                        <div class="card p-6 border-2 border-dashed border-gray-200 hover:border-purple-300 transition-colors">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-shield-alt text-purple-600 text-2xl"></i>
+                                </div>
+                                <h4 class="font-semibold text-gray-900 mb-2">Termos de Uso</h4>
+                                <p class="text-sm text-gray-600 mb-4">Visualizar aceites e logs de termos</p>
+                                <button onclick="viewTermoLogs()" class="bg-purple-600 text-white px-4 py-2 rounded-lg w-full hover:bg-purple-700">
+                                    <i class="fas fa-eye mr-2"></i>
+                                    Ver Logs
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Backup do Sistema -->
+                        <div class="card p-6 border-2 border-dashed border-gray-200 hover:border-orange-300 transition-colors">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-download text-orange-600 text-2xl"></i>
+                                </div>
+                                <h4 class="font-semibold text-gray-900 mb-2">Backup do Sistema</h4>
+                                <p class="text-sm text-gray-600 mb-4">Exportar dados e configurações</p>
+                                <button onclick="exportSystemData()" class="bg-orange-600 text-white px-4 py-2 rounded-lg w-full hover:bg-orange-700">
+                                    <i class="fas fa-download mr-2"></i>
+                                    Exportar Dados
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Estatísticas -->
+                        <div class="card p-6 border-2 border-dashed border-gray-200 hover:border-red-300 transition-colors">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-chart-bar text-red-600 text-2xl"></i>
+                                </div>
+                                <h4 class="font-semibold text-gray-900 mb-2">Estatísticas</h4>
+                                <p class="text-sm text-gray-600 mb-4">Relatórios e métricas do sistema</p>
+                                <button onclick="viewStatistics()" class="bg-red-600 text-white px-4 py-2 rounded-lg w-full hover:bg-red-700">
+                                    <i class="fas fa-chart-line mr-2"></i>
+                                    Ver Relatórios
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Configurações -->
+                        <div class="card p-6 border-2 border-dashed border-gray-200 hover:border-indigo-300 transition-colors">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-cog text-indigo-600 text-2xl"></i>
+                                </div>
+                                <h4 class="font-semibold text-gray-900 mb-2">Configurações</h4>
+                                <p class="text-sm text-gray-600 mb-4">Configurações avançadas do sistema</p>
+                                <button onclick="openSettings()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg w-full hover:bg-indigo-700">
+                                    <i class="fas fa-cog mr-2"></i>
+                                    Configurar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -310,14 +446,20 @@
                 'dashboard': 'Dashboard',
                 'users': 'Gerenciar Usuários',
                 'roles': 'Gerenciar Cargos',
-                'logs': 'Logs de Atividade'
+                'logs': 'Logs de Atividade',
+                'tools': 'Ferramentas Administrativas',
+                'content': 'Gerenciar Conteúdo',
+                'workflow': 'Workflow de Aprovação'
             };
             
             const subtitles = {
                 'dashboard': 'Visão geral do sistema',
                 'users': 'Adicionar e gerenciar usuários',
                 'roles': 'Configurar cargos e permissões',
-                'logs': 'Histórico de atividades'
+                'logs': 'Histórico de atividades',
+                'tools': 'Ferramentas avançadas do sistema',
+                'content': 'Criar e gerenciar conteúdo',
+                'workflow': 'Aprovar e publicar conteúdo'
             };
             
             document.getElementById('pageTitle').textContent = titles[section];
@@ -346,14 +488,27 @@
                 case 'logs':
                     loadLogs();
                     break;
+                case 'tools':
+                    loadTools();
+                    break;
+                case 'content':
+                    loadContent();
+                    break;
+                case 'workflow':
+                    loadWorkflow();
+                    break;
             }
         }
 
         // Carregar dashboard
         function loadDashboard() {
+            const posts = JSON.parse(localStorage.getItem('velotax_posts')) || [];
+            const media = JSON.parse(localStorage.getItem('velotax_media')) || [];
+            
             const totalUsers = Object.keys(users).length;
             const activeUsers = Object.values(users).filter(u => u.active).length;
             const totalRoles = Object.keys(roles).length;
+            const publishedPosts = posts.filter(post => post.status === 'published').length;
             
             document.getElementById('totalUsers').textContent = totalUsers;
             document.getElementById('activeUsers').textContent = activeUsers;
@@ -544,6 +699,258 @@
             localStorage.removeItem('velotax_user_role');
             localStorage.removeItem('velotax_remember');
             window.location.href = 'login.html';
+        }
+
+        // Funções das ferramentas
+        function viewTermoLogs() {
+            const termoLogs = JSON.parse(localStorage.getItem('velotax_termo_logs')) || [];
+            
+            let logsHtml = '<div class="space-y-4">';
+            termoLogs.forEach(log => {
+                logsHtml += `
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-medium text-gray-900">${log.email}</p>
+                                <p class="text-sm text-gray-600">Cargo: ${log.role}</p>
+                                <p class="text-sm text-gray-500">Aceite em: ${new Date(log.aceiteDate).toLocaleString()}</p>
+                            </div>
+                            <span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">Versão ${log.termoVersion}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            logsHtml += '</div>';
+            
+            if (termoLogs.length === 0) {
+                logsHtml = '<p class="text-gray-500 text-center py-8">Nenhum aceite de termo registrado.</p>';
+            }
+            
+            alert('Logs de Termos de Uso:\n\n' + termoLogs.length + ' aceites registrados');
+        }
+
+        function exportSystemData() {
+            const systemData = {
+                users: JSON.parse(localStorage.getItem('velotax_users')) || {},
+                posts: JSON.parse(localStorage.getItem('velotax_posts')) || [],
+                media: JSON.parse(localStorage.getItem('velotax_media')) || [],
+                termoLogs: JSON.parse(localStorage.getItem('velotax_termo_logs')) || [],
+                exportDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(systemData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'velonet-backup-' + new Date().toISOString().split('T')[0] + '.json';
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            alert('Backup exportado com sucesso!');
+        }
+
+        function viewStatistics() {
+            const users = JSON.parse(localStorage.getItem('velotax_users')) || {};
+            const posts = JSON.parse(localStorage.getItem('velotax_posts')) || [];
+            const media = JSON.parse(localStorage.getItem('velotax_media')) || [];
+            const termoLogs = JSON.parse(localStorage.getItem('velotax_termo_logs')) || [];
+            
+            const stats = {
+                totalUsers: Object.keys(users).length,
+                activeUsers: Object.values(users).filter(u => u.active).length,
+                totalPosts: posts.length,
+                publishedPosts: posts.filter(p => p.status === 'published').length,
+                totalMedia: media.length,
+                totalTermoAceites: termoLogs.length
+            };
+            
+            alert(`Estatísticas do Sistema:\n\n` +
+                  `👥 Usuários: ${stats.totalUsers} (${stats.activeUsers} ativos)\n` +
+                  `📝 Posts: ${stats.totalPosts} (${stats.publishedPosts} publicados)\n` +
+                  `🖼️ Mídia: ${stats.totalMedia} arquivos\n` +
+                  `✅ Termos: ${stats.totalTermoAceites} aceites`);
+        }
+
+        function openSettings() {
+            alert('Configurações do sistema:\n\n' +
+                  '• Configurações avançadas\n' +
+                  '• Personalização de temas\n' +
+                  '• Configurações de segurança\n' +
+                  '• Backup automático\n\n' +
+                  'Funcionalidade em desenvolvimento.');
+        }
+
+        // Carregar ferramentas
+        function loadTools() {
+            // Tools section já existe no HTML
+        }
+
+        // Carregar conteúdo
+        function loadContent() {
+            const contents = JSON.parse(localStorage.getItem('velotax_contents') || '[]');
+            
+            const contentHtml = `
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">Gerenciar Conteúdo</h3>
+                        <button onclick="window.open('content-editor.html', '_blank')" 
+                                class="btn-primary text-white px-4 py-2 rounded-lg">
+                            <i class="fas fa-plus mr-2"></i>Novo Conteúdo
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="card p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="font-semibold text-gray-900">Total de Conteúdos</h4>
+                                <span class="text-2xl font-bold text-blue-600">${contents.length}</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-sm text-gray-600">Rascunhos:</span>
+                                    <span class="text-sm font-medium">${contents.filter(c => c.status === 'draft').length}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm text-gray-600">Em Revisão:</span>
+                                    <span class="text-sm font-medium">${contents.filter(c => c.status === 'review').length}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm text-gray-600">Publicados:</span>
+                                    <span class="text-sm font-medium">${contents.filter(c => c.status === 'published').length}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card p-6">
+                            <h4 class="font-semibold text-gray-900 mb-4">Ações Rápidas</h4>
+                            <div class="space-y-3">
+                                <button onclick="window.open('content-editor.html', '_blank')" 
+                                        class="w-full text-left p-3 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100">
+                                    <i class="fas fa-edit mr-2"></i>Criar Novo Conteúdo
+                                </button>
+                                <button onclick="window.open('media-manager.html', '_blank')" 
+                                        class="w-full text-left p-3 bg-green-50 text-green-700 rounded-lg hover:bg-green-100">
+                                    <i class="fas fa-images mr-2"></i>Gerenciar Mídia
+                                </button>
+                                <button onclick="window.open('content-workflow.html', '_blank')" 
+                                        class="w-full text-left p-3 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100">
+                                    <i class="fas fa-tasks mr-2"></i>Ver Workflow
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="card p-6">
+                            <h4 class="font-semibold text-gray-900 mb-4">Conteúdo Recente</h4>
+                            <div class="space-y-3">
+                                ${contents.slice(0, 5).map(content => `
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-900">${content.title}</p>
+                                            <p class="text-xs text-gray-500">${content.author} • ${new Date(content.modifiedAt).toLocaleDateString()}</p>
+                                        </div>
+                                        <span class="px-2 py-1 text-xs rounded-full ${getStatusClass(content.status)}">${getStatusText(content.status)}</span>
+                                    </div>
+                                `).join('')}
+                                ${contents.length === 0 ? '<p class="text-gray-500 text-center">Nenhum conteúdo encontrado</p>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('content-section').innerHTML = contentHtml;
+        }
+
+        // Carregar workflow
+        function loadWorkflow() {
+            const contents = JSON.parse(localStorage.getItem('velotax_contents') || '[]');
+            
+            const workflowHtml = `
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">Workflow de Aprovação</h3>
+                        <button onclick="window.open('content-workflow.html', '_blank')" 
+                                class="btn-primary text-white px-4 py-2 rounded-lg">
+                            <i class="fas fa-external-link-alt mr-2"></i>Abrir Workflow
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="card p-6 text-center">
+                            <div class="text-3xl font-bold text-gray-400 mb-2">📝</div>
+                            <h4 class="font-semibold text-gray-900 mb-2">Rascunhos</h4>
+                            <p class="text-2xl font-bold text-gray-600">${contents.filter(c => c.status === 'draft').length}</p>
+                        </div>
+                        
+                        <div class="card p-6 text-center">
+                            <div class="text-3xl font-bold text-blue-400 mb-2">👁️</div>
+                            <h4 class="font-semibold text-gray-900 mb-2">Em Revisão</h4>
+                            <p class="text-2xl font-bold text-blue-600">${contents.filter(c => c.status === 'review').length}</p>
+                        </div>
+                        
+                        <div class="card p-6 text-center">
+                            <div class="text-3xl font-bold text-green-400 mb-2">✅</div>
+                            <h4 class="font-semibold text-gray-900 mb-2">Aprovados</h4>
+                            <p class="text-2xl font-bold text-green-600">${contents.filter(c => c.status === 'approved').length}</p>
+                        </div>
+                        
+                        <div class="card p-6 text-center">
+                            <div class="text-3xl font-bold text-purple-400 mb-2">🌐</div>
+                            <h4 class="font-semibold text-gray-900 mb-2">Publicados</h4>
+                            <p class="text-2xl font-bold text-purple-600">${contents.filter(c => c.status === 'published').length}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-6">
+                        <h4 class="font-semibold text-gray-900 mb-4">Conteúdo Pendente de Revisão</h4>
+                        <div class="space-y-3">
+                            ${contents.filter(c => c.status === 'review').map(content => `
+                                <div class="flex items-center justify-between p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                    <div>
+                                        <p class="font-medium text-gray-900">${content.title}</p>
+                                        <p class="text-sm text-gray-600">${content.author} • ${content.category}</p>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <button onclick="window.open('content-workflow.html', '_blank')" 
+                                                class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                                            Revisar
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                            ${contents.filter(c => c.status === 'review').length === 0 ? 
+                                '<p class="text-gray-500 text-center py-4">Nenhum conteúdo pendente de revisão</p>' : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('workflow-section').innerHTML = workflowHtml;
+        }
+
+        // Funções auxiliares
+        function getStatusClass(status) {
+            const classes = {
+                'draft': 'bg-gray-100 text-gray-800',
+                'review': 'bg-yellow-100 text-yellow-800',
+                'approved': 'bg-green-100 text-green-800',
+                'published': 'bg-blue-100 text-blue-800',
+                'rejected': 'bg-red-100 text-red-800'
+            };
+            return classes[status] || 'bg-gray-100 text-gray-800';
+        }
+
+        function getStatusText(status) {
+            const texts = {
+                'draft': 'Rascunho',
+                'review': 'Em Revisão',
+                'approved': 'Aprovado',
+                'published': 'Publicado',
+                'rejected': 'Rejeitado'
+            };
+            return texts[status] || 'Rascunho';
         }
 
         // Inicializar

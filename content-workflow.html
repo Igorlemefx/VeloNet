@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeloNet - Workflow de Conteúdo</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        .workflow-step {
+            transition: all 0.3s ease;
+        }
+        
+        .workflow-step.active {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        
+        .workflow-step.completed {
+            border-color: #10b981;
+            background-color: #f0fdf4;
+        }
+        
+        .workflow-step.pending {
+            border-color: #f59e0b;
+            background-color: #fffbeb;
+        }
+        
+        .workflow-step.rejected {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-draft { background: #fef3c7; color: #92400e; }
+        .status-review { background: #dbeafe; color: #1e40af; }
+        .status-approved { background: #d1fae5; color: #065f46; }
+        .status-published { background: #d1fae5; color: #065f46; }
+        .status-rejected { background: #fee2e2; color: #991b1b; }
+        .status-archived { background: #f3f4f6; color: #374151; }
+        
+        .priority-high { background: #fee2e2; color: #991b1b; }
+        .priority-normal { background: #dbeafe; color: #1e40af; }
+        .priority-low { background: #f0fdf4; color: #065f46; }
+        
+        .comment-item {
+            border-left: 3px solid #e5e7eb;
+            padding-left: 16px;
+        }
+        
+        .comment-item.reviewer {
+            border-left-color: #3b82f6;
+        }
+        
+        .comment-item.approver {
+            border-left-color: #10b981;
+        }
+        
+        .comment-item.rejected {
+            border-left-color: #ef4444;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <i class="fas fa-tasks text-purple-600 text-2xl mr-3"></i>
+                    <h1 class="text-2xl font-bold text-gray-900">Workflow de Conteúdo VeloNet</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="refreshData()" class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-sync-alt mr-2"></i>Atualizar
+                    </button>
+                    <button onclick="window.close()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Filters -->
+        <div class="bg-white rounded-lg shadow-sm border p-6 mb-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+                <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+                    <!-- Search -->
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="searchInput" 
+                               class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                               placeholder="Buscar conteúdo...">
+                    </div>
+                    
+                    <!-- Status Filter -->
+                    <select id="statusFilter" 
+                            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Todos os status</option>
+                        <option value="draft">Rascunho</option>
+                        <option value="review">Em Revisão</option>
+                        <option value="approved">Aprovado</option>
+                        <option value="published">Publicado</option>
+                        <option value="rejected">Rejeitado</option>
+                        <option value="archived">Arquivado</option>
+                    </select>
+                    
+                    <!-- Priority Filter -->
+                    <select id="priorityFilter" 
+                            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Todas as prioridades</option>
+                        <option value="low">Baixa</option>
+                        <option value="normal">Normal</option>
+                        <option value="high">Alta</option>
+                        <option value="urgent">Urgente</option>
+                    </select>
+                    
+                    <!-- Category Filter -->
+                    <select id="categoryFilter" 
+                            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Todas as categorias</option>
+                        <option value="noticias">Notícias</option>
+                        <option value="treinamentos">Treinamentos</option>
+                        <option value="procedimentos">Procedimentos</option>
+                        <option value="comunicados">Comunicados</option>
+                        <option value="recursos">Recursos Humanos</option>
+                        <option value="tecnologia">Tecnologia</option>
+                        <option value="qualidade">Qualidade</option>
+                        <option value="seguranca">Segurança</option>
+                    </select>
+                </div>
+                
+                <!-- View Options -->
+                <div class="flex items-center space-x-2">
+                    <button onclick="setViewMode('kanban')" id="kanbanView" 
+                            class="p-2 rounded-lg bg-purple-100 text-purple-600">
+                        <i class="fas fa-columns"></i>
+                    </button>
+                    <button onclick="setViewMode('list')" id="listView" 
+                            class="p-2 rounded-lg text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Kanban Board -->
+        <div id="kanbanBoard" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Draft Column -->
+            <div class="bg-white rounded-lg shadow-sm border">
+                <div class="p-4 border-b bg-gray-50">
+                    <h3 class="font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-edit text-gray-500 mr-2"></i>
+                        Rascunho
+                        <span class="ml-auto bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs" id="draftCount">0</span>
+                    </h3>
+                </div>
+                <div class="p-4 space-y-3" id="draftColumn">
+                    <!-- Draft items will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Review Column -->
+            <div class="bg-white rounded-lg shadow-sm border">
+                <div class="p-4 border-b bg-blue-50">
+                    <h3 class="font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-eye text-blue-500 mr-2"></i>
+                        Em Revisão
+                        <span class="ml-auto bg-blue-200 text-blue-700 px-2 py-1 rounded-full text-xs" id="reviewCount">0</span>
+                    </h3>
+                </div>
+                <div class="p-4 space-y-3" id="reviewColumn">
+                    <!-- Review items will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Approved Column -->
+            <div class="bg-white rounded-lg shadow-sm border">
+                <div class="p-4 border-b bg-green-50">
+                    <h3 class="font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-check text-green-500 mr-2"></i>
+                        Aprovado
+                        <span class="ml-auto bg-green-200 text-green-700 px-2 py-1 rounded-full text-xs" id="approvedCount">0</span>
+                    </h3>
+                </div>
+                <div class="p-4 space-y-3" id="approvedColumn">
+                    <!-- Approved items will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Published Column -->
+            <div class="bg-white rounded-lg shadow-sm border">
+                <div class="p-4 border-b bg-purple-50">
+                    <h3 class="font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-globe text-purple-500 mr-2"></i>
+                        Publicado
+                        <span class="ml-auto bg-purple-200 text-purple-700 px-2 py-1 rounded-full text-xs" id="publishedCount">0</span>
+                    </h3>
+                </div>
+                <div class="p-4 space-y-3" id="publishedColumn">
+                    <!-- Published items will be loaded here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- List View -->
+        <div id="listView" class="hidden bg-white rounded-lg shadow-sm border">
+            <div class="p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Lista de Conteúdo</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Conteúdo
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Prioridade
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Autor
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Última Modificação
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Ações
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="listTableBody">
+                            <!-- List items will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Details Modal -->
+    <div id="contentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg max-w-4xl w-full max-h-screen overflow-y-auto">
+                <div class="flex justify-between items-center p-6 border-b">
+                    <h3 class="text-lg font-semibold text-gray-900">Detalhes do Conteúdo</h3>
+                    <button onclick="closeContentModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="p-6" id="contentModalBody">
+                    <!-- Content details will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div id="reviewModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg max-w-2xl w-full">
+                <div class="flex justify-between items-center p-6 border-b">
+                    <h3 class="text-lg font-semibold text-gray-900">Revisar Conteúdo</h3>
+                    <button onclick="closeReviewModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Comentários</label>
+                        <textarea id="reviewComments" rows="4" 
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                  placeholder="Digite seus comentários sobre o conteúdo..."></textarea>
+                    </div>
+                    <div class="flex justify-end space-x-3">
+                        <button onclick="rejectContent()" 
+                                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                            <i class="fas fa-times mr-2"></i>Rejeitar
+                        </button>
+                        <button onclick="approveContent()" 
+                                class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                            <i class="fas fa-check mr-2"></i>Aprovar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let contents = [];
+        let currentView = 'kanban';
+        let currentFilters = {
+            search: '',
+            status: '',
+            priority: '',
+            category: ''
+        };
+        let currentContentId = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadContents();
+            setupEventListeners();
+            updateView();
+        });
+
+        function setupEventListeners() {
+            // Search and filters
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                currentFilters.search = e.target.value;
+                filterContents();
+            });
+            
+            document.getElementById('statusFilter').addEventListener('change', function(e) {
+                currentFilters.status = e.target.value;
+                filterContents();
+            });
+            
+            document.getElementById('priorityFilter').addEventListener('change', function(e) {
+                currentFilters.priority = e.target.value;
+                filterContents();
+            });
+            
+            document.getElementById('categoryFilter').addEventListener('change', function(e) {
+                currentFilters.category = e.target.value;
+                filterContents();
+            });
+        }
+
+        function loadContents() {
+            contents = JSON.parse(localStorage.getItem('velotax_contents') || '[]');
+        }
+
+        function filterContents() {
+            let filteredContents = contents;
+            
+            // Search filter
+            if (currentFilters.search) {
+                filteredContents = filteredContents.filter(content => 
+                    content.title.toLowerCase().includes(currentFilters.search.toLowerCase()) ||
+                    content.author.toLowerCase().includes(currentFilters.search.toLowerCase())
+                );
+            }
+            
+            // Status filter
+            if (currentFilters.status) {
+                filteredContents = filteredContents.filter(content => 
+                    content.status === currentFilters.status
+                );
+            }
+            
+            // Priority filter
+            if (currentFilters.priority) {
+                filteredContents = filteredContents.filter(content => 
+                    content.priority === currentFilters.priority
+                );
+            }
+            
+            // Category filter
+            if (currentFilters.category) {
+                filteredContents = filteredContents.filter(content => 
+                    content.category === currentFilters.category
+                );
+            }
+            
+            renderContents(filteredContents);
+        }
+
+        function renderContents(contents) {
+            if (currentView === 'kanban') {
+                renderKanbanView(contents);
+            } else {
+                renderListView(contents);
+            }
+        }
+
+        function renderKanbanView(contents) {
+            const columns = {
+                draft: contents.filter(c => c.status === 'draft'),
+                review: contents.filter(c => c.status === 'review'),
+                approved: contents.filter(c => c.status === 'approved'),
+                published: contents.filter(c => c.status === 'published')
+            };
+            
+            // Update counts
+            document.getElementById('draftCount').textContent = columns.draft.length;
+            document.getElementById('reviewCount').textContent = columns.review.length;
+            document.getElementById('approvedCount').textContent = columns.approved.length;
+            document.getElementById('publishedCount').textContent = columns.published.length;
+            
+            // Render columns
+            renderKanbanColumn('draftColumn', columns.draft);
+            renderKanbanColumn('reviewColumn', columns.review);
+            renderKanbanColumn('approvedColumn', columns.approved);
+            renderKanbanColumn('publishedColumn', columns.published);
+        }
+
+        function renderKanbanColumn(columnId, items) {
+            const column = document.getElementById(columnId);
+            column.innerHTML = '';
+            
+            items.forEach(item => {
+                const card = createContentCard(item);
+                column.appendChild(card);
+            });
+            
+            if (items.length === 0) {
+                column.innerHTML = '<p class="text-gray-500 text-center text-sm">Nenhum item</p>';
+            }
+        }
+
+        function createContentCard(content) {
+            const card = document.createElement('div');
+            card.className = 'bg-white border border-gray-200 rounded-lg p-4 cursor-pointer hover:shadow-md transition-shadow';
+            card.onclick = () => showContentDetails(content.id);
+            
+            const priorityClass = getPriorityClass(content.priority);
+            const statusClass = getStatusClass(content.status);
+            
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-2">
+                    <span class="status-badge ${statusClass}">${getStatusText(content.status)}</span>
+                    <span class="priority-badge ${priorityClass}">${getPriorityText(content.priority)}</span>
+                </div>
+                <h4 class="font-medium text-gray-900 mb-2 line-clamp-2">${content.title}</h4>
+                <p class="text-sm text-gray-500 mb-3">${content.category}</p>
+                <div class="flex items-center justify-between text-xs text-gray-400">
+                    <span>${content.author}</span>
+                    <span>${formatDate(content.modifiedAt)}</span>
+                </div>
+                ${content.tags && content.tags.length > 0 ? `
+                    <div class="mt-3 flex flex-wrap gap-1">
+                        ${content.tags.slice(0, 3).map(tag => 
+                            `<span class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">${tag}</span>`
+                        ).join('')}
+                        ${content.tags.length > 3 ? `<span class="text-xs text-gray-400">+${content.tags.length - 3}</span>` : ''}
+                    </div>
+                ` : ''}
+            `;
+            
+            return card;
+        }
+
+        function renderListView(contents) {
+            const tbody = document.getElementById('listTableBody');
+            tbody.innerHTML = '';
+            
+            contents.forEach(content => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                
+                const priorityClass = getPriorityClass(content.priority);
+                const statusClass = getStatusClass(content.status);
+                
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div>
+                            <div class="text-sm font-medium text-gray-900">${content.title}</div>
+                            <div class="text-sm text-gray-500">${content.category}</div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="status-badge ${statusClass}">${getStatusText(content.status)}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="priority-badge ${priorityClass}">${getPriorityText(content.priority)}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        ${content.author}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${formatDate(content.modifiedAt)}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button onclick="showContentDetails('${content.id}')" 
+                                class="text-blue-600 hover:text-blue-900 mr-3">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button onclick="editContent('${content.id}')" 
+                                class="text-green-600 hover:text-green-900 mr-3">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deleteContent('${content.id}')" 
+                                class="text-red-600 hover:text-red-900">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+
+        function setViewMode(mode) {
+            currentView = mode;
+            
+            const kanbanView = document.getElementById('kanbanView');
+            const listView = document.getElementById('listView');
+            const kanbanBoard = document.getElementById('kanbanBoard');
+            const listViewContainer = document.getElementById('listView');
+            
+            if (mode === 'kanban') {
+                kanbanView.className = 'p-2 rounded-lg bg-purple-100 text-purple-600';
+                listView.className = 'p-2 rounded-lg text-gray-400 hover:text-gray-600';
+                kanbanBoard.classList.remove('hidden');
+                listViewContainer.classList.add('hidden');
+            } else {
+                kanbanView.className = 'p-2 rounded-lg text-gray-400 hover:text-gray-600';
+                listView.className = 'p-2 rounded-lg bg-purple-100 text-purple-600';
+                kanbanBoard.classList.add('hidden');
+                listViewContainer.classList.remove('hidden');
+            }
+            
+            updateView();
+        }
+
+        function updateView() {
+            filterContents();
+        }
+
+        function showContentDetails(contentId) {
+            const content = contents.find(c => c.id === contentId);
+            if (!content) return;
+            
+            const modalBody = document.getElementById('contentModalBody');
+            modalBody.innerHTML = `
+                <div class="space-y-6">
+                    <!-- Header -->
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900 mb-2">${content.title}</h2>
+                            <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                <span>${content.category}</span>
+                                <span>•</span>
+                                <span>${content.author}</span>
+                                <span>•</span>
+                                <span>${formatDate(content.modifiedAt)}</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <span class="status-badge ${getStatusClass(content.status)}">${getStatusText(content.status)}</span>
+                            <span class="priority-badge ${getPriorityClass(content.priority)}">${getPriorityText(content.priority)}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Content Preview -->
+                    <div class="border rounded-lg p-4 bg-gray-50">
+                        <h3 class="font-medium text-gray-900 mb-2">Visualização do Conteúdo</h3>
+                        <div class="prose max-w-none">
+                            ${content.content}
+                        </div>
+                    </div>
+                    
+                    <!-- Metadata -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Data de Criação</label>
+                            <p class="text-sm text-gray-900">${formatDate(content.createdAt)}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Última Modificação</label>
+                            <p class="text-sm text-gray-900">${formatDate(content.modifiedAt)}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Data de Expiração</label>
+                            <p class="text-sm text-gray-900">${content.expirationDate || 'Não definida'}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Visualizações</label>
+                            <p class="text-sm text-gray-900">${content.views || 0}</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Tags -->
+                    ${content.tags && content.tags.length > 0 ? `
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                            <div class="flex flex-wrap gap-2">
+                                ${content.tags.map(tag => 
+                                    `<span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">${tag}</span>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    <!-- Workflow Actions -->
+                    <div class="border-t pt-6">
+                        <h3 class="font-medium text-gray-900 mb-4">Ações do Workflow</h3>
+                        <div class="flex space-x-3">
+                            ${content.status === 'draft' ? `
+                                <button onclick="submitForReview('${content.id}')" 
+                                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                    <i class="fas fa-paper-plane mr-2"></i>Enviar para Revisão
+                                </button>
+                            ` : ''}
+                            
+                            ${content.status === 'review' ? `
+                                <button onclick="openReviewModal('${content.id}')" 
+                                        class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700">
+                                    <i class="fas fa-eye mr-2"></i>Revisar
+                                </button>
+                            ` : ''}
+                            
+                            ${content.status === 'approved' ? `
+                                <button onclick="publishContent('${content.id}')" 
+                                        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                                    <i class="fas fa-globe mr-2"></i>Publicar
+                                </button>
+                            ` : ''}
+                            
+                            <button onclick="editContent('${content.id}')" 
+                                    class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                                <i class="fas fa-edit mr-2"></i>Editar
+                            </button>
+                            
+                            <button onclick="deleteContent('${content.id}')" 
+                                    class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                                <i class="fas fa-trash mr-2"></i>Excluir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('contentModal').classList.remove('hidden');
+        }
+
+        function closeContentModal() {
+            document.getElementById('contentModal').classList.add('hidden');
+        }
+
+        function openReviewModal(contentId) {
+            currentContentId = contentId;
+            document.getElementById('reviewComments').value = '';
+            document.getElementById('reviewModal').classList.remove('hidden');
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').classList.add('hidden');
+            currentContentId = null;
+        }
+
+        function submitForReview(contentId) {
+            if (confirm('Tem certeza que deseja enviar este conteúdo para revisão?')) {
+                updateContentStatus(contentId, 'review');
+                alert('Conteúdo enviado para revisão com sucesso!');
+            }
+        }
+
+        function approveContent() {
+            const comments = document.getElementById('reviewComments').value;
+            
+            if (confirm('Tem certeza que deseja aprovar este conteúdo?')) {
+                updateContentStatus(currentContentId, 'approved', comments);
+                closeReviewModal();
+                alert('Conteúdo aprovado com sucesso!');
+            }
+        }
+
+        function rejectContent() {
+            const comments = document.getElementById('reviewComments').value;
+            
+            if (!comments.trim()) {
+                alert('Por favor, adicione comentários sobre a rejeição.');
+                return;
+            }
+            
+            if (confirm('Tem certeza que deseja rejeitar este conteúdo?')) {
+                updateContentStatus(currentContentId, 'rejected', comments);
+                closeReviewModal();
+                alert('Conteúdo rejeitado.');
+            }
+        }
+
+        function publishContent(contentId) {
+            if (confirm('Tem certeza que deseja publicar este conteúdo?')) {
+                updateContentStatus(contentId, 'published');
+                alert('Conteúdo publicado com sucesso!');
+            }
+        }
+
+        function updateContentStatus(contentId, status, comments = '') {
+            const contentIndex = contents.findIndex(c => c.id === contentId);
+            if (contentIndex === -1) return;
+            
+            contents[contentIndex].status = status;
+            contents[contentIndex].modifiedAt = new Date().toISOString();
+            
+            // Add workflow log
+            if (!contents[contentIndex].workflowLog) {
+                contents[contentIndex].workflowLog = [];
+            }
+            
+            contents[contentIndex].workflowLog.push({
+                action: status,
+                timestamp: new Date().toISOString(),
+                user: localStorage.getItem('velotax_user_name') || 'Usuário',
+                comments: comments
+            });
+            
+            localStorage.setItem('velotax_contents', JSON.stringify(contents));
+            updateView();
+        }
+
+        function editContent(contentId) {
+            window.open(`content-editor.html?id=${contentId}`, '_blank');
+        }
+
+        function deleteContent(contentId) {
+            if (confirm('Tem certeza que deseja excluir este conteúdo? Esta ação não pode ser desfeita.')) {
+                contents = contents.filter(c => c.id !== contentId);
+                localStorage.setItem('velotax_contents', JSON.stringify(contents));
+                updateView();
+                closeContentModal();
+                alert('Conteúdo excluído com sucesso!');
+            }
+        }
+
+        function refreshData() {
+            loadContents();
+            updateView();
+        }
+
+        function getStatusClass(status) {
+            const classes = {
+                'draft': 'status-draft',
+                'review': 'status-review',
+                'approved': 'status-approved',
+                'published': 'status-published',
+                'rejected': 'status-rejected',
+                'archived': 'status-archived'
+            };
+            return classes[status] || 'status-draft';
+        }
+
+        function getStatusText(status) {
+            const texts = {
+                'draft': 'Rascunho',
+                'review': 'Em Revisão',
+                'approved': 'Aprovado',
+                'published': 'Publicado',
+                'rejected': 'Rejeitado',
+                'archived': 'Arquivado'
+            };
+            return texts[status] || 'Rascunho';
+        }
+
+        function getPriorityClass(priority) {
+            const classes = {
+                'low': 'priority-low',
+                'normal': 'priority-normal',
+                'high': 'priority-high',
+                'urgent': 'priority-high'
+            };
+            return classes[priority] || 'priority-normal';
+        }
+
+        function getPriorityText(priority) {
+            const texts = {
+                'low': 'Baixa',
+                'normal': 'Normal',
+                'high': 'Alta',
+                'urgent': 'Urgente'
+            };
+            return texts[priority] || 'Normal';
+        }
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('pt-BR');
+        }
+
+        // Close modals when clicking outside
+        document.getElementById('contentModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeContentModal();
+            }
+        });
+
+        document.getElementById('reviewModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeReviewModal();
+            }
+        });
+
+        // Initial load
+        updateView();
+    </script>
+</body>
+</html> 
