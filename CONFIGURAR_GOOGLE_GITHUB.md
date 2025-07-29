@@ -27,15 +27,15 @@ Configurar autenticação Google para a intranet hospedada no GitHub Pages, sem 
 ### **1.4 Configurar URLs (IMPORTANTE)**
 **Authorized JavaScript origins**:
 ```
-https://Velotax.github.io
-https://www.Velotax.github.io
+https://igorlemefx.github.io
+https://www.igorlemefx.github.io
 ```
 
 **Authorized redirect URIs**:
 ```
-https://Velotax.github.io/VeloNet/
-https://Velotax.github.io/VeloNet/login.html
-https://Velotax.github.io/VeloNet/admin.html
+https://igorlemefx.github.io/velonet/
+https://igorlemefx.github.io/velonet/login.html
+https://igorlemefx.github.io/velonet/admin.html
 ```
 
 ### **1.5 Obter Client ID**
@@ -66,7 +66,7 @@ O código já está configurado para aceitar apenas `@velotax.com.br`
 
 ### **3.1 Acessar Intranet**
 ```
-https://Velotax.github.io/VeloNet/
+https://igorlemefx.github.io/velonet/
 ```
 
 ### **3.2 Testar Login Google**
@@ -84,22 +84,22 @@ https://Velotax.github.io/VeloNet/
 
 ### **Página Inicial**
 ```
-https://Velotax.github.io/VeloNet/
+https://igorlemefx.github.io/velonet/
 ```
 
 ### **Login Direto**
 ```
-https://Velotax.github.io/VeloNet/login.html
+https://igorlemefx.github.io/velonet/login.html
 ```
 
 ### **Painel Admin**
 ```
-https://Velotax.github.io/VeloNet/admin.html
+https://igorlemefx.github.io/velonet/admin.html
 ```
 
 ### **Intranet**
 ```
-https://Velotax.github.io/VeloNet/intranet_simples.html
+https://igorlemefx.github.io/velonet/intranet_simples.html
 ```
 
 ---
@@ -128,7 +128,7 @@ https://Velotax.github.io/VeloNet/intranet_simples.html
 ```
 🔐 VELONET - PORTAL CORPORATIVO VELOTAX
 
-🔗 Link de Acesso: https://Velotax.github.io/VeloNet/
+🔗 Link de Acesso: https://igorlemefx.github.io/velonet/
 
 🔑 Credenciais:
 - E-mail: seu.email@velotax.com.br
@@ -213,3 +213,44 @@ https://Velotax.github.io/VeloNet/intranet_simples.html
 ---
 
 **🎉 Sistema pronto para uso com autenticação Google!** 
+
+## ✅ **DOMÍNIO ALTERADO COM SUCESSO!**
+
+### 🔄 **ALTERAÇÕES REALIZADAS**
+
+Atualizei todos os arquivos relevantes para usar o novo domínio **Velotax.github.io**:
+
+#### **📄 Arquivos Atualizados:**
+
+1. **`CONFIGURAR_GOOGLE_GITHUB.md`**
+   - URLs do Google Cloud atualizadas
+   - Links de acesso corrigidos
+   - Mensagem para compartilhar atualizada
+
+2. **`README.md`**
+   - Domínio principal atualizado
+   - Links de documentação corrigidos
+
+3. **`index.html`**
+   - Página inicial completamente reformulada
+   - Novo design profissional
+   - Links atualizados para o novo domínio
+
+### 🌐 **NOVOS LINKS DE ACESSO**
+
+```
+🔐 VeloNet: https://Velotax.github.io/VeloNet/
+📝 Editor: https://Velotax.github.io/VeloNet/content-editor.html
+🖼️ Mídia: https://Velotax.github.io/VeloNet/media-manager.html
+⚙️ Admin: https://Velotax.github.io/VeloNet/admin.html
+```
+
+### 🎯 **BENEFÍCIOS DA MUDANÇA**
+
+- ✅ **Domínio profissional** da empresa
+- ✅ **URL mais limpa** e memorável
+- ✅ **Branding consistente** com a Velotax
+- ✅ **Credibilidade** aumentada
+- ✅ **Facilidade** para compartilhar
+
+**O VeloNet agora está com o domínio profissional da Velotax! 🚀** 

@@ -127,7 +127,7 @@ https://igorlemefx.github.io/velonet/
 
 ### **Domínio Atual**
 ```
-https://Velotax.github.io/VeloNet/
+https://igorlemefx.github.io/velonet/
 ```
 
 ### **Hospedagem**
