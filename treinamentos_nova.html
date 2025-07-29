@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinamentos Velotax - Plataforma Educacional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .card {
+            transition: all 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.3s ease;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .quiz-option {
+            transition: all 0.2s ease;
+        }
+        
+        .quiz-option:hover {
+            transform: translateX(5px);
+        }
+        
+        .quiz-option.correct {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+        
+        .quiz-option.incorrect {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+        
+        .quiz-option.selected {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="flex items-center justify-between px-6 py-4">
+            <div class="flex items-center space-x-4">
+                <a href="intranet_nova.html" class="text-blue-600 hover:text-blue-800">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Voltar à Intranet
+                </a>
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Treinamentos Velotax</h1>
+                    <p class="text-sm text-gray-500">Plataforma Educacional</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="text-right">
+                    <div id="current-time" class="text-sm font-medium text-gray-900">14:30:25</div>
+                    <div id="current-date" class="text-xs text-gray-500">23/01/2025</div>
+                </div>
+                
+                <div class="bg-blue-100 rounded-full p-2">
+                    <i class="fas fa-user text-blue-600"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-6">
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl p-6 shadow-sm card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500">Cursos Concluídos</p>
+                        <p class="text-2xl font-bold text-gray-900">8</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-green-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500">Pontos Acumulados</p>
+                        <p class="text-2xl font-bold text-gray-900">1,850</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-star text-blue-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500">Certificações</p>
+                        <p class="text-2xl font-bold text-gray-900">7</p>
+                    </div>
+                    <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-certificate text-yellow-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm card">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500">Nível Atual</p>
+                        <p class="text-2xl font-bold text-gray-900">Avançado</p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-trophy text-purple-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Chart -->
+        <div class="bg-white rounded-xl p-6 shadow-sm card mb-8">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Seu Progresso</h3>
+            <div class="h-48 flex items-center justify-center bg-gray-50 rounded-lg">
+                <div class="text-center text-gray-500">
+                    <i class="fas fa-chart-donut text-4xl mb-2"></i>
+                    <p>Gráfico de Progresso</p>
+                    <p class="text-sm">65% concluído</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Courses -->
+        <div class="space-y-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-6">Cursos Disponíveis</h2>
+            
+            <div class="space-y-6" id="courses-container">
+                <!-- IRPF Course -->
+                <div class="bg-white rounded-xl p-6 shadow-sm card">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-file-invoice-dollar text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">IRPF - Imposto de Renda Pessoa Física</h3>
+                                <p class="text-sm text-gray-500">Aprenda sobre declaração e cálculo do IRPF</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Concluído</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm text-gray-600 mb-1">
+                            <span>Progresso</span>
+                            <span>100%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Módulos</p>
+                            <p class="font-semibold text-gray-900">5</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Pontos</p>
+                            <p class="font-semibold text-gray-900">250</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Certificado</p>
+                            <p class="font-semibold text-green-600">✓</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex space-x-2">
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="startQuiz('irpf-1')">
+                            <i class="fas fa-play mr-2"></i>
+                            Revisar Quiz
+                        </button>
+                        <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">
+                            <i class="fas fa-download mr-2"></i>
+                            Certificado
+                        </button>
+                    </div>
+                </div>
+
+                <!-- DARFs Course -->
+                <div class="bg-white rounded-xl p-6 shadow-sm card">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-receipt text-green-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">DARFs - Guias de Recolhimento</h3>
+                                <p class="text-sm text-gray-500">Entenda sobre DARFs e pagamentos de impostos</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Em Andamento</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm text-gray-600 mb-1">
+                            <span>Progresso</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 60%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Módulos</p>
+                            <p class="font-semibold text-gray-900">3</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Pontos</p>
+                            <p class="font-semibold text-gray-900">180</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Certificado</p>
+                            <p class="font-semibold text-gray-400">-</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex space-x-2">
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="startQuiz('darfs-1')">
+                            <i class="fas fa-play mr-2"></i>
+                            Continuar Quiz
+                        </button>
+                        <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">
+                            <i class="fas fa-book mr-2"></i>
+                            Material
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Velotax Calculator Course -->
+                <div class="bg-white rounded-xl p-6 shadow-sm card">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-calculator text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">Calculadora Velotax</h3>
+                                <p class="text-sm text-gray-500">Domine nossa calculadora de impostos</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Disponível</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm text-gray-600 mb-1">
+                            <span>Progresso</span>
+                            <span>0%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-gray-300 h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Módulos</p>
+                            <p class="font-semibold text-gray-900">2</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Pontos</p>
+                            <p class="font-semibold text-gray-900">150</p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600">Certificado</p>
+                            <p class="font-semibold text-gray-400">-</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex space-x-2">
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors" onclick="startQuiz('calculator-1')">
+                            <i class="fas fa-play mr-2"></i>
+                            Iniciar Curso
+                        </button>
+                        <button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            Detalhes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="mt-12">
+            <h2 class="text-xl font-bold text-gray-900 mb-6">Suas Certificações</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-xl p-6 text-white card">
+                    <div class="text-center">
+                        <i class="fas fa-certificate text-4xl mb-4"></i>
+                        <h3 class="text-lg font-semibold mb-2">IRPF Expert</h3>
+                        <p class="text-sm opacity-90 mb-4">Especialista em Imposto de Renda</p>
+                        <p class="text-xs opacity-75">Concluído em 15/01/2025</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl p-6 text-white card">
+                    <div class="text-center">
+                        <i class="fas fa-certificate text-4xl mb-4"></i>
+                        <h3 class="text-lg font-semibold mb-2">DARF Specialist</h3>
+                        <p class="text-sm opacity-90 mb-4">Especialista em DARFs</p>
+                        <p class="text-xs opacity-75">Em progresso</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-green-400 to-green-600 rounded-xl p-6 text-white card">
+                    <div class="text-center">
+                        <i class="fas fa-certificate text-4xl mb-4"></i>
+                        <h3 class="text-lg font-semibold mb-2">Atendimento Premium</h3>
+                        <p class="text-sm opacity-90 mb-4">Atendimento de Excelência</p>
+                        <p class="text-xs opacity-75">Concluído em 10/01/2025</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Quiz Modal -->
+    <div id="quiz-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold text-gray-900">Quiz: <span id="quiz-title">IRPF</span></h3>
+                <button onclick="closeQuiz()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div id="quiz-content">
+                <!-- Quiz content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="treinamentos_nova.js"></script>
+</body>
+</html> 

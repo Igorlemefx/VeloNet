@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intranet Velotax - Simples</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Sidebar -->
+    <div class="fixed left-0 top-0 h-full w-64 bg-blue-600">
+        <div class="flex items-center justify-center h-16 bg-blue-700">
+            <div class="text-white text-center">
+                <h1 class="text-xl font-bold">Velotax</h1>
+                <p class="text-xs opacity-90">Portal Corporativo</p>
+            </div>
+        </div>
+        
+        <nav class="mt-8 px-4">
+            <div class="space-y-2">
+                <button onclick="showDashboard()" class="w-full text-left flex items-center px-4 py-3 text-white rounded-lg hover:bg-blue-500">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Dashboard</span>
+                </button>
+                
+                <button onclick="showNoticias()" class="w-full text-left flex items-center px-4 py-3 text-white rounded-lg hover:bg-blue-500">
+                    <i class="fas fa-newspaper mr-3"></i>
+                    <span>Notícias</span>
+                    <span class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">3</span>
+                </button>
+                
+                <button onclick="showDesempenho()" class="w-full text-left flex items-center px-4 py-3 text-white rounded-lg hover:bg-blue-500">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    <span>Desempenho</span>
+                </button>
+                
+                <button onclick="showTreinamento()" class="w-full text-left flex items-center px-4 py-3 text-white rounded-lg hover:bg-blue-500">
+                    <i class="fas fa-graduation-cap mr-3"></i>
+                    <span>Treinamentos</span>
+                </button>
+
+                <button onclick="showAtendimento()" class="w-full text-left flex items-center px-4 py-3 text-white rounded-lg hover:bg-blue-500">
+                    <i class="fas fa-headset mr-3"></i>
+                    <span>Atendimento B2C</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ml-64 min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div>
+                    <h2 id="page-title" class="text-xl font-semibold text-gray-900">Dashboard</h2>
+                    <p id="page-subtitle" class="text-sm text-gray-500">Visão geral do sistema</p>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="text-right">
+                        <div id="current-time" class="text-sm font-medium text-gray-900">14:30:25</div>
+                        <div id="current-date" class="text-xs text-gray-500">23/01/2025</div>
+                    </div>
+                    
+                    <button class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">2</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <main class="p-6">
+            <div id="content">
+                <!-- Dashboard Content -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Atendimentos Hoje</p>
+                                <p class="text-2xl font-bold text-gray-900">42</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-headset text-blue-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Satisfação</p>
+                                <p class="text-2xl font-bold text-gray-900">4.8</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-star text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Tempo Médio</p>
+                                <p class="text-2xl font-bold text-gray-900">8.5min</p>
+                            </div>
+                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-clock text-yellow-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Online</p>
+                                <p class="text-2xl font-bold text-gray-900">12</p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-users text-purple-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Bem-vindo à Intranet Velotax!</h3>
+                    <p class="text-gray-600">Esta é uma versão simplificada da intranet. Clique nos botões do menu para navegar.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Funções para carregar seções
+        function showDashboard() {
+            document.getElementById('page-title').textContent = 'Dashboard';
+            document.getElementById('page-subtitle').textContent = 'Visão geral do sistema';
+            
+            document.getElementById('content').innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Atendimentos Hoje</p>
+                                <p class="text-2xl font-bold text-gray-900">42</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-headset text-blue-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Satisfação</p>
+                                <p class="text-2xl font-bold text-gray-900">4.8</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-star text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Tempo Médio</p>
+                                <p class="text-2xl font-bold text-gray-900">8.5min</p>
+                            </div>
+                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-clock text-yellow-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Online</p>
+                                <p class="text-2xl font-bold text-gray-900">12</p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-users text-purple-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Dashboard</h3>
+                    <p class="text-gray-600">Esta é a seção do Dashboard com estatísticas em tempo real.</p>
+                </div>
+            `;
+        }
+
+        function showNoticias() {
+            document.getElementById('page-title').textContent = 'Notícias';
+            document.getElementById('page-subtitle').textContent = 'Últimas atualizações da empresa';
+            
+            document.getElementById('content').innerHTML = `
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Notícias</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-blue-50 rounded-lg">
+                            <h4 class="font-semibold text-blue-900">Nova Política de Benefícios</h4>
+                            <p class="text-sm text-blue-700">A partir do próximo mês, todos os colaboradores terão acesso a novos benefícios incluindo plano de saúde premium.</p>
+                        </div>
+                        <div class="p-4 bg-green-50 rounded-lg">
+                            <h4 class="font-semibold text-green-900">Recorde de Vendas</h4>
+                            <p class="text-sm text-green-700">A equipe de vendas bateu um novo recorde este mês, superando a meta em 15%.</p>
+                        </div>
+                        <div class="p-4 bg-yellow-50 rounded-lg">
+                            <h4 class="font-semibold text-yellow-900">Evento Corporativo</h4>
+                            <p class="text-sm text-yellow-700">Prepare-se para o nosso evento corporativo anual que acontecerá no próximo mês.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showDesempenho() {
+            document.getElementById('page-title').textContent = 'Desempenho';
+            document.getElementById('page-subtitle').textContent = 'Acompanhe suas métricas';
+            
+            document.getElementById('content').innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Produtividade Geral</h3>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-blue-600 mb-2">92%</div>
+                            <p class="text-sm text-gray-500">Meta: 90%</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Atendimentos</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">Total do Mês</span>
+                                <span class="font-semibold">1,247</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">Média Diária</span>
+                                <span class="font-semibold">41.6</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">Satisfação</span>
+                                <span class="font-semibold text-green-600">4.8/5.0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Pontuação</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">Pontos Atuais</span>
+                                <span class="font-semibold">1,250</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">Nível</span>
+                                <span class="font-semibold text-blue-600">Avançado</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">Próximo Nível</span>
+                                <span class="font-semibold">1,500 pts</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showTreinamento() {
+            document.getElementById('page-title').textContent = 'Treinamentos';
+            document.getElementById('page-subtitle').textContent = 'Desenvolva suas habilidades';
+            
+            document.getElementById('content').innerHTML = `
+                <div class="text-center mb-8">
+                    <button onclick="window.open('treinamentos_nova.html', '_blank')" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-external-link-alt mr-2"></i>
+                        Acessar Plataforma de Treinamentos
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-xl p-6 shadow-sm text-center">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-graduation-cap text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Cursos Concluídos</h3>
+                        <p class="text-3xl font-bold text-blue-600">8</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-sm text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-star text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Pontos Acumulados</h3>
+                        <p class="text-3xl font-bold text-green-600">1,250</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-sm text-center">
+                        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-certificate text-yellow-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Certificações</h3>
+                        <p class="text-3xl font-bold text-yellow-600">5</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showAtendimento() {
+            document.getElementById('page-title').textContent = 'Atendimento B2C';
+            document.getElementById('page-subtitle').textContent = 'Procedimentos e Manuais';
+            
+            document.getElementById('content').innerHTML = `
+                <div class="space-y-6">
+                    <!-- Manual de Tom, Voz e Estilo -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                            <i class="fas fa-book text-blue-600 mr-2"></i>
+                            Manual de Tom, Voz e Estilo
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-900 mb-2">Objetivo</h4>
+                                <p class="text-sm text-blue-800">Este é um documento vivo, em constante revisão e evolução. A proposta é que sirva como guia para todos os conteúdos que nós, Velotaxers, formos construir. Não importa quem esteja atuando naquele contato, ou meio de comunicação utilizado, todos vamos comunicar na mesma voz, tons e estilo da nossa marca, oferecendo uma experiência linear e completa para os nossos clientes.</p>
+                            </div>
+
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-green-900 mb-2">Nossa Voz</h4>
+                                <p class="text-sm text-green-800 mb-2"><strong>Velotax:</strong> Pronúncia /ve.loˈtæks/. Substantivo masculino. O Velotax. O aplicativo do Velotax. Faça seu imposto no Velotax.</p>
+                                <p class="text-sm text-green-800 mb-2"><strong>Velo:</strong> latim, velocidade.</p>
+                                <p class="text-sm text-green-800 mb-2"><strong>Tax:</strong> inglês, imposto.</p>
+                                <p class="text-sm text-green-800"><strong>Nossa missão:</strong> simplificar o modo com que as pessoas lidam com seus impostos.</p>
+                            </div>
+
+                            <div class="bg-yellow-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-yellow-900 mb-2">Adjetivos que definem nossa personalidade:</h4>
+                                <ul class="text-sm text-yellow-800 list-disc list-inside space-y-1">
+                                    <li>Descomplicada</li>
+                                    <li>Simples</li>
+                                    <li>Direta</li>
+                                    <li>Rápida</li>
+                                    <li>Confiável</li>
+                                    <li>Séria</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-purple-900 mb-2">Adjetivos que definem nossa linguagem:</h4>
+                                <ul class="text-sm text-purple-800 list-disc list-inside space-y-1">
+                                    <li><strong>Leve:</strong> falamos sobre imposto de maneira interessante e cotidiana</li>
+                                    <li><strong>Educativa:</strong> ensinamos o nosso público de maneira nunca feita antes</li>
+                                    <li><strong>Informativa:</strong> falamos com propriedade e somos referência no assunto</li>
+                                    <li><strong>Acessível:</strong> traduzimos leis, regras, tributos e as "letras miúdas"</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Workflow - Pedidos de Estorno -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                            <i class="fas fa-exchange-alt text-red-600 mr-2"></i>
+                            Workflow - Pedidos de Estorno
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-red-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-red-900 mb-2">Regras para Estorno</h4>
+                                <p class="text-sm text-red-800 mb-2">O Velotax atenderá a pedidos de estorno diante do enquadramento nas regras previstas pelo CDC:</p>
+                                <ul class="text-sm text-red-800 list-disc list-inside space-y-1">
+                                    <li>Dentro de um período de 7 dias corridos da data de aquisição</li>
+                                    <li>Verificando-se que o usuário não fez o uso de funções exclusivamente pagas da plataforma</li>
+                                    <li>De forma exclusiva e mediante liberalidade da empresa, em casos especiais</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-900 mb-2">Passos do Workflow</h4>
+                                <ol class="text-sm text-blue-800 list-decimal list-inside space-y-2">
+                                    <li>Assumir imediatamente a atribuição do chamado</li>
+                                    <li>Averiguar o conteúdo da mensagem</li>
+                                    <li>Preencher o formulário lateral adequadamente</li>
+                                    <li>Selecionar "Pedido de Estorno" na Ação Automática</li>
+                                    <li>Definir status como "Pendente"</li>
+                                    <li>Aguardar resposta do cliente ou prosseguir com o workflow</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Workflow - Escalar para N2 -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                            <i class="fas fa-level-up-alt text-orange-600 mr-2"></i>
+                            Workflow - Escalar para N2
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-orange-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-orange-900 mb-2">Quando Escalar</h4>
+                                <p class="text-sm text-orange-800">Solicitações que exigem intervenção técnica do pessoal de qualidade ou desenvolvimento (N2).</p>
+                            </div>
+
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-900 mb-2">Passos para Escalação</h4>
+                                <ol class="text-sm text-blue-800 list-decimal list-inside space-y-2">
+                                    <li>Preencher tipo de chamado como "Reclamação" (problemas técnicos)</li>
+                                    <li>Preencher Motivo e Detalhe adequadamente</li>
+                                    <li>Alterar campo "Escalar chamado" para "N2 - Suporte"</li>
+                                    <li>Inserir observações para equipe técnica</li>
+                                    <li>Salvar ticket como "Em Andamento"</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Abertura de Chamados - Telefone -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                            <i class="fas fa-phone text-green-600 mr-2"></i>
+                            Abertura de Chamados - Telefone
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-green-900 mb-2">Protocolo de Abertura</h4>
+                                <p class="text-sm text-green-800 mb-4">Chamados originados de atendimentos telefônicos devem seguir protocolo específico.</p>
+                                <a href="https://youtu.be/OCG-1oX2vvM" target="_blank" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                    <i class="fas fa-play mr-2"></i>
+                                    Assistir Vídeo Tutorial
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cliente Novo - Ticket Automático -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                            <i class="fas fa-user-plus text-purple-600 mr-2"></i>
+                            Cliente Novo - Ticket Aberto Automaticamente
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-purple-900 mb-2">Procedimento</h4>
+                                <p class="text-sm text-purple-800 mb-2">Clientes que entrem em contato por telefone sem conta no Velotax geram ticket com preenchimento provisório.</p>
+                                <p class="text-sm text-purple-800"><strong>Ação necessária:</strong> Coletar nome completo e e-mail do cliente e preencher os campos NOME e SOLICITANTE.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lista Personalizada -->
+                    <div class="bg-white rounded-xl p-6 shadow-sm">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">
+                            <i class="fas fa-list text-indigo-600 mr-2"></i>
+                            Lista Personalizada: Meus Tickets - Controle
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-indigo-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-indigo-900 mb-2">Controle de Tickets</h4>
+                                <p class="text-sm text-indigo-800 mb-4">Pasta de acompanhamento e controle dos tickets em tratamento para todos os agentes.</p>
+                                <a href="https://youtu.be/XhWLMd7uraU" target="_blank" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                                    <i class="fas fa-play mr-2"></i>
+                                    Ver Tutorial de Configuração
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Atualizar data/hora
+        function updateDateTime() {
+            const now = new Date();
+            document.getElementById('current-time').textContent = now.toLocaleTimeString('pt-BR');
+            document.getElementById('current-date').textContent = now.toLocaleDateString('pt-BR');
+        }
+
+        // Atualizar a cada segundo
+        setInterval(updateDateTime, 1000);
+        updateDateTime(); // Primeira execução
+    </script>
+</body>
+</html> 

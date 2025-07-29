@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base de Conhecimento - Velotax Intranet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #64748b;
+            --accent-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--light-bg);
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .page-header {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-subtitle {
+            color: var(--gray-600);
+            font-size: 16px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 24px;
+        }
+
+        .sidebar {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            height: fit-content;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-item {
+            margin-bottom: 8px;
+        }
+
+        .category-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: var(--gray-600);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .category-link:hover {
+            background: var(--gray-50);
+            color: var(--primary-color);
+        }
+
+        .category-link.active {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .content-area {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        .actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 16px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 12px 16px;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-input {
+            border: none;
+            outline: none;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+        }
+
+        .knowledge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .knowledge-card {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .knowledge-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .card-category {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .card-date {
+            color: var(--gray-500);
+            font-size: 12px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .card-excerpt {
+            color: var(--gray-600);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-author {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .author-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--gray-300);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-600);
+        }
+
+        .author-name {
+            font-size: 12px;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .card-stats {
+            display: flex;
+            gap: 12px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 12px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-header {
+            padding: 24px 24px 0;
+            border-bottom: 1px solid var(--gray-200);
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .modal-body {
+            padding: 0 24px 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+        }
+
+        .form-textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        .modal-footer {
+            padding: 24px;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .tag {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            color: var(--danger-color);
+        }
+
+        .tag-input {
+            border: none;
+            outline: none;
+            font-size: 12px;
+            background: transparent;
+            min-width: 80px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .actions-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .knowledge-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+                max-height: 95vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-book"></i>
+                Base de Conhecimento
+            </h1>
+            <p class="page-subtitle">Wiki e documentação da Velotax</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-folder"></i>
+                    Categorias
+                </h3>
+                <ul class="category-list">
+                    <li class="category-item">
+                        <a href="#" class="category-link active" onclick="filterByCategory('')">
+                            <i class="fas fa-th-large"></i>
+                            Todas as Categorias
+                        </a>
+                    </li>
+                    <li class="category-item">
+                        <a href="#" class="category-link" onclick="filterByCategory('Processos')">
+                            <i class="fas fa-cogs"></i>
+                            Processos
+                        </a>
+                    </li>
+                    <li class="category-item">
+                        <a href="#" class="category-link" onclick="filterByCategory('Procedimentos')">
+                            <i class="fas fa-clipboard-list"></i>
+                            Procedimentos
+                        </a>
+                    </li>
+                    <li class="category-item">
+                        <a href="#" class="category-link" onclick="filterByCategory('Sistemas')">
+                            <i class="fas fa-desktop"></i>
+                            Sistemas
+                        </a>
+                    </li>
+                    <li class="category-item">
+                        <a href="#" class="category-link" onclick="filterByCategory('Treinamentos')">
+                            <i class="fas fa-graduation-cap"></i>
+                            Treinamentos
+                        </a>
+                    </li>
+                    <li class="category-item">
+                        <a href="#" class="category-link" onclick="filterByCategory('Políticas')">
+                            <i class="fas fa-shield-alt"></i>
+                            Políticas
+                        </a>
+                    </li>
+                    <li class="category-item">
+                        <a href="#" class="category-link" onclick="filterByCategory('FAQ')">
+                            <i class="fas fa-question-circle"></i>
+                            FAQ
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Actions Bar -->
+                <div class="actions-bar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="search-input" placeholder="Buscar na base de conhecimento..." id="searchInput">
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="openCreateModal()">
+                        <i class="fas fa-plus"></i>
+                        Novo Artigo
+                    </button>
+                </div>
+
+                <!-- Knowledge Grid -->
+                <div class="knowledge-grid" id="knowledgeGrid">
+                    <!-- Knowledge cards will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit Knowledge Modal -->
+    <div id="knowledgeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Novo Artigo</h2>
+            </div>
+            
+            <div class="modal-body">
+                <form id="knowledgeForm">
+                    <div class="form-group">
+                        <label class="form-label" for="articleTitle">Título do Artigo</label>
+                        <input type="text" id="articleTitle" class="form-input" placeholder="Digite o título do artigo" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="articleCategory">Categoria</label>
+                        <select id="articleCategory" class="form-select" required>
+                            <option value="">Selecione uma categoria</option>
+                            <option value="Processos">Processos</option>
+                            <option value="Procedimentos">Procedimentos</option>
+                            <option value="Sistemas">Sistemas</option>
+                            <option value="Treinamentos">Treinamentos</option>
+                            <option value="Políticas">Políticas</option>
+                            <option value="FAQ">FAQ</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="articleTags">Tags</label>
+                        <div class="tags-container" id="tagsContainer">
+                            <input type="text" class="tag-input" id="tagInput" placeholder="Adicionar tag..." onkeypress="addTag(event)">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="articleContent">Conteúdo</label>
+                        <textarea id="articleContent" class="form-textarea" placeholder="Digite o conteúdo do artigo..." required></textarea>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="saveArticle()">Salvar Artigo</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample knowledge data
+        let knowledgeData = [
+            {
+                id: 1,
+                title: "Processo de Abertura de Conta",
+                content: "Este artigo descreve o processo completo para abertura de conta de novos clientes na Velotax. Inclui todos os documentos necessários, etapas do processo e responsabilidades de cada área envolvida.",
+                category: "Processos",
+                tags: ["conta", "cliente", "documentação"],
+                author: "Maria Silva",
+                authorInitial: "MS",
+                date: "2025-01-27",
+                views: 234,
+                likes: 45,
+                helpful: 67
+            },
+            {
+                id: 2,
+                title: "Como Usar o Sistema Fiscal",
+                content: "Guia completo sobre como utilizar o sistema fiscal da Velotax. Inclui instruções passo a passo, dicas de uso e solução de problemas comuns.",
+                category: "Sistemas",
+                tags: ["sistema", "fiscal", "tutorial"],
+                author: "João Santos",
+                authorInitial: "JS",
+                date: "2025-01-26",
+                views: 456,
+                likes: 89,
+                helpful: 123
+            },
+            {
+                id: 3,
+                title: "Procedimento de Backup de Dados",
+                content: "Procedimento detalhado para realização de backup dos dados dos clientes. Inclui frequência, responsabilidades e procedimentos de recuperação.",
+                category: "Procedimentos",
+                tags: ["backup", "dados", "segurança"],
+                author: "Ana Costa",
+                authorInitial: "AC",
+                date: "2025-01-25",
+                views: 189,
+                likes: 34,
+                helpful: 56
+            },
+            {
+                id: 4,
+                title: "Política de Segurança da Informação",
+                content: "Política completa de segurança da informação da Velotax. Define as diretrizes, responsabilidades e procedimentos para proteção dos dados.",
+                category: "Políticas",
+                tags: ["segurança", "política", "dados"],
+                author: "Carlos Oliveira",
+                authorInitial: "CO",
+                date: "2025-01-24",
+                views: 312,
+                likes: 67,
+                helpful: 89
+            },
+            {
+                id: 5,
+                title: "FAQ - Perguntas Frequentes",
+                content: "Lista das perguntas mais frequentes sobre os serviços da Velotax e suas respectivas respostas. Atualizada regularmente com base no feedback dos clientes.",
+                category: "FAQ",
+                tags: ["faq", "perguntas", "respostas"],
+                author: "Pedro Lima",
+                authorInitial: "PL",
+                date: "2025-01-23",
+                views: 567,
+                likes: 123,
+                helpful: 234
+            },
+            {
+                id: 6,
+                title: "Treinamento de Atendimento ao Cliente",
+                content: "Material de treinamento para equipe de atendimento ao cliente. Inclui técnicas de comunicação, resolução de problemas e procedimentos padrão.",
+                category: "Treinamentos",
+                tags: ["treinamento", "atendimento", "cliente"],
+                author: "Equipe RH",
+                authorInitial: "RH",
+                date: "2025-01-22",
+                views: 234,
+                likes: 56,
+                helpful: 78
+            }
+        ];
+
+        let editingArticleId = null;
+        let currentCategory = '';
+        let currentTags = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderKnowledge();
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', filterKnowledge);
+        }
+
+        // Render knowledge articles
+        function renderKnowledge(articlesToRender = knowledgeData) {
+            const knowledgeGrid = document.getElementById('knowledgeGrid');
+            knowledgeGrid.innerHTML = '';
+
+            articlesToRender.forEach(article => {
+                const knowledgeCard = document.createElement('div');
+                knowledgeCard.className = 'knowledge-card';
+                knowledgeCard.onclick = () => openEditModal(article.id);
+                
+                knowledgeCard.innerHTML = `
+                    <div class="card-header">
+                        <span class="card-category">${article.category}</span>
+                        <span class="card-date">${formatDate(article.date)}</span>
+                    </div>
+                    <h3 class="card-title">${article.title}</h3>
+                    <p class="card-excerpt">${article.content.substring(0, 150)}${article.content.length > 150 ? '...' : ''}</p>
+                    <div class="card-footer">
+                        <div class="card-author">
+                            <div class="author-avatar">${article.authorInitial}</div>
+                            <span class="author-name">${article.author}</span>
+                        </div>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-eye"></i>
+                                ${article.views}
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-thumbs-up"></i>
+                                ${article.likes}
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-check-circle"></i>
+                                ${article.helpful}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                knowledgeGrid.appendChild(knowledgeCard);
+            });
+        }
+
+        // Filter by category
+        function filterByCategory(category) {
+            currentCategory = category;
+            
+            // Update active category
+            document.querySelectorAll('.category-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            filterKnowledge();
+        }
+
+        // Filter knowledge
+        function filterKnowledge() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            let filteredArticles = knowledgeData.filter(article => {
+                const matchesSearch = article.title.toLowerCase().includes(searchTerm) || 
+                                    article.content.toLowerCase().includes(searchTerm) ||
+                                    article.tags.some(tag => tag.toLowerCase().includes(searchTerm));
+                const matchesCategory = !currentCategory || article.category === currentCategory;
+                
+                return matchesSearch && matchesCategory;
+            });
+            
+            renderKnowledge(filteredArticles);
+        }
+
+        // Open create modal
+        function openCreateModal() {
+            editingArticleId = null;
+            currentTags = [];
+            document.getElementById('modalTitle').textContent = 'Novo Artigo';
+            document.getElementById('knowledgeForm').reset();
+            renderTags();
+            document.getElementById('knowledgeModal').style.display = 'block';
+        }
+
+        // Open edit modal
+        function openEditModal(articleId) {
+            const article = knowledgeData.find(a => a.id === articleId);
+            if (!article) return;
+            
+            editingArticleId = articleId;
+            currentTags = [...article.tags];
+            document.getElementById('modalTitle').textContent = 'Editar Artigo';
+            document.getElementById('articleTitle').value = article.title;
+            document.getElementById('articleCategory').value = article.category;
+            document.getElementById('articleContent').value = article.content;
+            renderTags();
+            document.getElementById('knowledgeModal').style.display = 'block';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('knowledgeModal').style.display = 'none';
+            editingArticleId = null;
+            currentTags = [];
+        }
+
+        // Add tag
+        function addTag(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const tagInput = document.getElementById('tagInput');
+                const tag = tagInput.value.trim();
+                
+                if (tag && !currentTags.includes(tag)) {
+                    currentTags.push(tag);
+                    renderTags();
+                }
+                
+                tagInput.value = '';
+            }
+        }
+
+        // Remove tag
+        function removeTag(tag) {
+            currentTags = currentTags.filter(t => t !== tag);
+            renderTags();
+        }
+
+        // Render tags
+        function renderTags() {
+            const tagsContainer = document.getElementById('tagsContainer');
+            tagsContainer.innerHTML = '';
+            
+            currentTags.forEach(tag => {
+                const tagElement = document.createElement('div');
+                tagElement.className = 'tag';
+                tagElement.innerHTML = `
+                    ${tag}
+                    <span class="tag-remove" onclick="removeTag('${tag}')">
+                        <i class="fas fa-times"></i>
+                    </span>
+                `;
+                tagsContainer.appendChild(tagElement);
+            });
+            
+            const tagInput = document.createElement('input');
+            tagInput.type = 'text';
+            tagInput.className = 'tag-input';
+            tagInput.id = 'tagInput';
+            tagInput.placeholder = 'Adicionar tag...';
+            tagInput.onkeypress = addTag;
+            tagsContainer.appendChild(tagInput);
+        }
+
+        // Save article
+        function saveArticle() {
+            const title = document.getElementById('articleTitle').value;
+            const category = document.getElementById('articleCategory').value;
+            const content = document.getElementById('articleContent').value;
+            
+            if (!title || !category || !content) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            if (editingArticleId) {
+                // Edit existing article
+                const articleIndex = knowledgeData.findIndex(a => a.id === editingArticleId);
+                if (articleIndex !== -1) {
+                    knowledgeData[articleIndex] = {
+                        ...knowledgeData[articleIndex],
+                        title,
+                        category,
+                        content,
+                        tags: currentTags
+                    };
+                }
+            } else {
+                // Create new article
+                const newArticle = {
+                    id: Date.now(),
+                    title,
+                    content,
+                    category,
+                    tags: currentTags,
+                    author: 'Usuário Atual',
+                    authorInitial: 'UA',
+                    date: new Date().toISOString().split('T')[0],
+                    views: 0,
+                    likes: 0,
+                    helpful: 0
+                };
+                knowledgeData.unshift(newArticle);
+            }
+            
+            renderKnowledge();
+            closeModal();
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('knowledgeModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html> 

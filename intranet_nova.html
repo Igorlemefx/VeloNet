@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intranet Velotax - Portal Corporativo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .sidebar {
+            background: linear-gradient(180deg, #1e40af 0%, #3730a3 100%);
+        }
+        
+        .card {
+            transition: all 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-item {
+            transition: all 0.2s ease;
+        }
+        
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.3s ease;
+        }
+        
+        .loading {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Loading Screen -->
+    <div id="loading" class="fixed inset-0 bg-blue-600 flex items-center justify-center z-50">
+        <div class="text-center text-white">
+            <div class="loading rounded-full h-16 w-16 border-4 border-white border-t-transparent mx-auto mb-4"></div>
+            <h2 class="text-2xl font-bold mb-2">Intranet Velotax</h2>
+            <p class="text-lg opacity-90">Carregando...</p>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="fixed left-0 top-0 h-full w-64 sidebar z-40">
+        <div class="flex items-center justify-center h-16 bg-white bg-opacity-10">
+            <div class="text-white text-center">
+                <h1 class="text-xl font-bold">Velotax</h1>
+                <p class="text-xs opacity-90">Portal Corporativo</p>
+            </div>
+        </div>
+        
+        <nav class="mt-8 px-4">
+            <div class="space-y-2">
+                <a href="#dashboard" class="nav-item flex items-center px-4 py-3 text-white rounded-lg active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Dashboard</span>
+                </a>
+                
+                <a href="#noticias" class="nav-item flex items-center px-4 py-3 text-white rounded-lg" data-section="noticias">
+                    <i class="fas fa-newspaper mr-3"></i>
+                    <span>Notícias</span>
+                    <span class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">3</span>
+                </a>
+                
+                <a href="#desempenho" class="nav-item flex items-center px-4 py-3 text-white rounded-lg" data-section="desempenho">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    <span>Desempenho</span>
+                </a>
+                
+                <a href="#treinamento" class="nav-item flex items-center px-4 py-3 text-white rounded-lg" data-section="treinamento">
+                    <i class="fas fa-graduation-cap mr-3"></i>
+                    <span>Treinamentos</span>
+                </a>
+                
+                <a href="#ranking" class="nav-item flex items-center px-4 py-3 text-white rounded-lg" data-section="ranking">
+                    <i class="fas fa-trophy mr-3"></i>
+                    <span>Ranking</span>
+                </a>
+                
+                <a href="#comunicacao" class="nav-item flex items-center px-4 py-3 text-white rounded-lg" data-section="comunicacao">
+                    <i class="fas fa-comments mr-3"></i>
+                    <span>Comunicação</span>
+                </a>
+                
+                <a href="#areas" class="nav-item flex items-center px-4 py-3 text-white rounded-lg" data-section="areas">
+                    <i class="fas fa-sitemap mr-3"></i>
+                    <span>Áreas</span>
+                </a>
+            </div>
+        </nav>
+        
+        <div class="absolute bottom-8 left-4 right-4">
+            <div class="bg-white bg-opacity-10 rounded-lg p-4 text-white">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm opacity-90">Usuário Online</span>
+                    <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                </div>
+                <p class="text-sm font-medium">João Silva</p>
+                <p class="text-xs opacity-75">Suporte Técnico</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ml-64 min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center space-x-4">
+                    <button id="sidebar-toggle" class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <div>
+                        <h2 id="page-title" class="text-xl font-semibold text-gray-900">Dashboard</h2>
+                        <p id="page-subtitle" class="text-sm text-gray-500">Visão geral do sistema</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="text-right">
+                        <div id="current-time" class="text-sm font-medium text-gray-900">14:30:25</div>
+                        <div id="current-date" class="text-xs text-gray-500">23/01/2025</div>
+                    </div>
+                    
+                    <div class="relative">
+                        <button class="text-gray-600 hover:text-gray-800">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">2</span>
+                        </button>
+                    </div>
+                    
+                    <button id="logout-btn" class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-sign-out-alt text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <main class="p-6">
+            <div id="dashboard-section" class="fade-in">
+                <!-- Dashboard Content -->
+            </div>
+            
+            <div id="other-sections" class="hidden fade-in">
+                <!-- Other sections content -->
+            </div>
+        </main>
+    </div>
+
+    <script src="intranet_nova.js"></script>
+</body>
+</html> 

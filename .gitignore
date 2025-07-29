@@ -1,0 +1,43 @@
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Arquivos temporários
+*.tmp
+*.temp
+*.log
+
+# Arquivos de backup
+*.bak
+*.backup
+
+# Arquivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Arquivos de cache
+.cache/
+.temp/
+
+# Arquivos de configuração local
+config.local.json
+.env
+
+# Arquivos de build
+dist/
+build/
+node_modules/
+
+# Arquivos de mídia grandes
+*.mp4
+*.avi
+*.mov
+*.wmv
+
+# Arquivos de dados sensíveis
+*.key
+*.pem
+*.p12 
