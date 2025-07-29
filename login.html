@@ -183,42 +183,78 @@
                 name: 'Igor',
                 password: 'velotax2025',
                 active: true
+            },
+            'suporte.manha@velotax.com.br': {
+                role: 'colaborador',
+                name: 'Suporte Manhã',
+                password: 'velotax2025',
+                active: true
+            },
+            'suporte@velotax.com.br': {
+                role: 'colaborador',
+                name: 'Suporte',
+                password: 'velotax2025',
+                active: true
+            },
+            'ti@velotax.com.br': {
+                role: 'admin',
+                name: 'TI',
+                password: 'velotax2025',
+                active: true
+            },
+            'rh@velotax.com.br': {
+                role: 'gerente',
+                name: 'RH',
+                password: 'velotax2025',
+                active: true
+            },
+            'financeiro@velotax.com.br': {
+                role: 'colaborador',
+                name: 'Financeiro',
+                password: 'velotax2025',
+                active: true
             }
         };
 
         // Função para autenticação Google
         function handleCredentialResponse(response) {
-            // Decodificar o token JWT do Google
-            const responsePayload = decodeJwtResponse(response.credential);
-            
-            console.log("ID: " + responsePayload.sub);
-            console.log('Full Name: ' + responsePayload.name);
-            console.log('Given Name: ' + responsePayload.given_name);
-            console.log('Family Name: ' + responsePayload.family_name);
-            console.log("Image URL: " + responsePayload.picture);
-            console.log("Email: " + responsePayload.email);
+            try {
+                // Decodificar o token JWT do Google
+                const responsePayload = decodeJwtResponse(response.credential);
+                
+                console.log("ID: " + responsePayload.sub);
+                console.log('Full Name: ' + responsePayload.name);
+                console.log('Given Name: ' + responsePayload.given_name);
+                console.log('Family Name: ' + responsePayload.family_name);
+                console.log("Image URL: " + responsePayload.picture);
+                console.log("Email: " + responsePayload.email);
 
-            const email = responsePayload.email;
-            
-            // Verificar se é e-mail Velotax
-            if (!email.endsWith('@velotax.com.br')) {
-                showError('Apenas e-mails corporativos @velotax.com.br são permitidos.');
-                return;
+                const email = responsePayload.email;
+                
+                // Verificar se é e-mail Velotax
+                if (!email.endsWith('@velotax.com.br')) {
+                    showError('Apenas e-mails corporativos @velotax.com.br são permitidos.');
+                    return;
+                }
+
+                // Verificar se o usuário existe
+                if (!users[email]) {
+                    showError('E-mail não autorizado. Entre em contato com o administrador. E-mail: ' + email);
+                    return;
+                }
+
+                if (!users[email].active) {
+                    showError('Conta desativada. Entre em contato com o administrador.');
+                    return;
+                }
+
+                // Login bem-sucedido
+                console.log('Login Google bem-sucedido para: ' + email);
+                loginSuccess(email, responsePayload.name);
+            } catch (error) {
+                console.error('Erro no login Google:', error);
+                showError('Erro no login Google. Tente novamente.');
             }
-
-            // Verificar se o usuário existe
-            if (!users[email]) {
-                showError('E-mail não autorizado. Entre em contato com o administrador.');
-                return;
-            }
-
-            if (!users[email].active) {
-                showError('Conta desativada. Entre em contato com o administrador.');
-                return;
-            }
-
-            // Login bem-sucedido
-            loginSuccess(email, responsePayload.name);
         }
 
         // Função para decodificar JWT (simplificada)
