@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velotax - Login Seguro</title>
+    <title>Velotax - Portal Corporativo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -38,16 +39,75 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
+
+        .google-btn {
+            background: white;
+            color: #333;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .google-btn:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .divider {
+            position: relative;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .divider span {
+            background: rgba(102, 126, 234, 0.8);
+            padding: 0 15px;
+            color: white;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
     <div class="login-card rounded-2xl p-8 w-full max-w-md">
         <div class="text-center mb-8">
             <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="fas fa-shield-alt text-white text-3xl"></i>
+                <i class="fas fa-building text-white text-3xl"></i>
             </div>
             <h1 class="text-3xl font-bold text-white mb-2">Velotax</h1>
             <p class="text-white text-opacity-80">Portal Corporativo Seguro</p>
+        </div>
+        
+        <!-- Botão Google Sign-In -->
+        <div class="mb-6">
+            <div id="g_id_onload"
+                 data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                 data-callback="handleCredentialResponse"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin google-btn w-full py-3 px-4 rounded-lg flex items-center justify-center font-medium"
+                 data-type="standard"
+                 data-size="large"
+                 data-theme="outline"
+                 data-text="sign_in_with"
+                 data-shape="rectangular"
+                 data-logo_alignment="left">
+                <i class="fab fa-google mr-3 text-red-500"></i>
+                Entrar com Google
+            </div>
+        </div>
+
+        <div class="divider">
+            <span>ou</span>
         </div>
         
         <form id="loginForm" class="space-y-6">
@@ -98,8 +158,8 @@
         
         <div class="mt-6 text-center">
             <p class="text-white text-opacity-70 text-sm">
-                <i class="fas fa-info-circle mr-1"></i>
-                Acesso restrito a colaboradores Velotax
+                <i class="fas fa-shield-alt mr-1"></i>
+                Acesso restrito a colaboradores @velotax.com.br
             </p>
         </div>
         
@@ -110,69 +170,121 @@
     </div>
 
     <script>
-        // E-mails autorizados (apenas @velotax.com.br)
-        const authorizedEmails = [
-            'suporte.manha@velotax.com.br',
-            'admin@velotax.com.br',
-            'igor@velotax.com.br',
-            'teste@velotax.com.br',
-            'suporte@velotax.com.br',
-            'ti@velotax.com.br',
-            'rh@velotax.com.br',
-            'financeiro@velotax.com.br'
-        ];
-        
-        // Senhas de teste (em produção, usar autenticação real)
-        const testPasswords = {
-            'suporte.manha@velotax.com.br': 'velotax2025',
-            'admin@velotax.com.br': 'admin123',
-            'igor@velotax.com.br': 'velotax2025',
-            'teste@velotax.com.br': 'teste123',
-            'suporte@velotax.com.br': 'velotax2025',
-            'ti@velotax.com.br': 'velotax2025',
-            'rh@velotax.com.br': 'velotax2025',
-            'financeiro@velotax.com.br': 'velotax2025'
+        // Sistema de usuários (em produção, usar banco de dados)
+        let users = JSON.parse(localStorage.getItem('velotax_users')) || {
+            'admin@velotax.com.br': {
+                role: 'admin',
+                name: 'Administrador',
+                password: 'admin123',
+                active: true
+            },
+            'igor@velotax.com.br': {
+                role: 'admin',
+                name: 'Igor',
+                password: 'velotax2025',
+                active: true
+            }
         };
+
+        // Função para autenticação Google
+        function handleCredentialResponse(response) {
+            // Decodificar o token JWT do Google
+            const responsePayload = decodeJwtResponse(response.credential);
+            
+            console.log("ID: " + responsePayload.sub);
+            console.log('Full Name: ' + responsePayload.name);
+            console.log('Given Name: ' + responsePayload.given_name);
+            console.log('Family Name: ' + responsePayload.family_name);
+            console.log("Image URL: " + responsePayload.picture);
+            console.log("Email: " + responsePayload.email);
+
+            const email = responsePayload.email;
+            
+            // Verificar se é e-mail Velotax
+            if (!email.endsWith('@velotax.com.br')) {
+                showError('Apenas e-mails corporativos @velotax.com.br são permitidos.');
+                return;
+            }
+
+            // Verificar se o usuário existe
+            if (!users[email]) {
+                showError('E-mail não autorizado. Entre em contato com o administrador.');
+                return;
+            }
+
+            if (!users[email].active) {
+                showError('Conta desativada. Entre em contato com o administrador.');
+                return;
+            }
+
+            // Login bem-sucedido
+            loginSuccess(email, responsePayload.name);
+        }
+
+        // Função para decodificar JWT (simplificada)
+        function decodeJwtResponse(token) {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+
+        // Função para mostrar erro
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            errorText.textContent = message;
+            errorMessage.classList.remove('hidden');
+        }
+
+        // Função para login bem-sucedido
+        function loginSuccess(email, name) {
+            // Salvar dados do usuário
+            localStorage.setItem('velotax_user', email);
+            localStorage.setItem('velotax_user_name', name);
+            localStorage.setItem('velotax_user_role', users[email].role);
+            localStorage.setItem('velotax_remember', 'true');
+            
+            // Redirecionar baseado no papel
+            if (users[email].role === 'admin') {
+                window.location.href = 'admin.html';
+            } else {
+                window.location.href = 'intranet_simples.html';
+            }
+        }
         
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const email = document.getElementById('email').value.toLowerCase();
             const password = document.getElementById('password').value;
-            const errorMessage = document.getElementById('errorMessage');
-            const errorText = document.getElementById('errorText');
             
             // Validar e-mail corporativo
-            if (!email.endsWith('@velotax.com.br') && !authorizedEmails.includes(email)) {
-                errorText.textContent = 'Apenas e-mails corporativos @velotax.com.br são permitidos.';
-                errorMessage.classList.remove('hidden');
+            if (!email.endsWith('@velotax.com.br')) {
+                showError('Apenas e-mails corporativos @velotax.com.br são permitidos.');
                 return;
             }
             
             // Validar credenciais
-            if (!authorizedEmails.includes(email)) {
-                errorText.textContent = 'E-mail não autorizado. Entre em contato com o administrador.';
-                errorMessage.classList.remove('hidden');
+            if (!users[email]) {
+                showError('E-mail não autorizado. Entre em contato com o administrador.');
+                return;
+            }
+
+            if (!users[email].active) {
+                showError('Conta desativada. Entre em contato com o administrador.');
                 return;
             }
             
-            if (testPasswords[email] !== password) {
-                errorText.textContent = 'Senha incorreta. Tente novamente.';
-                errorMessage.classList.remove('hidden');
+            if (users[email].password !== password) {
+                showError('Senha incorreta. Tente novamente.');
                 return;
             }
             
             // Login bem-sucedido
-            errorMessage.classList.add('hidden');
-            
-            // Salvar dados de login
-            if (document.getElementById('remember').checked) {
-                localStorage.setItem('velotax_user', email);
-                localStorage.setItem('velotax_remember', 'true');
-            }
-            
-            // Redirecionar para a intranet
-            window.location.href = 'intranet_simples.html';
+            loginSuccess(email, users[email].name);
         });
         
         // Verificar se já está logado
@@ -181,8 +293,13 @@
             const remember = localStorage.getItem('velotax_remember');
             
             if (savedUser && remember === 'true') {
-                document.getElementById('email').value = savedUser;
-                document.getElementById('remember').checked = true;
+                // Redirecionar baseado no papel
+                const role = localStorage.getItem('velotax_user_role');
+                if (role === 'admin') {
+                    window.location.href = 'admin.html';
+                } else {
+                    window.location.href = 'intranet_simples.html';
+                }
             }
         });
     </script>

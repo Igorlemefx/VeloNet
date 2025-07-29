@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velotax - Painel Administrativo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+        }
+        
+        .sidebar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Sidebar -->
+    <div class="fixed inset-y-0 left-0 w-64 sidebar text-white">
+        <div class="p-6">
+            <div class="flex items-center mb-8">
+                <i class="fas fa-building text-2xl mr-3"></i>
+                <h1 class="text-xl font-bold">Velotax Admin</h1>
+            </div>
+            
+            <nav class="space-y-2">
+                <button onclick="showSection('dashboard')" class="w-full text-left flex items-center px-4 py-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors active">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    Dashboard
+                </button>
+                <button onclick="showSection('users')" class="w-full text-left flex items-center px-4 py-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors">
+                    <i class="fas fa-users mr-3"></i>
+                    Usuários
+                </button>
+                <button onclick="showSection('roles')" class="w-full text-left flex items-center px-4 py-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors">
+                    <i class="fas fa-user-tag mr-3"></i>
+                    Cargos
+                </button>
+                <button onclick="showSection('logs')" class="w-full text-left flex items-center px-4 py-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors">
+                    <i class="fas fa-history mr-3"></i>
+                    Logs
+                </button>
+            </nav>
+        </div>
+        
+        <div class="absolute bottom-6 left-6 right-6">
+            <div class="bg-white bg-opacity-10 rounded-lg p-4">
+                <div class="flex items-center mb-2">
+                    <i class="fas fa-user-circle mr-2"></i>
+                    <span id="adminName">Administrador</span>
+                </div>
+                <button onclick="logout()" class="w-full bg-white bg-opacity-20 text-white py-2 rounded-lg hover:bg-opacity-30 transition-colors">
+                    <i class="fas fa-sign-out-alt mr-2"></i>
+                    Sair
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ml-64 p-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h2 id="pageTitle" class="text-2xl font-bold text-gray-900">Dashboard</h2>
+                <p id="pageSubtitle" class="text-gray-600">Visão geral do sistema</p>
+            </div>
+            <div class="flex space-x-4">
+                <button onclick="window.open('intranet_simples.html', '_blank')" class="btn-primary text-white px-4 py-2 rounded-lg">
+                    <i class="fas fa-external-link-alt mr-2"></i>
+                    Ver Intranet
+                </button>
+                <button onclick="window.open('index.html', '_blank')" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                    <i class="fas fa-home mr-2"></i>
+                    Página Inicial
+                </button>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div id="content">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="card p-6">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-users text-blue-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-semibold text-gray-900" id="totalUsers">0</h3>
+                                <p class="text-gray-600">Usuários Ativos</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-6">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-user-check text-green-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-semibold text-gray-900" id="activeUsers">0</h3>
+                                <p class="text-gray-600">Online Hoje</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card p-6">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-user-tag text-purple-600 text-xl"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-semibold text-gray-900" id="totalRoles">0</h3>
+                                <p class="text-gray-600">Cargos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Atividade Recente</h3>
+                    <div id="recentActivity" class="space-y-3">
+                        <!-- Atividade será carregada dinamicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div id="users-section" class="hidden space-y-6">
+                <div class="card p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900">Gerenciar Usuários</h3>
+                        <button onclick="showAddUserModal()" class="btn-primary text-white px-4 py-2 rounded-lg">
+                            <i class="fas fa-plus mr-2"></i>
+                            Adicionar Usuário
+                        </button>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuário</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cargo</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Último Acesso</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTable" class="bg-white divide-y divide-gray-200">
+                                <!-- Usuários serão carregados dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roles Section -->
+            <div id="roles-section" class="hidden space-y-6">
+                <div class="card p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900">Gerenciar Cargos</h3>
+                        <button onclick="showAddRoleModal()" class="btn-primary text-white px-4 py-2 rounded-lg">
+                            <i class="fas fa-plus mr-2"></i>
+                            Adicionar Cargo
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="rolesGrid">
+                        <!-- Cargos serão carregados dinamicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logs Section -->
+            <div id="logs-section" class="hidden space-y-6">
+                <div class="card p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Logs de Atividade</h3>
+                    <div id="logsList" class="space-y-3">
+                        <!-- Logs serão carregados dinamicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Adicionar Usuário</h3>
+            <form id="addUserForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
+                    <input type="text" id="userName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">E-mail (@velotax.com.br)</label>
+                    <input type="email" id="userEmail" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Cargo</label>
+                    <select id="userRole" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <option value="">Selecione um cargo</option>
+                        <option value="colaborador">Colaborador</option>
+                        <option value="gerente">Gerente</option>
+                        <option value="admin">Administrador</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Senha Temporária</label>
+                    <input type="password" id="userPassword" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div class="flex space-x-3 pt-4">
+                    <button type="submit" class="flex-1 btn-primary text-white py-2 rounded-lg">
+                        Adicionar
+                    </button>
+                    <button type="button" onclick="hideAddUserModal()" class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sistema de usuários
+        let users = JSON.parse(localStorage.getItem('velotax_users')) || {
+            'admin@velotax.com.br': {
+                role: 'admin',
+                name: 'Administrador',
+                password: 'admin123',
+                active: true,
+                lastAccess: new Date().toISOString()
+            },
+            'igor@velotax.com.br': {
+                role: 'admin',
+                name: 'Igor',
+                password: 'velotax2025',
+                active: true,
+                lastAccess: new Date().toISOString()
+            }
+        };
+
+        // Sistema de cargos
+        let roles = JSON.parse(localStorage.getItem('velotax_roles')) || {
+            'admin': {
+                name: 'Administrador',
+                permissions: ['manage_users', 'manage_roles', 'view_logs', 'manage_content'],
+                color: 'bg-red-100 text-red-800'
+            },
+            'gerente': {
+                name: 'Gerente',
+                permissions: ['manage_content', 'view_logs'],
+                color: 'bg-blue-100 text-blue-800'
+            },
+            'colaborador': {
+                name: 'Colaborador',
+                permissions: ['view_content'],
+                color: 'bg-green-100 text-green-800'
+            }
+        };
+
+        // Logs de atividade
+        let activityLogs = JSON.parse(localStorage.getItem('velotax_logs')) || [];
+
+        // Verificar se é admin
+        function checkAdminAccess() {
+            const userEmail = localStorage.getItem('velotax_user');
+            const userRole = localStorage.getItem('velotax_user_role');
+            
+            if (!userEmail || userRole !== 'admin') {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            document.getElementById('adminName').textContent = users[userEmail]?.name || 'Administrador';
+        }
+
+        // Mostrar seção
+        function showSection(section) {
+            // Esconder todas as seções
+            document.querySelectorAll('[id$="-section"]').forEach(el => el.classList.add('hidden'));
+            
+            // Mostrar seção selecionada
+            document.getElementById(section + '-section').classList.remove('hidden');
+            
+            // Atualizar título
+            const titles = {
+                'dashboard': 'Dashboard',
+                'users': 'Gerenciar Usuários',
+                'roles': 'Gerenciar Cargos',
+                'logs': 'Logs de Atividade'
+            };
+            
+            const subtitles = {
+                'dashboard': 'Visão geral do sistema',
+                'users': 'Adicionar e gerenciar usuários',
+                'roles': 'Configurar cargos e permissões',
+                'logs': 'Histórico de atividades'
+            };
+            
+            document.getElementById('pageTitle').textContent = titles[section];
+            document.getElementById('pageSubtitle').textContent = subtitles[section];
+            
+            // Atualizar menu ativo
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Carregar dados da seção
+            loadSectionData(section);
+        }
+
+        // Carregar dados da seção
+        function loadSectionData(section) {
+            switch(section) {
+                case 'dashboard':
+                    loadDashboard();
+                    break;
+                case 'users':
+                    loadUsers();
+                    break;
+                case 'roles':
+                    loadRoles();
+                    break;
+                case 'logs':
+                    loadLogs();
+                    break;
+            }
+        }
+
+        // Carregar dashboard
+        function loadDashboard() {
+            const totalUsers = Object.keys(users).length;
+            const activeUsers = Object.values(users).filter(u => u.active).length;
+            const totalRoles = Object.keys(roles).length;
+            
+            document.getElementById('totalUsers').textContent = totalUsers;
+            document.getElementById('activeUsers').textContent = activeUsers;
+            document.getElementById('totalRoles').textContent = totalRoles;
+            
+            // Carregar atividade recente
+            const recentActivity = activityLogs.slice(-5).reverse();
+            const activityHtml = recentActivity.map(log => `
+                <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                    <div class="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                    <div class="flex-1">
+                        <p class="text-sm text-gray-900">${log.action}</p>
+                        <p class="text-xs text-gray-500">${new Date(log.timestamp).toLocaleString()}</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('recentActivity').innerHTML = activityHtml || '<p class="text-gray-500">Nenhuma atividade recente</p>';
+        }
+
+        // Carregar usuários
+        function loadUsers() {
+            const usersHtml = Object.entries(users).map(([email, user]) => `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-gray-600"></i>
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">${user.name}</div>
+                                <div class="text-sm text-gray-500">${email}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${roles[user.role]?.color || 'bg-gray-100 text-gray-800'}">
+                            ${roles[user.role]?.name || user.role}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                            ${user.active ? 'Ativo' : 'Inativo'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${user.lastAccess ? new Date(user.lastAccess).toLocaleString() : 'Nunca'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button onclick="toggleUserStatus('${email}')" class="text-blue-600 hover:text-blue-900 mr-3">
+                            ${user.active ? 'Desativar' : 'Ativar'}
+                        </button>
+                        <button onclick="deleteUser('${email}')" class="text-red-600 hover:text-red-900">
+                            Excluir
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            document.getElementById('usersTable').innerHTML = usersHtml;
+        }
+
+        // Carregar cargos
+        function loadRoles() {
+            const rolesHtml = Object.entries(roles).map(([key, role]) => `
+                <div class="card p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900">${role.name}</h4>
+                            <p class="text-sm text-gray-600">${key}</p>
+                        </div>
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full ${role.color}">
+                            ${role.permissions.length} permissões
+                        </span>
+                    </div>
+                    <div class="space-y-2">
+                        ${role.permissions.map(perm => `
+                            <div class="flex items-center text-sm text-gray-600">
+                                <i class="fas fa-check text-green-500 mr-2"></i>
+                                ${perm.replace('_', ' ')}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('rolesGrid').innerHTML = rolesHtml;
+        }
+
+        // Carregar logs
+        function loadLogs() {
+            const logsHtml = activityLogs.slice(-20).reverse().map(log => `
+                <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                    <div class="w-3 h-3 bg-blue-500 rounded-full mr-4"></div>
+                    <div class="flex-1">
+                        <p class="text-sm text-gray-900">${log.action}</p>
+                        <p class="text-xs text-gray-500">${log.user} - ${new Date(log.timestamp).toLocaleString()}</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('logsList').innerHTML = logsHtml || '<p class="text-gray-500">Nenhum log encontrado</p>';
+        }
+
+        // Adicionar log
+        function addLog(action) {
+            const userEmail = localStorage.getItem('velotax_user');
+            const log = {
+                action: action,
+                user: userEmail,
+                timestamp: new Date().toISOString()
+            };
+            
+            activityLogs.push(log);
+            localStorage.setItem('velotax_logs', JSON.stringify(activityLogs));
+        }
+
+        // Modal de adicionar usuário
+        function showAddUserModal() {
+            document.getElementById('addUserModal').classList.remove('hidden');
+            document.getElementById('addUserModal').classList.add('flex');
+        }
+
+        function hideAddUserModal() {
+            document.getElementById('addUserModal').classList.add('hidden');
+            document.getElementById('addUserModal').classList.remove('flex');
+            document.getElementById('addUserForm').reset();
+        }
+
+        // Adicionar usuário
+        document.getElementById('addUserForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value.toLowerCase();
+            const role = document.getElementById('userRole').value;
+            const password = document.getElementById('userPassword').value;
+            
+            if (!email.endsWith('@velotax.com.br')) {
+                alert('Apenas e-mails @velotax.com.br são permitidos.');
+                return;
+            }
+            
+            if (users[email]) {
+                alert('Este e-mail já está cadastrado.');
+                return;
+            }
+            
+            users[email] = {
+                role: role,
+                name: name,
+                password: password,
+                active: true,
+                lastAccess: null
+            };
+            
+            localStorage.setItem('velotax_users', JSON.stringify(users));
+            addLog(`Adicionou usuário: ${email}`);
+            
+            hideAddUserModal();
+            loadUsers();
+            loadDashboard();
+        });
+
+        // Toggle status do usuário
+        function toggleUserStatus(email) {
+            users[email].active = !users[email].active;
+            localStorage.setItem('velotax_users', JSON.stringify(users));
+            addLog(`${users[email].active ? 'Ativou' : 'Desativou'} usuário: ${email}`);
+            loadUsers();
+        }
+
+        // Deletar usuário
+        function deleteUser(email) {
+            if (confirm(`Tem certeza que deseja excluir o usuário ${email}?`)) {
+                delete users[email];
+                localStorage.setItem('velotax_users', JSON.stringify(users));
+                addLog(`Excluiu usuário: ${email}`);
+                loadUsers();
+                loadDashboard();
+            }
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('velotax_user');
+            localStorage.removeItem('velotax_user_name');
+            localStorage.removeItem('velotax_user_role');
+            localStorage.removeItem('velotax_remember');
+            window.location.href = 'login.html';
+        }
+
+        // Inicializar
+        window.addEventListener('load', function() {
+            checkAdminAccess();
+            showSection('dashboard');
+        });
+    </script>
+</body>
+</html> 
