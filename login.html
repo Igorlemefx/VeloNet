@@ -283,11 +283,19 @@
             localStorage.setItem('velotax_user_role', users[email].role);
             localStorage.setItem('velotax_remember', 'true');
             
-            // Redirecionar baseado no papel
-            if (users[email].role === 'admin') {
-                window.location.href = 'admin.html';
+            // Verificar se é primeiro acesso (aceitou termo)
+            const termoAceito = localStorage.getItem('velotax_termo_aceito_' + email);
+            
+            if (!termoAceito) {
+                // Primeiro acesso - redirecionar para termo de uso
+                window.location.href = 'termo-uso.html';
             } else {
-                window.location.href = 'intranet_simples.html';
+                // Já aceitou o termo - redirecionar baseado no papel
+                if (users[email].role === 'admin') {
+                    window.location.href = 'admin.html';
+                } else {
+                    window.location.href = 'intranet_simples.html';
+                }
             }
         }
         
