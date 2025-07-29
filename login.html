@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velotax - Login Seguro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .login-card {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+        }
+        
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="login-card rounded-2xl p-8 w-full max-w-md">
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-shield-alt text-white text-3xl"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-white mb-2">Velotax</h1>
+            <p class="text-white text-opacity-80">Portal Corporativo Seguro</p>
+        </div>
+        
+        <form id="loginForm" class="space-y-6">
+            <div>
+                <label class="block text-white text-sm font-medium mb-2">
+                    <i class="fas fa-envelope mr-2"></i>
+                    E-mail Corporativo
+                </label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    class="input-field w-full px-4 py-3 rounded-lg text-white placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+                    placeholder="seu.email@velotax.com.br"
+                    required
+                >
+            </div>
+            
+            <div>
+                <label class="block text-white text-sm font-medium mb-2">
+                    <i class="fas fa-lock mr-2"></i>
+                    Senha
+                </label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    class="input-field w-full px-4 py-3 rounded-lg text-white placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+                    placeholder="Digite sua senha"
+                    required
+                >
+            </div>
+            
+            <div class="flex items-center justify-between">
+                <label class="flex items-center text-white text-sm">
+                    <input type="checkbox" id="remember" class="mr-2">
+                    Lembrar de mim
+                </label>
+                <a href="#" class="text-white text-sm hover:text-opacity-80">Esqueceu a senha?</a>
+            </div>
+            
+            <button 
+                type="submit" 
+                class="btn-login w-full py-3 rounded-lg text-white font-semibold"
+            >
+                <i class="fas fa-sign-in-alt mr-2"></i>
+                Acessar Intranet
+            </button>
+        </form>
+        
+        <div class="mt-6 text-center">
+            <p class="text-white text-opacity-70 text-sm">
+                <i class="fas fa-info-circle mr-1"></i>
+                Acesso restrito a colaboradores Velotax
+            </p>
+        </div>
+        
+        <div id="errorMessage" class="mt-4 p-3 bg-red-500 bg-opacity-20 border border-red-500 border-opacity-30 rounded-lg text-white text-sm hidden">
+            <i class="fas fa-exclamation-triangle mr-2"></i>
+            <span id="errorText"></span>
+        </div>
+    </div>
+
+    <script>
+        // E-mails autorizados (em produção, isso viria de um banco de dados)
+        const authorizedEmails = [
+            'suporte.manha@velotax.com.br',
+            'admin@velotax.com.br',
+            'igorlemefx@gmail.com',
+            'teste@velotax.com.br'
+        ];
+        
+        // Senhas de teste (em produção, usar autenticação real)
+        const testPasswords = {
+            'suporte.manha@velotax.com.br': 'velotax2025',
+            'admin@velotax.com.br': 'admin123',
+            'igorlemefx@gmail.com': 'velotax2025',
+            'teste@velotax.com.br': 'teste123'
+        };
+        
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.toLowerCase();
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            
+            // Validar e-mail corporativo
+            if (!email.endsWith('@velotax.com.br') && !authorizedEmails.includes(email)) {
+                errorText.textContent = 'Apenas e-mails corporativos @velotax.com.br são permitidos.';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+            
+            // Validar credenciais
+            if (!authorizedEmails.includes(email)) {
+                errorText.textContent = 'E-mail não autorizado. Entre em contato com o administrador.';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+            
+            if (testPasswords[email] !== password) {
+                errorText.textContent = 'Senha incorreta. Tente novamente.';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+            
+            // Login bem-sucedido
+            errorMessage.classList.add('hidden');
+            
+            // Salvar dados de login
+            if (document.getElementById('remember').checked) {
+                localStorage.setItem('velotax_user', email);
+                localStorage.setItem('velotax_remember', 'true');
+            }
+            
+            // Redirecionar para a intranet
+            window.location.href = 'intranet_simples.html';
+        });
+        
+        // Verificar se já está logado
+        window.addEventListener('load', function() {
+            const savedUser = localStorage.getItem('velotax_user');
+            const remember = localStorage.getItem('velotax_remember');
+            
+            if (savedUser && remember === 'true') {
+                document.getElementById('email').value = savedUser;
+                document.getElementById('remember').checked = true;
+            }
+        });
+    </script>
+</body>
+</html> 
