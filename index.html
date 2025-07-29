@@ -3,291 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velotax - Portal Corporativo</title>
+    <title>VeloNet - Portal Corporativo Velotax</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
         }
         
-        .login-card {
+        .hero-card {
             backdrop-filter: blur(10px);
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
         
-        .input-field {
+        .feature-card {
             background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
         }
         
-        .input-field:focus {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.5);
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
         }
         
-        .btn-login {
+        .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             transition: all 0.3s ease;
         }
         
-        .btn-login:hover {
+        .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .google-btn {
-            background: white;
-            color: #333;
-            border: 1px solid #ddd;
-            transition: all 0.3s ease;
-        }
-
-        .google-btn:hover {
-            background: #f8f9fa;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .divider {
-            position: relative;
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .divider::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .divider span {
-            background: rgba(102, 126, 234, 0.8);
-            padding: 0 15px;
-            color: white;
-            font-size: 14px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <div class="login-card rounded-2xl p-8 w-full max-w-md">
-        <div class="text-center mb-8">
-            <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="fas fa-building text-white text-3xl"></i>
-            </div>
-            <h1 class="text-3xl font-bold text-white mb-2">VeloNet</h1>
-            <p class="text-white text-opacity-80">Portal Corporativo Velotax</p>
-        </div>
-        
-        <!-- Botão Google Sign-In -->
-        <div class="mb-6">
-            <div id="g_id_onload"
-                 data-client_id="1070039276915-2b694q77hs2tgv3heuf5olrfoc4udq9r.apps.googleusercontent.com"
-                 data-callback="handleCredentialResponse"
-                 data-auto_prompt="false">
-            </div>
-            <div class="g_id_signin google-btn w-full py-3 px-4 rounded-lg flex items-center justify-center font-medium"
-                 data-type="standard"
-                 data-size="large"
-                 data-theme="outline"
-                 data-text="sign_in_with"
-                 data-shape="rectangular"
-                 data-logo_alignment="left">
-                <i class="fab fa-google mr-3 text-red-500"></i>
-                Entrar com Google
-            </div>
-        </div>
-
-        <div class="divider">
-            <span>ou</span>
-        </div>
-        
-        <form id="loginForm" class="space-y-6">
-            <div>
-                <label class="block text-white text-sm font-medium mb-2">
-                    <i class="fas fa-envelope mr-2"></i>
-                    E-mail Corporativo
-                </label>
-                <input 
-                    type="email" 
-                    id="email" 
-                    class="input-field w-full px-4 py-3 rounded-lg text-white placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
-                    placeholder="seu.email@velotax.com.br"
-                    required
-                >
-            </div>
-            
-            <div>
-                <label class="block text-white text-sm font-medium mb-2">
-                    <i class="fas fa-lock mr-2"></i>
-                    Senha
-                </label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    class="input-field w-full px-4 py-3 rounded-lg text-white placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
-                    placeholder="Digite sua senha"
-                    required
-                >
-            </div>
-            
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="text-white py-6">
+        <div class="container mx-auto px-6">
             <div class="flex items-center justify-between">
-                <label class="flex items-center text-white text-sm">
-                    <input type="checkbox" id="remember" class="mr-2">
-                    Lembrar de mim
-                </label>
-                <a href="#" class="text-white text-sm hover:text-opacity-80">Esqueceu a senha?</a>
+                <div class="flex items-center">
+                    <i class="fas fa-building text-3xl mr-3"></i>
+                    <h1 class="text-2xl font-bold">VeloNet</h1>
+                </div>
+                <div class="text-sm opacity-80">
+                    Portal Corporativo Velotax
+                </div>
             </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-6 text-center">
+            <div class="hero-card rounded-3xl p-12 max-w-4xl mx-auto">
+                <div class="w-24 h-24 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-8">
+                    <i class="fas fa-network-wired text-white text-4xl"></i>
+                </div>
+                
+                <h1 class="text-5xl font-bold text-white mb-6">
+                    VeloNet
+                </h1>
+                <p class="text-xl text-white text-opacity-90 mb-8 max-w-2xl mx-auto">
+                    Portal corporativo completo com autenticação Google, sistema de treinamentos e gestão de usuários.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="login.html" class="btn-primary text-white px-8 py-4 rounded-lg text-lg font-semibold inline-flex items-center">
+                        <i class="fas fa-sign-in-alt mr-3"></i>
+                        Acessar VeloNet
+                    </a>
+                    <a href="#features" class="bg-white bg-opacity-20 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-opacity-30 transition-colors inline-flex items-center">
+                        <i class="fas fa-info-circle mr-3"></i>
+                        Saiba Mais
+                    </a>
+                </div>
+                
+                <div class="mt-6 text-sm text-white text-opacity-80">
+                    <i class="fas fa-link mr-2"></i>
+                    <a href="https://Velotax.github.io/VeloNet/" class="underline hover:text-white">https://Velotax.github.io/VeloNet/</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-white text-center mb-16">
+                Funcionalidades Principais
+            </h2>
             
-            <button 
-                type="submit" 
-                class="btn-login w-full py-3 rounded-lg text-white font-semibold"
-            >
-                <i class="fas fa-sign-in-alt mr-2"></i>
-                Acessar Intranet
-            </button>
-        </form>
-        
-        <div class="mt-6 text-center">
-            <p class="text-white text-opacity-70 text-sm">
-                <i class="fas fa-shield-alt mr-1"></i>
-                Acesso restrito a colaboradores @velotax.com.br
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dashboard -->
+                <div class="feature-card rounded-2xl p-8 text-white">
+                    <div class="w-16 h-16 bg-blue-500 bg-opacity-20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-tachometer-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Dashboard Inteligente</h3>
+                    <p class="text-white text-opacity-80">
+                        Métricas em tempo real, gráficos de desempenho e visão geral completa do sistema.
+                    </p>
+                </div>
+
+                <!-- Treinamentos -->
+                <div class="feature-card rounded-2xl p-8 text-white">
+                    <div class="w-16 h-16 bg-green-500 bg-opacity-20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-graduation-cap text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Sistema de Treinamentos</h3>
+                    <p class="text-white text-opacity-80">
+                        Módulos educativos, quizzes interativos e sistema de certificação para colaboradores.
+                    </p>
+                </div>
+
+                <!-- Atendimento -->
+                <div class="feature-card rounded-2xl p-8 text-white">
+                    <div class="w-16 h-16 bg-purple-500 bg-opacity-20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-headset text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Atendimento B2C</h3>
+                    <p class="text-white text-opacity-80">
+                        Manual completo de atendimento, procedimentos padronizados e vídeos tutoriais.
+                    </p>
+                </div>
+
+                <!-- Autenticação -->
+                <div class="feature-card rounded-2xl p-8 text-white">
+                    <div class="w-16 h-16 bg-red-500 bg-opacity-20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Autenticação Segura</h3>
+                    <p class="text-white text-opacity-80">
+                        Login Google com restrição para e-mails corporativos @velotax.com.br.
+                    </p>
+                </div>
+
+                <!-- Admin -->
+                <div class="feature-card rounded-2xl p-8 text-white">
+                    <div class="w-16 h-16 bg-yellow-500 bg-opacity-20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-user-cog text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Painel Administrativo</h3>
+                    <p class="text-white text-opacity-80">
+                        Gestão completa de usuários, cargos, permissões e logs de atividade.
+                    </p>
+                </div>
+
+                <!-- Responsivo -->
+                <div class="feature-card rounded-2xl p-8 text-white">
+                    <div class="w-16 h-16 bg-indigo-500 bg-opacity-20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-mobile-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Totalmente Responsivo</h3>
+                    <p class="text-white text-opacity-80">
+                        Interface otimizada para desktop, tablet e mobile com navegação touch.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-6 text-center">
+            <div class="hero-card rounded-3xl p-12 max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-white mb-6">
+                    Pronto para começar?
+                </h2>
+                <p class="text-white text-opacity-90 mb-8">
+                    Acesse o VeloNet e descubra todas as funcionalidades disponíveis para sua equipe.
+                </p>
+                <a href="login.html" class="btn-primary text-white px-8 py-4 rounded-lg text-lg font-semibold inline-flex items-center">
+                    <i class="fas fa-rocket mr-3"></i>
+                    Acessar Agora
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 text-white text-center">
+        <div class="container mx-auto px-6">
+            <p class="text-white text-opacity-70">
+                © 2025 VeloNet - Portal Corporativo Velotax. Todos os direitos reservados.
             </p>
+            <div class="mt-4 text-sm text-white text-opacity-60">
+                <a href="https://Velotax.github.io/VeloNet/" class="hover:text-white">https://Velotax.github.io/VeloNet/</a>
+            </div>
         </div>
-        
-        <div id="errorMessage" class="mt-4 p-3 bg-red-500 bg-opacity-20 border border-red-500 border-opacity-30 rounded-lg text-white text-sm hidden">
-            <i class="fas fa-exclamation-triangle mr-2"></i>
-            <span id="errorText"></span>
-        </div>
-    </div>
+    </footer>
 
     <script>
-        // Sistema de usuários (em produção, usar banco de dados)
-        let users = JSON.parse(localStorage.getItem('velotax_users')) || {
-            'admin@velotax.com.br': {
-                role: 'admin',
-                name: 'Administrador',
-                password: 'admin123',
-                active: true
-            },
-            'igor@velotax.com.br': {
-                role: 'admin',
-                name: 'Igor',
-                password: 'velotax2025',
-                active: true
-            }
-        };
-
-        // Função para autenticação Google
-        function handleCredentialResponse(response) {
-            // Decodificar o token JWT do Google
-            const responsePayload = decodeJwtResponse(response.credential);
-            
-            console.log("ID: " + responsePayload.sub);
-            console.log('Full Name: ' + responsePayload.name);
-            console.log('Given Name: ' + responsePayload.given_name);
-            console.log('Family Name: ' + responsePayload.family_name);
-            console.log("Image URL: " + responsePayload.picture);
-            console.log("Email: " + responsePayload.email);
-
-            const email = responsePayload.email;
-            
-            // Verificar se é e-mail Velotax
-            if (!email.endsWith('@velotax.com.br')) {
-                showError('Apenas e-mails corporativos @velotax.com.br são permitidos.');
-                return;
-            }
-
-            // Verificar se o usuário existe
-            if (!users[email]) {
-                showError('E-mail não autorizado. Entre em contato com o administrador.');
-                return;
-            }
-
-            if (!users[email].active) {
-                showError('Conta desativada. Entre em contato com o administrador.');
-                return;
-            }
-
-            // Login bem-sucedido
-            loginSuccess(email, responsePayload.name);
-        }
-
-        // Função para decodificar JWT (simplificada)
-        function decodeJwtResponse(token) {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            return JSON.parse(jsonPayload);
-        }
-
-        // Função para mostrar erro
-        function showError(message) {
-            const errorMessage = document.getElementById('errorMessage');
-            const errorText = document.getElementById('errorText');
-            errorText.textContent = message;
-            errorMessage.classList.remove('hidden');
-        }
-
-        // Função para login bem-sucedido
-        function loginSuccess(email, name) {
-            // Salvar dados do usuário
-            localStorage.setItem('velotax_user', email);
-            localStorage.setItem('velotax_user_name', name);
-            localStorage.setItem('velotax_user_role', users[email].role);
-            localStorage.setItem('velotax_remember', 'true');
-            
-            // Redirecionar baseado no papel
-            if (users[email].role === 'admin') {
-                window.location.href = 'admin.html';
-            } else {
-                window.location.href = 'intranet_simples.html';
-            }
-        }
-        
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value.toLowerCase();
-            const password = document.getElementById('password').value;
-            
-            // Validar e-mail corporativo
-            if (!email.endsWith('@velotax.com.br')) {
-                showError('Apenas e-mails corporativos @velotax.com.br são permitidos.');
-                return;
-            }
-            
-            // Validar credenciais
-            if (!users[email]) {
-                showError('E-mail não autorizado. Entre em contato com o administrador.');
-                return;
-            }
-
-            if (!users[email].active) {
-                showError('Conta desativada. Entre em contato com o administrador.');
-                return;
-            }
-            
-            if (users[email].password !== password) {
-                showError('Senha incorreta. Tente novamente.');
-                return;
-            }
-            
-            // Login bem-sucedido
-            loginSuccess(email, users[email].name);
-        });
-        
-        // Verificar se já está logado
         window.addEventListener('load', function() {
             const savedUser = localStorage.getItem('velotax_user');
             const remember = localStorage.getItem('velotax_remember');

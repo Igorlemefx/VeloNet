@@ -27,15 +27,15 @@ Configurar autenticação Google para a intranet hospedada no GitHub Pages, sem 
 ### **1.4 Configurar URLs (IMPORTANTE)**
 **Authorized JavaScript origins**:
 ```
-https://igorlemefx.github.io
-https://www.igorlemefx.github.io
+https://Velotax.github.io
+https://www.Velotax.github.io
 ```
 
 **Authorized redirect URIs**:
 ```
-https://igorlemefx.github.io/velonet/
-https://igorlemefx.github.io/velonet/login.html
-https://igorlemefx.github.io/velonet/admin.html
+https://Velotax.github.io/VeloNet/
+https://Velotax.github.io/VeloNet/login.html
+https://Velotax.github.io/VeloNet/admin.html
 ```
 
 ### **1.5 Obter Client ID**
@@ -66,7 +66,7 @@ O código já está configurado para aceitar apenas `@velotax.com.br`
 
 ### **3.1 Acessar Intranet**
 ```
-https://igorlemefx.github.io/velonet/
+https://Velotax.github.io/VeloNet/
 ```
 
 ### **3.2 Testar Login Google**
@@ -84,22 +84,22 @@ https://igorlemefx.github.io/velonet/
 
 ### **Página Inicial**
 ```
-https://igorlemefx.github.io/velonet/
+https://Velotax.github.io/VeloNet/
 ```
 
 ### **Login Direto**
 ```
-https://igorlemefx.github.io/velonet/login.html
+https://Velotax.github.io/VeloNet/login.html
 ```
 
 ### **Painel Admin**
 ```
-https://igorlemefx.github.io/velonet/admin.html
+https://Velotax.github.io/VeloNet/admin.html
 ```
 
 ### **Intranet**
 ```
-https://igorlemefx.github.io/velonet/intranet_simples.html
+https://Velotax.github.io/VeloNet/intranet_simples.html
 ```
 
 ---
@@ -128,7 +128,7 @@ https://igorlemefx.github.io/velonet/intranet_simples.html
 ```
 🔐 VELONET - PORTAL CORPORATIVO VELOTAX
 
-🔗 Link de Acesso: https://igorlemefx.github.io/velonet/
+🔗 Link de Acesso: https://Velotax.github.io/VeloNet/
 
 🔑 Credenciais:
 - E-mail: seu.email@velotax.com.br
