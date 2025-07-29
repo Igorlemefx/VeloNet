@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velotax - Portal Corporativo</title>
+    <title>VeloNet - Portal Corporativo Velotax</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -18,6 +18,18 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             transition: all 0.3s ease;
@@ -29,55 +41,154 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <div class="hero-card rounded-2xl p-8 w-full max-w-2xl text-center">
-        <div class="mb-8">
-            <div class="w-24 h-24 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                <i class="fas fa-building text-white text-4xl"></i>
-            </div>
-            <h1 class="text-4xl font-bold text-white mb-4">Velotax</h1>
-            <p class="text-xl text-white text-opacity-90 mb-2">Portal Corporativo</p>
-            <p class="text-white text-opacity-70">Sistema interno de comunicação e colaboração</p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div class="bg-white bg-opacity-10 rounded-lg p-6">
-                <i class="fas fa-shield-alt text-white text-2xl mb-3"></i>
-                <h3 class="text-white font-semibold mb-2">Acesso Seguro</h3>
-                <p class="text-white text-opacity-80 text-sm">Autenticação com e-mail corporativo</p>
-            </div>
-            
-            <div class="bg-white bg-opacity-10 rounded-lg p-6">
-                <i class="fas fa-users text-white text-2xl mb-3"></i>
-                <h3 class="text-white font-semibold mb-2">Colaboração</h3>
-                <p class="text-white text-opacity-80 text-sm">Compartilhamento de conhecimento</p>
-            </div>
-            
-            <div class="bg-white bg-opacity-10 rounded-lg p-6">
-                <i class="fas fa-graduation-cap text-white text-2xl mb-3"></i>
-                <h3 class="text-white font-semibold mb-2">Treinamentos</h3>
-                <p class="text-white text-opacity-80 text-sm">Plataforma educacional integrada</p>
-            </div>
-            
-            <div class="bg-white bg-opacity-10 rounded-lg p-6">
-                <i class="fas fa-headset text-white text-2xl mb-3"></i>
-                <h3 class="text-white font-semibold mb-2">Atendimento</h3>
-                <p class="text-white text-opacity-80 text-sm">Procedimentos B2C organizados</p>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="text-white py-6">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas fa-building text-3xl mr-3"></i>
+                    <h1 class="text-2xl font-bold">VeloNet</h1>
+                </div>
+                <div class="text-sm opacity-80">
+                    Portal Corporativo Velotax
+                </div>
             </div>
         </div>
-        
-        <div class="space-y-4">
-            <a href="login.html" class="btn-primary inline-block px-8 py-3 rounded-lg text-white font-semibold">
-                <i class="fas fa-sign-in-alt mr-2"></i>
-                Acessar Intranet
-            </a>
-            
-            <div class="text-white text-opacity-70 text-sm">
-                <i class="fas fa-info-circle mr-1"></i>
-                Acesso restrito a colaboradores Velotax
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-6 text-center">
+            <div class="hero-card rounded-3xl p-12 max-w-4xl mx-auto">
+                <div class="w-24 h-24 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-8">
+                    <i class="fas fa-network-wired text-white text-4xl"></i>
+                </div>
+                
+                <h1 class="text-5xl font-bold text-white mb-6">
+                    VeloNet
+                </h1>
+                <p class="text-xl text-white text-opacity-90 mb-8 max-w-2xl mx-auto">
+                    Portal corporativo completo com autenticação Google, sistema de treinamentos e gestão de usuários para a Velotax.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="login.html" class="btn-primary text-white px-8 py-4 rounded-lg text-lg font-semibold inline-flex items-center">
+                        <i class="fas fa-sign-in-alt mr-3"></i>
+                        Acessar VeloNet
+                    </a>
+                    <a href="#features" class="bg-white bg-opacity-20 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-opacity-30 transition-colors inline-flex items-center">
+                        <i class="fas fa-info-circle mr-3"></i>
+                        Saiba Mais
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-white text-center mb-16">
+                Funcionalidades Principais
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Dashboard -->
+                <div class="feature-card rounded-2xl p-8 text-white">
+                    <div class="w-16 h-16 bg-blue-500 bg-opacity-20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-tachometer-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Dashboard Inteligente</h3>
+                    <p class="text-white text-opacity-80">
+                        Métricas em tempo real, gráficos de desempenho e visão geral completa do sistema.
+                    </p>
+                </div>
+
+                <!-- Treinamentos -->
+                <div class="feature-card rounded-2xl p-8 text-white">
+                    <div class="w-16 h-16 bg-green-500 bg-opacity-20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-graduation-cap text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Sistema de Treinamentos</h3>
+                    <p class="text-white text-opacity-80">
+                        Módulos educativos, quizzes interativos e sistema de certificação para colaboradores.
+                    </p>
+                </div>
+
+                <!-- Atendimento -->
+                <div class="feature-card rounded-2xl p-8 text-white">
+                    <div class="w-16 h-16 bg-purple-500 bg-opacity-20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-headset text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Atendimento B2C</h3>
+                    <p class="text-white text-opacity-80">
+                        Manual completo de atendimento, procedimentos padronizados e vídeos tutoriais.
+                    </p>
+                </div>
+
+                <!-- Autenticação -->
+                <div class="feature-card rounded-2xl p-8 text-white">
+                    <div class="w-16 h-16 bg-red-500 bg-opacity-20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Autenticação Segura</h3>
+                    <p class="text-white text-opacity-80">
+                        Login Google com restrição para e-mails corporativos @velotax.com.br.
+                    </p>
+                </div>
+
+                <!-- Admin -->
+                <div class="feature-card rounded-2xl p-8 text-white">
+                    <div class="w-16 h-16 bg-yellow-500 bg-opacity-20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-user-cog text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Painel Administrativo</h3>
+                    <p class="text-white text-opacity-80">
+                        Gestão completa de usuários, cargos, permissões e logs de atividade.
+                    </p>
+                </div>
+
+                <!-- Responsivo -->
+                <div class="feature-card rounded-2xl p-8 text-white">
+                    <div class="w-16 h-16 bg-indigo-500 bg-opacity-20 rounded-xl flex items-center justify-center mb-6">
+                        <i class="fas fa-mobile-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Totalmente Responsivo</h3>
+                    <p class="text-white text-opacity-80">
+                        Interface otimizada para desktop, tablet e mobile com navegação touch.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-6 text-center">
+            <div class="hero-card rounded-3xl p-12 max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-white mb-6">
+                    Pronto para começar?
+                </h2>
+                <p class="text-white text-opacity-90 mb-8">
+                    Acesse o VeloNet e descubra todas as funcionalidades disponíveis para sua equipe.
+                </p>
+                <a href="login.html" class="btn-primary text-white px-8 py-4 rounded-lg text-lg font-semibold inline-flex items-center">
+                    <i class="fas fa-rocket mr-3"></i>
+                    Acessar Agora
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 text-white text-center">
+        <div class="container mx-auto px-6">
+            <p class="text-white text-opacity-70">
+                © 2025 VeloNet - Portal Corporativo Velotax. Todos os direitos reservados.
+            </p>
+        </div>
+    </footer>
 
     <script>
         // Verificar se já está logado
@@ -86,8 +197,13 @@
             const remember = localStorage.getItem('velotax_remember');
             
             if (savedUser && remember === 'true') {
-                // Se já está logado, redirecionar direto para a intranet
-                window.location.href = 'intranet_simples.html';
+                // Redirecionar baseado no papel
+                const role = localStorage.getItem('velotax_user_role');
+                if (role === 'admin') {
+                    window.location.href = 'admin.html';
+                } else {
+                    window.location.href = 'intranet_simples.html';
+                }
             }
         });
     </script>

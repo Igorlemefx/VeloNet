@@ -1,4 +1,4 @@
-# 🏢 **INTRANET VELOTAX - PORTAL CORPORATIVO**
+# 🏢 **VELONET - PORTAL CORPORATIVO VELOTAX**
 
 Sistema completo de intranet corporativa com autenticação Google, painel administrativo e gestão de usuários.
 
@@ -53,7 +53,7 @@ Sistema completo de intranet corporativa com autenticação Google, painel admin
 ## 📁 **ESTRUTURA DO PROJETO**
 
 ```
-intranet-velotax/
+velonet/
 ├── 📄 index.html              # Página inicial
 ├── 🔐 login.html              # Sistema de login
 ├── 🏠 intranet_simples.html   # Intranet principal
@@ -61,7 +61,7 @@ intranet-velotax/
 ├── 📚 treinamentos_nova.html  # Sistema de treinamentos
 ├── 📖 base_conhecimento.html  # Base de conhecimentos
 ├── 📋 README.md               # Documentação principal
-├── 🌐 CONFIGURAR_DOMINIO.md   # Guia de configuração
+├── 🌐 CONFIGURAR_GOOGLE_GITHUB.md # Guia de configuração
 └── 📁 docs/                   # Documentação adicional
 ```
 
@@ -77,7 +77,7 @@ start index.html
 
 ### **2. Online (Produção)**
 ```
-https://intranet.velotax.com.br
+https://igorlemefx.github.io/velonet/
 ```
 
 ---
@@ -125,15 +125,15 @@ https://intranet.velotax.com.br
 
 ## 🌐 **CONFIGURAÇÃO DE DOMÍNIO**
 
-### **Domínio Sugerido**
+### **Domínio Atual**
 ```
-https://intranet.velotax.com.br
+https://igorlemefx.github.io/velonet/
 ```
 
-### **Hospedagem Recomendada**
-- **Vercel** (Gratuito)
-- **Netlify** (Gratuito)
-- **Hostinger** (Pago)
+### **Hospedagem**
+- **GitHub Pages** (Gratuito)
+- **HTTPS automático**
+- **Deploy automático**
 
 ### **Autenticação Google**
 - ✅ OAuth 2.0 configurado
@@ -165,7 +165,7 @@ https://intranet.velotax.com.br
 
 ### **Guias Disponíveis**
 - 📖 [Guia Inicial](docs/guia_inicial.md)
-- 🌐 [Configurar Domínio](CONFIGURAR_DOMINIO.md)
+- 🌐 [Configurar Google](CONFIGURAR_GOOGLE_GITHUB.md)
 - 📋 [README Intranet](README_INTRANET.md)
 - 🎓 [README Treinamentos](README_TREINAMENTOS.md)
 
@@ -182,11 +182,10 @@ https://intranet.velotax.com.br
 2. Configurar OAuth 2.0
 3. Atualizar Client ID no `login.html`
 
-### **Domínio Próprio**
-1. Registrar domínio
-2. Configurar DNS
-3. Deploy na hospedagem
-4. Configurar HTTPS
+### **GitHub Pages**
+1. Repositório configurado
+2. Deploy automático
+3. HTTPS ativo
 
 ### **Backup e Segurança**
 - ✅ Backup automático dos dados
