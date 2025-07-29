@@ -110,20 +110,28 @@
     </div>
 
     <script>
-        // E-mails autorizados (em produção, isso viria de um banco de dados)
+        // E-mails autorizados (apenas @velotax.com.br)
         const authorizedEmails = [
             'suporte.manha@velotax.com.br',
             'admin@velotax.com.br',
-            'igorlemefx@gmail.com',
-            'teste@velotax.com.br'
+            'igor@velotax.com.br',
+            'teste@velotax.com.br',
+            'suporte@velotax.com.br',
+            'ti@velotax.com.br',
+            'rh@velotax.com.br',
+            'financeiro@velotax.com.br'
         ];
         
         // Senhas de teste (em produção, usar autenticação real)
         const testPasswords = {
             'suporte.manha@velotax.com.br': 'velotax2025',
             'admin@velotax.com.br': 'admin123',
-            'igorlemefx@gmail.com': 'velotax2025',
-            'teste@velotax.com.br': 'teste123'
+            'igor@velotax.com.br': 'velotax2025',
+            'teste@velotax.com.br': 'teste123',
+            'suporte@velotax.com.br': 'velotax2025',
+            'ti@velotax.com.br': 'velotax2025',
+            'rh@velotax.com.br': 'velotax2025',
+            'financeiro@velotax.com.br': 'velotax2025'
         };
         
         document.getElementById('loginForm').addEventListener('submit', function(e) {
