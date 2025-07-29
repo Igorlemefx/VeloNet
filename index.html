@@ -52,8 +52,22 @@
                     <i class="fas fa-building text-3xl mr-3"></i>
                     <h1 class="text-2xl font-bold">VeloNet</h1>
                 </div>
-                <div class="text-sm opacity-80">
-                    Portal Corporativo Velotax
+                <div class="flex items-center space-x-4">
+                    <div id="userInfo" class="hidden">
+                        <div class="flex items-center space-x-2">
+                            <span id="userEmoji" class="text-2xl">👤</span>
+                            <span id="userName" class="text-sm font-medium"></span>
+                        </div>
+                    </div>
+                    <button id="logoutBtn" onclick="logout()" class="hidden bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-colors">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Sair
+                    </button>
+                    <button id="profileBtn" onclick="openProfileModal()" class="hidden bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-colors">
+                        <i class="fas fa-user-cog mr-2"></i>Perfil
+                    </button>
+                    <div class="text-sm opacity-80">
+                        Portal Corporativo Velotax
+                    </div>
                 </div>
             </div>
         </div>
@@ -200,19 +214,177 @@
         </div>
     </footer>
 
+    <!-- Profile Modal -->
+    <div id="profileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg max-w-md w-full">
+                <div class="flex justify-between items-center p-6 border-b">
+                    <h3 class="text-lg font-semibold text-gray-900">Editar Perfil</h3>
+                    <button onclick="closeProfileModal()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nome</label>
+                            <input type="text" id="profileName" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Emoji do Perfil</label>
+                            <div class="grid grid-cols-8 gap-2 mb-2">
+                                <button onclick="selectEmoji('👤')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">👤</button>
+                                <button onclick="selectEmoji('😊')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">😊</button>
+                                <button onclick="selectEmoji('😎')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">😎</button>
+                                <button onclick="selectEmoji('🤖')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🤖</button>
+                                <button onclick="selectEmoji('🦄')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🦄</button>
+                                <button onclick="selectEmoji('🐱')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🐱</button>
+                                <button onclick="selectEmoji('🦁')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🦁</button>
+                                <button onclick="selectEmoji('🐯')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🐯</button>
+                                <button onclick="selectEmoji('🐨')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🐨</button>
+                                <button onclick="selectEmoji('🐼')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🐼</button>
+                                <button onclick="selectEmoji('🦊')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🦊</button>
+                                <button onclick="selectEmoji('🐸')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🐸</button>
+                                <button onclick="selectEmoji('🐙')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🐙</button>
+                                <button onclick="selectEmoji('🦋')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🦋</button>
+                                <button onclick="selectEmoji('🌈')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🌈</button>
+                                <button onclick="selectEmoji('⭐')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">⭐</button>
+                                <button onclick="selectEmoji('🔥')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🔥</button>
+                                <button onclick="selectEmoji('💎')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">💎</button>
+                                <button onclick="selectEmoji('🎯')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🎯</button>
+                                <button onclick="selectEmoji('🚀')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🚀</button>
+                                <button onclick="selectEmoji('⚡')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">⚡</button>
+                                <button onclick="selectEmoji('🎨')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🎨</button>
+                                <button onclick="selectEmoji('🎵')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🎵</button>
+                                <button onclick="selectEmoji('🎮')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🎮</button>
+                                <button onclick="selectEmoji('🏆')" class="emoji-btn p-2 text-2xl hover:bg-gray-100 rounded">🏆</button>
+                            </div>
+                            <input type="text" id="customEmoji" 
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                   placeholder="Ou digite um emoji personalizado">
+                        </div>
+                        
+                        <div class="flex justify-end space-x-3 pt-4">
+                            <button onclick="closeProfileModal()" 
+                                    class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">
+                                Cancelar
+                            </button>
+                            <button onclick="saveProfile()" 
+                                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                Salvar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Verificar se usuário está logado
         window.addEventListener('load', function() {
             const savedUser = localStorage.getItem('velotax_user');
             const remember = localStorage.getItem('velotax_remember');
             
             if (savedUser && remember === 'true') {
-                // Redirecionar baseado no papel
-                const role = localStorage.getItem('velotax_user_role');
-                if (role === 'admin') {
-                    window.location.href = 'admin.html';
-                } else {
-                    window.location.href = 'intranet_simples.html';
-                }
+                showUserInfo();
+            } else {
+                showLoginButtons();
+            }
+        });
+
+        function showUserInfo() {
+            const userName = localStorage.getItem('velotax_user_name') || 'Usuário';
+            const userEmoji = localStorage.getItem('velotax_user_emoji') || '👤';
+            
+            document.getElementById('userName').textContent = userName;
+            document.getElementById('userEmoji').textContent = userEmoji;
+            document.getElementById('userInfo').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.remove('hidden');
+            document.getElementById('profileBtn').classList.remove('hidden');
+            
+            // Esconder botões de login
+            const loginButtons = document.querySelectorAll('a[href="login.html"]');
+            loginButtons.forEach(btn => btn.style.display = 'none');
+        }
+
+        function showLoginButtons() {
+            document.getElementById('userInfo').classList.add('hidden');
+            document.getElementById('logoutBtn').classList.add('hidden');
+            document.getElementById('profileBtn').classList.add('hidden');
+        }
+
+        function logout() {
+            if (confirm('Tem certeza que deseja sair?')) {
+                localStorage.removeItem('velotax_user');
+                localStorage.removeItem('velotax_user_name');
+                localStorage.removeItem('velotax_user_role');
+                localStorage.removeItem('velotax_remember');
+                window.location.reload();
+            }
+        }
+
+        function openProfileModal() {
+            const userName = localStorage.getItem('velotax_user_name') || '';
+            const userEmoji = localStorage.getItem('velotax_user_emoji') || '👤';
+            
+            document.getElementById('profileName').value = userName;
+            document.getElementById('customEmoji').value = userEmoji;
+            
+            // Marcar emoji selecionado
+            document.querySelectorAll('.emoji-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-100', 'border-blue-500');
+            });
+            
+            document.getElementById('profileModal').classList.remove('hidden');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.add('hidden');
+        }
+
+        function selectEmoji(emoji) {
+            document.getElementById('customEmoji').value = emoji;
+            
+            // Marcar emoji selecionado
+            document.querySelectorAll('.emoji-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-100', 'border-blue-500');
+            });
+            
+            event.target.classList.add('bg-blue-100', 'border-blue-500');
+        }
+
+        function saveProfile() {
+            const name = document.getElementById('profileName').value.trim();
+            const emoji = document.getElementById('customEmoji').value.trim();
+            
+            if (!name) {
+                alert('Por favor, digite um nome.');
+                return;
+            }
+            
+            if (!emoji) {
+                alert('Por favor, selecione um emoji.');
+                return;
+            }
+            
+            localStorage.setItem('velotax_user_name', name);
+            localStorage.setItem('velotax_user_emoji', emoji);
+            
+            // Atualizar interface
+            document.getElementById('userName').textContent = name;
+            document.getElementById('userEmoji').textContent = emoji;
+            
+            closeProfileModal();
+            alert('Perfil atualizado com sucesso!');
+        }
+
+        // Fechar modal quando clicar fora
+        document.getElementById('profileModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeProfileModal();
             }
         });
     </script>
