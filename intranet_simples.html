@@ -19,7 +19,7 @@
         
         <nav class="mt-8 px-4">
             <div class="space-y-2">
-                <button onclick="showDashboard()" class="w-full text-left flex items-center px-4 py-3 text-white rounded-lg hover:bg-blue-500">
+                <button onclick="showDashboard()" class="w-full text-left flex items-center px-4 py-3 text-white rounded-lg bg-blue-500">
                     <i class="fas fa-tachometer-alt mr-3"></i>
                     <span>Dashboard</span>
                 </button>
@@ -53,9 +53,15 @@
         <!-- Header -->
         <header class="bg-white shadow-sm border-b">
             <div class="flex items-center justify-between px-6 py-4">
-                <div>
-                    <h2 id="page-title" class="text-xl font-semibold text-gray-900">Dashboard</h2>
-                    <p id="page-subtitle" class="text-sm text-gray-500">Visão geral do sistema</p>
+                <div class="flex items-center space-x-4">
+                    <button onclick="resetToDashboard()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-home mr-2"></i>
+                        Dashboard
+                    </button>
+                    <div>
+                        <h2 id="page-title" class="text-xl font-semibold text-gray-900">Dashboard</h2>
+                        <p id="page-subtitle" class="text-sm text-gray-500">Visão geral do sistema</p>
+                    </div>
                 </div>
                 
                 <div class="flex items-center space-x-4">
@@ -480,9 +486,21 @@
             document.getElementById('current-date').textContent = now.toLocaleDateString('pt-BR');
         }
 
+        // Garantir que sempre volte para o dashboard correto
+        function resetToDashboard() {
+            showDashboard();
+            // Limpar qualquer estado anterior
+            localStorage.removeItem('velotax_current_section');
+        }
+
         // Atualizar a cada segundo
         setInterval(updateDateTime, 1000);
         updateDateTime(); // Primeira execução
+
+        // Garantir que sempre comece no dashboard
+        window.addEventListener('load', function() {
+            showDashboard();
+        });
     </script>
 </body>
 </html> 
