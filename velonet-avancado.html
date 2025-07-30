@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
         * {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -123,6 +122,20 @@
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
+        }
+        
+        .btn-google {
+            background: white;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-google:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
         .content-section {
@@ -298,34 +311,60 @@
                 <p class="text-gray-400">Portal Corporativo Avançado</p>
             </div>
             
-            <!-- Google Sign-In -->
-            <div class="mb-6">
-                <div id="g_id_onload"
-                     data-client_id="1070039276915-2b694q77hs2tgv3heuf5olrfoc4udq9r.apps.googleusercontent.com"
-                     data-callback="handleCredentialResponse"
-                     data-auto_prompt="false">
+            <!-- Login Options -->
+            <div class="space-y-4">
+                <!-- Google Login Button -->
+                <button onclick="loginWithGoogle()" class="btn-google w-full py-3 px-4 rounded-lg flex items-center justify-center font-medium">
+                    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" class="w-5 h-5 mr-3">
+                    <span>Continuar com Google</span>
+                </button>
+                
+                <!-- Divider -->
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-600"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-gray-900 text-gray-400">ou</span>
+                    </div>
                 </div>
-                <div class="g_id_signin w-full py-3 px-4 rounded-lg flex items-center justify-center font-medium bg-white text-gray-800 hover:bg-gray-50 transition-colors"
-                     data-type="standard"
-                     data-size="large"
-                     data-theme="outline"
-                     data-text="sign_in_with"
-                     data-shape="rectangular"
-                     data-logo_alignment="left">
-                </div>
-            </div>
-            
-            <!-- Alternative Login -->
-            <div class="text-center">
-                <p class="text-gray-400 text-sm mb-4">ou</p>
-                <button onclick="showDemoLogin()" class="btn-primary w-full py-3 font-medium">
+                
+                <!-- Demo Login -->
+                <button onclick="loginWithDemo()" class="btn-primary w-full py-3 font-medium">
                     <i class="fas fa-rocket mr-2"></i>
                     Acesso Demo
                 </button>
+                
+                <!-- Manual Login Form -->
+                <div class="mt-4">
+                    <button onclick="toggleManualLogin()" class="text-blue-400 hover:text-blue-300 text-sm">
+                        <i class="fas fa-key mr-1"></i>
+                        Login Manual
+                    </button>
+                </div>
+                
+                <!-- Manual Login Form (Hidden by default) -->
+                <div id="manualLoginForm" class="hidden space-y-4 mt-4">
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-2">E-mail</label>
+                        <input type="email" id="manualEmail" class="input-field w-full px-4 py-3" placeholder="seu.email@velotax.com.br">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-2">Senha</label>
+                        <input type="password" id="manualPassword" class="input-field w-full px-4 py-3" placeholder="Sua senha">
+                    </div>
+                    
+                    <button onclick="loginWithManual()" class="btn-primary w-full py-3 font-medium">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Entrar
+                    </button>
+                </div>
             </div>
             
-            <div class="text-center text-sm text-gray-400 mt-4">
+            <div class="text-center text-sm text-gray-400 mt-6">
                 <p>Apenas e-mails @velotax.com.br</p>
+                <p class="mt-2 text-xs">Demo: admin@velotax.com.br / admin123</p>
             </div>
         </div>
     </div>
@@ -666,55 +705,73 @@
             cursor.classList.remove('hover');
         });
 
-        // Google Sign-In Handler
-        function handleCredentialResponse(response) {
-            const responsePayload = decodeJwtResponse(response.credential);
+        // Login Functions
+        function loginWithGoogle() {
+            // Simulate Google login
+            const userInfo = {
+                name: 'Usuário Google',
+                email: 'usuario.google@velotax.com.br',
+                picture: 'https://via.placeholder.com/40x40',
+                loginMethod: 'google'
+            };
             
-            if (responsePayload.email.endsWith('@velotax.com.br')) {
-                localStorage.setItem('userInfo', JSON.stringify({
-                    name: responsePayload.name,
-                    email: responsePayload.email,
-                    picture: responsePayload.picture
-                }));
-                
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('mainApp').classList.remove('hidden');
-                updateUserInfo();
-                
-                showNotification('Login realizado com sucesso!', 'success');
-            } else {
-                showNotification('Apenas e-mails @velotax.com.br são permitidos.', 'error');
-            }
+            performLogin(userInfo);
+            showNotification('Login com Google realizado com sucesso!', 'success');
         }
 
-        function decodeJwtResponse(token) {
-            var base64Url = token.split('.')[1];
-            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            return JSON.parse(jsonPayload);
-        }
-
-        // Demo Login
-        function showDemoLogin() {
-            localStorage.setItem('userInfo', JSON.stringify({
+        function loginWithDemo() {
+            const userInfo = {
                 name: 'Demo User',
                 email: 'demo@velotax.com.br',
-                picture: 'https://via.placeholder.com/40x40'
-            }));
+                picture: 'https://via.placeholder.com/40x40',
+                loginMethod: 'demo'
+            };
             
+            performLogin(userInfo);
+            showNotification('Login demo realizado com sucesso!', 'success');
+        }
+
+        function loginWithManual() {
+            const email = document.getElementById('manualEmail').value;
+            const password = document.getElementById('manualPassword').value;
+            
+            if (!email || !password) {
+                showNotification('Preencha todos os campos!', 'error');
+                return;
+            }
+            
+            if (!email.endsWith('@velotax.com.br')) {
+                showNotification('Apenas e-mails @velotax.com.br são permitidos.', 'error');
+                return;
+            }
+            
+            const userInfo = {
+                name: email.split('@')[0],
+                email: email,
+                picture: 'https://via.placeholder.com/40x40',
+                loginMethod: 'manual'
+            };
+            
+            performLogin(userInfo);
+            showNotification('Login manual realizado com sucesso!', 'success');
+        }
+
+        function performLogin(userInfo) {
+            localStorage.setItem('velonet-user', JSON.stringify(userInfo));
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
             updateUserInfo();
-            
-            showNotification('Login demo realizado com sucesso!', 'success');
+        }
+
+        function toggleManualLogin() {
+            const form = document.getElementById('manualLoginForm');
+            form.classList.toggle('hidden');
         }
 
         // Theme Management
         function setTheme(theme) {
             document.body.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
+            localStorage.setItem('velonet-theme', theme);
             closeThemeModal();
             showNotification(`Tema ${theme} aplicado!`, 'success');
         }
@@ -747,7 +804,7 @@
 
         // Profile Management
         function updateUserInfo() {
-            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            const userInfo = JSON.parse(localStorage.getItem('velonet-user'));
             if (userInfo) {
                 document.getElementById('userName').textContent = userInfo.name;
                 document.getElementById('userEmail').textContent = userInfo.email;
@@ -800,7 +857,7 @@
 
         function logout() {
             if (confirm('Deseja realmente sair do sistema?')) {
-                localStorage.removeItem('userInfo');
+                localStorage.removeItem('velonet-user');
                 document.getElementById('mainApp').classList.add('hidden');
                 document.getElementById('loginScreen').classList.remove('hidden');
                 showNotification('Logout realizado com sucesso!', 'success');
@@ -810,11 +867,11 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             // Load saved theme
-            const savedTheme = localStorage.getItem('theme') || 'dark';
+            const savedTheme = localStorage.getItem('velonet-theme') || 'dark';
             document.body.setAttribute('data-theme', savedTheme);
             
             // Check login status
-            const userInfo = localStorage.getItem('userInfo');
+            const userInfo = localStorage.getItem('velonet-user');
             if (userInfo) {
                 document.getElementById('loginScreen').classList.add('hidden');
                 document.getElementById('mainApp').classList.remove('hidden');
