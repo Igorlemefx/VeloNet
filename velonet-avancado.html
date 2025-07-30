@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeloNet - Portal Corporativo Avançado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        * {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            cursor: none;
+        }
+        
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            background: #007AFF;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.1s ease;
+            mix-blend-mode: difference;
+        }
+        
+        .custom-cursor.hover {
+            transform: scale(1.5);
+            background: #FF3B30;
+        }
+        
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        /* Tema Claro */
+        body[data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-primary: #000000;
+            --text-secondary: #6c757d;
+            --accent-color: #007AFF;
+            --border-color: #e9ecef;
+        }
+        
+        /* Tema Escuro */
+        body[data-theme="dark"] {
+            --bg-primary: #000000;
+            --bg-secondary: #1c1c1e;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --text-primary: #ffffff;
+            --text-secondary: #8e8e93;
+            --accent-color: #007AFF;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Tema Azul */
+        body[data-theme="blue"] {
+            --bg-primary: #0a1929;
+            --bg-secondary: #132f4c;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --text-primary: #ffffff;
+            --text-secondary: #b2bac2;
+            --accent-color: #66b2ff;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-panel {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+        }
+        
+        .sidebar {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+        }
+        
+        .menu-item {
+            background: transparent;
+            color: var(--text-primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 12px;
+        }
+        
+        .menu-item:hover {
+            background: rgba(0, 122, 255, 0.1);
+            color: var(--accent-color);
+        }
+        
+        .menu-item.active {
+            background: rgba(0, 122, 255, 0.2);
+            color: var(--accent-color);
+        }
+        
+        .metric-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-color);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #0056CC 100%);
+            color: white;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
+        }
+        
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        .login-container {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+        }
+        
+        .input-field {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            border-color: var(--accent-color);
+            outline: none;
+        }
+        
+        .status-online {
+            background: linear-gradient(135deg, #34C759 0%, #30D158 100%);
+        }
+        
+        .status-pause {
+            background: linear-gradient(135deg, #FF9500 0%, #FF9F0A 100%);
+        }
+        
+        .status-offline {
+            background: linear-gradient(135deg, #FF3B30 0%, #FF453A 100%);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .profile-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            object-fit: cover;
+            border: 4px solid var(--accent-color);
+        }
+        
+        .reaction-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        .reaction-btn:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .reaction-btn.active {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .media-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .media-upload:hover {
+            border-color: var(--accent-color);
+            background: rgba(0, 122, 255, 0.05);
+        }
+        
+        .gemini-btn {
+            background: linear-gradient(135deg, #4285f4 0%, #34a853 50%, #fbbc05 75%, #ea4335 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 12px 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .gemini-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(66, 133, 244, 0.3);
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+    
+    <!-- Login Screen -->
+    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="login-container p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-building text-white text-3xl"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-white mb-2">VeloNet</h1>
+                <p class="text-gray-400">Portal Corporativo Avançado</p>
+            </div>
+            
+            <!-- Google Sign-In -->
+            <div class="mb-6">
+                <div id="g_id_onload"
+                     data-client_id="1070039276915-2b694q77hs2tgv3heuf5olrfoc4udq9r.apps.googleusercontent.com"
+                     data-callback="handleCredentialResponse"
+                     data-auto_prompt="false">
+                </div>
+                <div class="g_id_signin w-full py-3 px-4 rounded-lg flex items-center justify-center font-medium bg-white text-gray-800 hover:bg-gray-50 transition-colors"
+                     data-type="standard"
+                     data-size="large"
+                     data-theme="outline"
+                     data-text="sign_in_with"
+                     data-shape="rectangular"
+                     data-logo_alignment="left">
+                </div>
+            </div>
+            
+            <!-- Alternative Login -->
+            <div class="text-center">
+                <p class="text-gray-400 text-sm mb-4">ou</p>
+                <button onclick="showDemoLogin()" class="btn-primary w-full py-3 font-medium">
+                    <i class="fas fa-rocket mr-2"></i>
+                    Acesso Demo
+                </button>
+            </div>
+            
+            <div class="text-center text-sm text-gray-400 mt-4">
+                <p>Apenas e-mails @velotax.com.br</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="hidden">
+        <!-- Sidebar -->
+        <div class="fixed inset-y-0 left-0 w-64 sidebar z-40">
+            <div class="flex flex-col h-full">
+                <!-- Logo -->
+                <div class="p-6 border-b border-gray-800">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-building text-white"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-semibold text-white">VeloNet</h1>
+                            <p class="text-xs text-gray-400">Portal Avançado</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Menu -->
+                <nav class="flex-1 p-4 space-y-2">
+                    <button onclick="showSection('dashboard')" class="menu-item active w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-chart-line mr-3"></i>
+                        <span>Dashboard</span>
+                    </button>
+                    
+                    <button onclick="showSection('perfil')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-user mr-3"></i>
+                        <span>Meu Perfil</span>
+                    </button>
+                    
+                    <button onclick="showSection('atendimentos')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-headset mr-3"></i>
+                        <span>Atendimentos</span>
+                    </button>
+                    
+                    <button onclick="showSection('noticias')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-newspaper mr-3"></i>
+                        <span>Notícias</span>
+                    </button>
+                    
+                    <button onclick="showSection('processos')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-cogs mr-3"></i>
+                        <span>Processos</span>
+                    </button>
+                    
+                    <button onclick="showSection('treinamentos')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-graduation-cap mr-3"></i>
+                        <span>Treinamentos</span>
+                    </button>
+                    
+                    <button onclick="showSection('ponto')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-clock mr-3"></i>
+                        <span>Ponto</span>
+                    </button>
+                    
+                    <button onclick="showSection('base')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-book mr-3"></i>
+                        <span>Base de Conhecimento</span>
+                    </button>
+                    
+                    <button onclick="showSection('media')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-images mr-3"></i>
+                        <span>Mídia</span>
+                    </button>
+                    
+                    <button onclick="showSection('gemini')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-robot mr-3"></i>
+                        <span>Gemini AI</span>
+                    </button>
+                    
+                    <button onclick="showSection('admin')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-user-cog mr-3"></i>
+                        <span>Administração</span>
+                    </button>
+                </nav>
+                
+                <!-- User Info -->
+                <div class="p-4 border-t border-gray-800">
+                    <div class="flex items-center space-x-3">
+                        <img id="userAvatar" src="https://via.placeholder.com/40x40" alt="Avatar" class="w-10 h-10 rounded-full">
+                        <div class="flex-1">
+                            <p id="userName" class="text-sm font-medium text-white">Usuário</p>
+                            <p id="userEmail" class="text-xs text-gray-400">email@velotax.com.br</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="showThemeSelector()" class="text-gray-400 hover:text-blue-500 transition-colors">
+                                <i class="fas fa-palette"></i>
+                            </button>
+                            <button onclick="logout()" class="text-gray-400 hover:text-red-500 transition-colors">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="ml-64 p-6">
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="content-section active">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Dashboard</h1>
+                    <p class="text-gray-400">Visão geral do sistema</p>
+                </div>
+                
+                <!-- Métricas Principais -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="metric-card p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">Atendimentos Hoje</p>
+                                <p class="text-3xl font-bold text-white">47</p>
+                                <p class="text-green-400 text-xs">+12% vs ontem</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-500 bg-opacity-20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-phone text-blue-400 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">Satisfação</p>
+                                <p class="text-3xl font-bold text-white">4.8</p>
+                                <p class="text-green-400 text-xs">⭐ ⭐ ⭐ ⭐ ⭐</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-500 bg-opacity-20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-star text-green-400 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">TMA</p>
+                                <p class="text-3xl font-bold text-white">3:45</p>
+                                <p class="text-gray-400 text-xs">min/atendimento</p>
+                            </div>
+                            <div class="w-12 h-12 bg-orange-500 bg-opacity-20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-stopwatch text-orange-400 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">Status</p>
+                                <p class="text-3xl font-bold text-white">Online</p>
+                                <p class="text-green-400 text-xs">Disponível</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-500 bg-opacity-20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-circle text-green-400 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráficos -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Desempenho Semanal</h3>
+                        <div class="chart-container">
+                            <canvas id="desempenhoChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Distribuição de Atendimentos</h3>
+                        <div class="chart-container">
+                            <canvas id="distribuicaoChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Atividades Recentes -->
+                <div class="glass-panel p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">Atividades Recentes</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3 p-3 bg-gray-800 bg-opacity-50 rounded-lg">
+                            <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                            <span class="text-gray-300">Atendimento finalizado - Cliente satisfeito</span>
+                            <span class="text-gray-500 text-sm ml-auto">2 min atrás</span>
+                        </div>
+                        <div class="flex items-center space-x-3 p-3 bg-gray-800 bg-opacity-50 rounded-lg">
+                            <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                            <span class="text-gray-300">Novo ticket criado - Suporte técnico</span>
+                            <span class="text-gray-500 text-sm ml-auto">5 min atrás</span>
+                        </div>
+                        <div class="flex items-center space-x-3 p-3 bg-gray-800 bg-opacity-50 rounded-lg">
+                            <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                            <span class="text-gray-300">Pausa iniciada - Almoço</span>
+                            <span class="text-gray-500 text-sm ml-auto">1 hora atrás</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Perfil Section -->
+            <div id="perfil" class="content-section">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Meu Perfil</h1>
+                    <p class="text-gray-400">Gerencie suas informações pessoais</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Informações Pessoais -->
+                    <div class="lg:col-span-2">
+                        <div class="glass-panel p-6">
+                            <h3 class="text-lg font-semibold text-white mb-4">Informações Pessoais</h3>
+                            <form id="profileForm" class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-gray-300 text-sm font-medium mb-2">Nome Completo</label>
+                                        <input type="text" id="fullName" class="input-field w-full px-4 py-3" value="João Silva">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-300 text-sm font-medium mb-2">Cargo</label>
+                                        <input type="text" id="cargo" class="input-field w-full px-4 py-3" value="Atendente">
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-gray-300 text-sm font-medium mb-2">E-mail</label>
+                                        <input type="email" id="email" class="input-field w-full px-4 py-3" value="joao.silva@velotax.com.br" readonly>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-300 text-sm font-medium mb-2">Telefone</label>
+                                        <input type="tel" id="telefone" class="input-field w-full px-4 py-3" value="(11) 99999-9999">
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">Bio</label>
+                                    <textarea id="bio" class="input-field w-full px-4 py-3 h-24" placeholder="Conte um pouco sobre você...">Atendente dedicado com foco em satisfação do cliente.</textarea>
+                                </div>
+                                
+                                <button type="submit" class="btn-primary px-6 py-3">
+                                    <i class="fas fa-save mr-2"></i>
+                                    Salvar Alterações
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Avatar e Status -->
+                    <div>
+                        <div class="profile-card">
+                            <img id="profileAvatar" src="https://via.placeholder.com/120x120" alt="Avatar" class="profile-avatar">
+                            <h3 id="profileName" class="text-xl font-bold text-white mb-2">João Silva</h3>
+                            <p id="profileCargo" class="text-gray-400 mb-4">Atendente</p>
+                            
+                            <button onclick="changeAvatar()" class="btn-primary w-full mb-4">
+                                <i class="fas fa-camera mr-2"></i>
+                                Alterar Foto
+                            </button>
+                            
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Status</span>
+                                    <span class="text-green-400">Online</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Último Login</span>
+                                    <span class="text-white">Hoje 08:00</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Membro desde</span>
+                                    <span class="text-white">Jan 2024</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Outras seções serão adicionadas aqui... -->
+        </div>
+    </div>
+
+    <!-- Theme Selector Modal -->
+    <div id="themeModal" class="modal">
+        <div class="modal-content">
+            <h3 class="text-lg font-semibold text-white mb-4">Escolher Tema</h3>
+            <div class="grid grid-cols-1 gap-4">
+                <button onclick="setTheme('light')" class="p-4 bg-white text-black rounded-lg hover:bg-gray-100 transition-colors">
+                    <i class="fas fa-sun mr-2"></i>
+                    Tema Claro
+                </button>
+                <button onclick="setTheme('dark')" class="p-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-moon mr-2"></i>
+                    Tema Escuro
+                </button>
+                <button onclick="setTheme('blue')" class="p-4 bg-blue-900 text-white rounded-lg hover:bg-blue-800 transition-colors">
+                    <i class="fas fa-palette mr-2"></i>
+                    Tema Azul
+                </button>
+            </div>
+            <button onclick="closeThemeModal()" class="mt-4 text-gray-400 hover:text-white">
+                Fechar
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.custom-cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'scale(0.8)';
+        });
+        
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'scale(1)';
+        });
+        
+        // Add hover effect to clickable elements
+        document.addEventListener('mouseover', (e) => {
+            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A' || e.target.closest('button') || e.target.closest('a')) {
+                cursor.classList.add('hover');
+            }
+        });
+        
+        document.addEventListener('mouseout', (e) => {
+            cursor.classList.remove('hover');
+        });
+
+        // Google Sign-In Handler
+        function handleCredentialResponse(response) {
+            const responsePayload = decodeJwtResponse(response.credential);
+            
+            if (responsePayload.email.endsWith('@velotax.com.br')) {
+                localStorage.setItem('userInfo', JSON.stringify({
+                    name: responsePayload.name,
+                    email: responsePayload.email,
+                    picture: responsePayload.picture
+                }));
+                
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                updateUserInfo();
+                
+                showNotification('Login realizado com sucesso!', 'success');
+            } else {
+                showNotification('Apenas e-mails @velotax.com.br são permitidos.', 'error');
+            }
+        }
+
+        function decodeJwtResponse(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+
+        // Demo Login
+        function showDemoLogin() {
+            localStorage.setItem('userInfo', JSON.stringify({
+                name: 'Demo User',
+                email: 'demo@velotax.com.br',
+                picture: 'https://via.placeholder.com/40x40'
+            }));
+            
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            updateUserInfo();
+            
+            showNotification('Login demo realizado com sucesso!', 'success');
+        }
+
+        // Theme Management
+        function setTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            closeThemeModal();
+            showNotification(`Tema ${theme} aplicado!`, 'success');
+        }
+
+        function showThemeSelector() {
+            document.getElementById('themeModal').classList.add('active');
+        }
+
+        function closeThemeModal() {
+            document.getElementById('themeModal').classList.remove('active');
+        }
+
+        // Notifications
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type === 'error' ? 'border-red-500' : 'border-green-500'}`;
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : 'check-circle'} mr-2 text-${type === 'error' ? 'red' : 'green'}-500"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Profile Management
+        function updateUserInfo() {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            if (userInfo) {
+                document.getElementById('userName').textContent = userInfo.name;
+                document.getElementById('userEmail').textContent = userInfo.email;
+                document.getElementById('userAvatar').src = userInfo.picture;
+                
+                // Update profile section
+                document.getElementById('profileName').textContent = userInfo.name;
+                document.getElementById('profileAvatar').src = userInfo.picture;
+            }
+        }
+
+        function changeAvatar() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        document.getElementById('profileAvatar').src = e.target.result;
+                        document.getElementById('userAvatar').src = e.target.result;
+                        showNotification('Foto de perfil atualizada!', 'success');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
+        // Form Handling
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showNotification('Perfil atualizado com sucesso!', 'success');
+        });
+
+        // Navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.closest('.menu-item').classList.add('active');
+        }
+
+        function logout() {
+            if (confirm('Deseja realmente sair do sistema?')) {
+                localStorage.removeItem('userInfo');
+                document.getElementById('mainApp').classList.add('hidden');
+                document.getElementById('loginScreen').classList.remove('hidden');
+                showNotification('Logout realizado com sucesso!', 'success');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved theme
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.body.setAttribute('data-theme', savedTheme);
+            
+            // Check login status
+            const userInfo = localStorage.getItem('userInfo');
+            if (userInfo) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                updateUserInfo();
+            }
+            
+            // Initialize charts
+            initCharts();
+        });
+
+        function initCharts() {
+            // Performance Chart
+            const desempenhoCtx = document.getElementById('desempenhoChart').getContext('2d');
+            new Chart(desempenhoCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'],
+                    datasets: [{
+                        label: 'Atendimentos',
+                        data: [45, 52, 48, 61, 47],
+                        borderColor: '#007AFF',
+                        backgroundColor: 'rgba(0, 122, 255, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Distribution Chart
+            const distribuicaoCtx = document.getElementById('distribuicaoChart').getContext('2d');
+            new Chart(distribuicaoCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Telefone', 'Tickets', 'Chat', 'Email'],
+                    datasets: [{
+                        data: [47, 23, 15, 8],
+                        backgroundColor: [
+                            '#007AFF',
+                            '#34C759',
+                            '#FF9500',
+                            '#FF3B30'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        console.log('✅ VeloNet Avançado carregado com sucesso!');
+    </script>
+</body>
+</html> 

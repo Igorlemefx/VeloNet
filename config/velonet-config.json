@@ -1,0 +1,100 @@
+{
+  "system": {
+    "name": "VeloNet",
+    "version": "4.0.0",
+    "description": "Portal Corporativo Avançado",
+    "company": "Velotax"
+  },
+  "authentication": {
+    "google": {
+      "client_id": "1070039276915-2b694q77hs2tgv3heuf5olrfoc4udq9r.apps.googleusercontent.com",
+      "allowed_domains": ["velotax.com.br"],
+      "scopes": ["email", "profile"]
+    },
+    "session_timeout": 3600000
+  },
+  "themes": {
+    "light": {
+      "name": "Claro",
+      "colors": {
+        "primary": "#ffffff",
+        "secondary": "#f8f9fa",
+        "text": "#000000",
+        "text_secondary": "#6c757d",
+        "accent": "#007AFF",
+        "border": "#e9ecef"
+      }
+    },
+    "dark": {
+      "name": "Escuro",
+      "colors": {
+        "primary": "#000000",
+        "secondary": "#1c1c1e",
+        "text": "#ffffff",
+        "text_secondary": "#8e8e93",
+        "accent": "#007AFF",
+        "border": "rgba(255, 255, 255, 0.1)"
+      }
+    },
+    "blue": {
+      "name": "Azul",
+      "colors": {
+        "primary": "#0a1929",
+        "secondary": "#132f4c",
+        "text": "#ffffff",
+        "text_secondary": "#b2bac2",
+        "accent": "#66b2ff",
+        "border": "rgba(255, 255, 255, 0.1)"
+      }
+    }
+  },
+  "features": {
+    "custom_cursor": true,
+    "notifications": true,
+    "media_upload": true,
+    "news_system": true,
+    "user_profiles": true,
+    "gemini_integration": true,
+    "theme_switcher": true,
+    "charts": true,
+    "real_time_updates": true
+  },
+  "departments": [
+    "Suporte",
+    "TI",
+    "RH",
+    "Financeiro",
+    "Marketing",
+    "Vendas"
+  ],
+  "roles": [
+    "Atendente",
+    "Supervisor",
+    "Gerente",
+    "Administrador"
+  ],
+  "media": {
+    "allowed_types": ["image/jpeg", "image/png", "image/gif", "video/mp4", "video/webm"],
+    "max_size": 10485760,
+    "upload_path": "/uploads/"
+  },
+  "notifications": {
+    "types": ["success", "error", "warning", "info"],
+    "duration": 3000,
+    "position": "top-right"
+  },
+  "charts": {
+    "colors": ["#007AFF", "#34C759", "#FF9500", "#FF3B30", "#AF52DE", "#FF2D92"],
+    "animation_duration": 1000
+  },
+  "api": {
+    "base_url": "https://api.velotax.com.br/v1",
+    "endpoints": {
+      "users": "/users",
+      "news": "/news",
+      "media": "/media",
+      "attendance": "/attendance",
+      "reports": "/reports"
+    }
+  }
+} 
