@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeloNet - Portal Corporativo Unificado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #000058 0%, #1634FF 50%, #791DD0 100%);
+            color: #333;
+        }
+        
+        .main-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .menu-item {
+            background: linear-gradient(135deg, #1634FF 0%, #791DD0 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #1634FF 0%, #791DD0 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        .news-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-left: 4px solid #1634FF;
+        }
+        
+        .process-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-left: 4px solid #1DFDB9;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Sidebar -->
+    <div class="fixed inset-y-0 left-0 w-64 sidebar z-50">
+        <div class="flex flex-col h-full">
+            <!-- Logo -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center">
+                    <i class="fas fa-building text-3xl mr-3" style="color: #1634FF;"></i>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-800">VeloNet</h1>
+                        <p class="text-sm text-gray-600">Portal Corporativo</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Menu -->
+            <nav class="flex-1 p-4 space-y-2">
+                <button onclick="showSection('dashboard')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    <span>Dashboard</span>
+                </button>
+                
+                <button onclick="showSection('noticias')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                    <i class="fas fa-newspaper mr-3"></i>
+                    <span>Notícias</span>
+                </button>
+                
+                <button onclick="showSection('processos')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                    <i class="fas fa-cogs mr-3"></i>
+                    <span>Processos</span>
+                </button>
+                
+                <button onclick="showSection('treinamentos')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                    <i class="fas fa-graduation-cap mr-3"></i>
+                    <span>Treinamentos</span>
+                </button>
+                
+                <button onclick="showSection('ponto')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                    <i class="fas fa-clock mr-3"></i>
+                    <span>Ponto Mais</span>
+                </button>
+                
+                <button onclick="showSection('base')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                    <i class="fas fa-book mr-3"></i>
+                    <span>Base de Conhecimento</span>
+                </button>
+                
+                <button onclick="showSection('admin')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                    <i class="fas fa-user-cog mr-3"></i>
+                    <span>Administração</span>
+                </button>
+            </nav>
+            
+            <!-- User Info -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <img src="https://via.placeholder.com/40x40" alt="Avatar" class="w-10 h-10 rounded-full">
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-800">Suporte Manha</p>
+                        <p class="text-xs text-gray-600">Online</p>
+                    </div>
+                    <button onclick="logout()" class="text-red-500 hover:text-red-700">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ml-64 p-6">
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="content-section active">
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold text-white mb-2">Dashboard de Atendimento</h1>
+                <p class="text-white text-opacity-80">Métricas em tempo real - VeloNet</p>
+            </div>
+            
+            <!-- Métricas do Dia -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="metric-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-white text-opacity-80 text-sm">Telefone</p>
+                            <p class="text-3xl font-bold">47</p>
+                            <p class="text-white text-opacity-60 text-xs">+12% vs ontem</p>
+                        </div>
+                        <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-phone text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-white text-opacity-80 text-sm">Tickets</p>
+                            <p class="text-3xl font-bold">23</p>
+                            <p class="text-white text-opacity-60 text-xs">+8% vs ontem</p>
+                        </div>
+                        <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-ticket-alt text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-white text-opacity-80 text-sm">Satisfação</p>
+                            <p class="text-3xl font-bold">4.8</p>
+                            <p class="text-white text-opacity-60 text-xs">⭐ ⭐ ⭐ ⭐ ⭐</p>
+                        </div>
+                        <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-star text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card rounded-2xl p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-white text-opacity-80 text-sm">TMA</p>
+                            <p class="text-3xl font-bold">3:45</p>
+                            <p class="text-white text-opacity-60 text-xs">min/atendimento</p>
+                        </div>
+                        <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-stopwatch text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráficos -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="main-container rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Monitoria</h3>
+                    <div class="chart-container">
+                        <canvas id="monitoriaChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="main-container rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Desempenho Semanal</h3>
+                    <div class="chart-container">
+                        <canvas id="desempenhoChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tempo de Pausa -->
+            <div class="main-container rounded-2xl p-6 mb-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Tempo de Pausa Acumulado</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="rounded-lg p-4" style="background-color: rgba(255, 132, 0, 0.1); border-left: 4px solid #FF8400;">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-medium" style="color: #FF8400;">Almoço</p>
+                                <p class="text-2xl font-bold" style="color: #FF8400;">1:00</p>
+                            </div>
+                            <i class="fas fa-utensils text-2xl" style="color: #FF8400;"></i>
+                        </div>
+                    </div>
+                    <div class="rounded-lg p-4" style="background-color: rgba(29, 253, 185, 0.1); border-left: 4px solid #1DFDB9;">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-medium" style="color: #1DFDB9;">Treinamento</p>
+                                <p class="text-2xl font-bold" style="color: #1DFDB9;">0:30</p>
+                            </div>
+                            <i class="fas fa-graduation-cap text-2xl" style="color: #1DFDB9;"></i>
+                        </div>
+                    </div>
+                    <div class="rounded-lg p-4" style="background-color: rgba(255, 0, 215, 0.1); border-left: 4px solid #FF00D7;">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-medium" style="color: #FF00D7;">Feedback</p>
+                                <p class="text-2xl font-bold" style="color: #FF00D7;">0:15</p>
+                            </div>
+                            <i class="fas fa-comments text-2xl" style="color: #FF00D7;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notícias Section -->
+        <div id="noticias" class="content-section">
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold text-white mb-2">Notícias da Empresa</h1>
+                <p class="text-white text-opacity-80">Últimas notícias e comunicados importantes</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="news-card rounded-lg p-6">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-800 mb-2">Nova Política de Atendimento</h3>
+                            <p class="text-gray-600 text-sm mb-2">Implementamos novas diretrizes para melhorar a qualidade do atendimento ao cliente.</p>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <i class="fas fa-calendar mr-1"></i>
+                                <span>15 de Janeiro, 2025</span>
+                                <i class="fas fa-user ml-4 mr-1"></i>
+                                <span>RH</span>
+                            </div>
+                        </div>
+                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Importante</span>
+                    </div>
+                </div>
+
+                <div class="news-card rounded-lg p-6">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-800 mb-2">Treinamento de Produtos</h3>
+                            <p class="text-gray-600 text-sm mb-2">Novo módulo de treinamento sobre produtos disponível na plataforma.</p>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <i class="fas fa-calendar mr-1"></i>
+                                <span>14 de Janeiro, 2025</span>
+                                <i class="fas fa-user ml-4 mr-1"></i>
+                                <span>Treinamentos</span>
+                            </div>
+                        </div>
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Novo</span>
+                    </div>
+                </div>
+
+                <div class="news-card rounded-lg p-6">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-800 mb-2">Manutenção do Sistema</h3>
+                            <p class="text-gray-600 text-sm mb-2">Sistema ficará indisponível das 02:00 às 04:00 para manutenção.</p>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <i class="fas fa-calendar mr-1"></i>
+                                <span>13 de Janeiro, 2025</span>
+                                <i class="fas fa-user ml-4 mr-1"></i>
+                                <span>TI</span>
+                            </div>
+                        </div>
+                        <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">Aviso</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Processos Section -->
+        <div id="processos" class="content-section">
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold text-white mb-2">Processos da Empresa</h1>
+                <p class="text-white text-opacity-80">Procedimentos e processos (Responsável: Gabriel)</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="process-card rounded-lg p-6">
+                    <h3 class="font-semibold text-gray-800 mb-2">Processo de Atendimento</h3>
+                    <p class="text-gray-600 text-sm mb-3">Fluxo completo do atendimento ao cliente</p>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                        Ver Processo
+                    </button>
+                </div>
+
+                <div class="process-card rounded-lg p-6">
+                    <h3 class="font-semibold text-gray-800 mb-2">Escalação de Problemas</h3>
+                    <p class="text-gray-600 text-sm mb-3">Como escalar problemas complexos</p>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                        Ver Processo
+                    </button>
+                </div>
+
+                <div class="process-card rounded-lg p-6">
+                    <h3 class="font-semibold text-gray-800 mb-2">Gestão de Qualidade</h3>
+                    <p class="text-gray-600 text-sm mb-3">Controle de qualidade do atendimento</p>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                        Ver Processo
+                    </button>
+                </div>
+
+                <div class="process-card rounded-lg p-6">
+                    <h3 class="font-semibold text-gray-800 mb-2">Procedimentos de Emergência</h3>
+                    <p class="text-gray-600 text-sm mb-3">Protocolos para situações críticas</p>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                        Ver Processo
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Treinamentos Section -->
+        <div id="treinamentos" class="content-section">
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold text-white mb-2">Sistema de Treinamentos</h1>
+                <p class="text-white text-opacity-80">Módulos educativos e certificações</p>
+            </div>
+            
+            <div class="main-container rounded-2xl p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-2">Atendimento ao Cliente</h3>
+                        <p class="text-sm mb-4">Aprenda as melhores práticas de atendimento</p>
+                        <button class="bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-medium">
+                            Iniciar Curso
+                        </button>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-green-500 to-blue-600 text-white rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-2">Produtos e Serviços</h3>
+                        <p class="text-sm mb-4">Conheça todos os produtos da empresa</p>
+                        <button class="bg-white text-green-600 px-4 py-2 rounded-lg text-sm font-medium">
+                            Iniciar Curso
+                        </button>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg p-6">
+                        <h3 class="text-lg font-semibold mb-2">Sistema VeloNet</h3>
+                        <p class="text-sm mb-4">Tutorial completo do sistema</p>
+                        <button class="bg-white text-purple-600 px-4 py-2 rounded-lg text-sm font-medium">
+                            Iniciar Curso
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ponto Section -->
+        <div id="ponto" class="content-section">
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold text-white mb-2">Ponto Mais</h1>
+                <p class="text-white text-opacity-80">Sistema de controle de ponto eletrônico</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="main-container rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Status Atual</h3>
+                    <div class="text-center">
+                        <div class="w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, #1DFDB9 0%, #1634FF 100%);">
+                            <span class="text-white text-3xl font-bold">Presente</span>
+                        </div>
+                        <p class="text-gray-600">Entrada: 08:00</p>
+                    </div>
+                </div>
+
+                <div class="main-container rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Horas Trabalhadas</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Hoje</span>
+                            <span class="font-semibold">6h 45min</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Esta Semana</span>
+                            <span class="font-semibold">32h 15min</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Este Mês</span>
+                            <span class="font-semibold">145h 30min</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-container rounded-2xl p-6 mt-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Controles</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <button class="w-full text-white py-3 rounded-lg transition-colors" style="background: linear-gradient(135deg, #1634FF 0%, #791DD0 100%);">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Registrar Entrada
+                    </button>
+                    <button class="w-full text-white py-3 rounded-lg transition-colors" style="background: linear-gradient(135deg, #FF8400 0%, #FF00D7 100%);">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Registrar Saída
+                    </button>
+                    <button class="w-full text-white py-3 rounded-lg transition-colors" style="background: linear-gradient(135deg, #1DFDB9 0%, #1634FF 100%);">
+                        <i class="fas fa-pause mr-2"></i>Iniciar Pausa
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Base de Conhecimento Section -->
+        <div id="base" class="content-section">
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold text-white mb-2">Base de Conhecimento</h1>
+                <p class="text-white text-opacity-80">Documentação e procedimentos</p>
+            </div>
+            
+            <div class="main-container rounded-2xl p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h3 class="font-semibold text-gray-800 mb-2">Manual de Atendimento</h3>
+                        <p class="text-gray-600 text-sm mb-3">Guia completo para atendimento ao cliente</p>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                            Acessar
+                        </button>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h3 class="font-semibold text-gray-800 mb-2">Procedimentos Operacionais</h3>
+                        <p class="text-gray-600 text-sm mb-3">Procedimentos padrão da empresa</p>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                            Acessar
+                        </button>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h3 class="font-semibold text-gray-800 mb-2">FAQ</h3>
+                        <p class="text-gray-600 text-sm mb-3">Perguntas frequentes</p>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                            Acessar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Section -->
+        <div id="admin" class="content-section">
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold text-white mb-2">Painel Administrativo</h1>
+                <p class="text-white text-opacity-80">Gestão de usuários e configurações</p>
+            </div>
+            
+            <div class="main-container rounded-2xl p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h3 class="font-semibold text-gray-800 mb-2">Gestão de Usuários</h3>
+                        <p class="text-gray-600 text-sm mb-3">Criar, editar e gerenciar colaboradores</p>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                            Acessar
+                        </button>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h3 class="font-semibold text-gray-800 mb-2">Relatórios</h3>
+                        <p class="text-gray-600 text-sm mb-3">Relatórios de desempenho e métricas</p>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                            Acessar
+                        </button>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h3 class="font-semibold text-gray-800 mb-2">Configurações</h3>
+                        <p class="text-gray-600 text-sm mb-3">Configurações do sistema</p>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
+                            Acessar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para mostrar seções
+        function showSection(sectionId) {
+            // Esconder todas as seções
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Mostrar a seção selecionada
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // Função de logout
+        function logout() {
+            if (confirm('Deseja realmente sair do sistema?')) {
+                alert('Logout realizado com sucesso!');
+            }
+        }
+
+        // Gráfico de Monitoria
+        const monitoriaCtx = document.getElementById('monitoriaChart').getContext('2d');
+        new Chart(monitoriaCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Excelente', 'Bom', 'Regular', 'Precisa Melhorar'],
+                datasets: [{
+                    data: [45, 35, 15, 5],
+                    backgroundColor: [
+                        '#1DFDB9',
+                        '#1634FF',
+                        '#FF8400',
+                        '#FF00D7'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Desempenho
+        const desempenhoCtx = document.getElementById('desempenhoChart').getContext('2d');
+        new Chart(desempenhoCtx, {
+            type: 'line',
+            data: {
+                labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+                datasets: [{
+                    label: 'Atendimentos',
+                    data: [280, 320, 290, 357],
+                    borderColor: '#1634FF',
+                    backgroundColor: 'rgba(22, 52, 255, 0.1)',
+                    tension: 0.4
+                }, {
+                    label: 'Satisfação',
+                    data: [4.5, 4.7, 4.6, 4.8],
+                    borderColor: '#1DFDB9',
+                    backgroundColor: 'rgba(29, 253, 185, 0.1)',
+                    tension: 0.4,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Atendimentos'
+                        }
+                    },
+                    y1: {
+                        position: 'right',
+                        beginAtZero: true,
+                        max: 5,
+                        title: {
+                            display: true,
+                            text: 'Satisfação'
+                        }
+                    }
+                }
+            }
+        });
+
+        console.log('✅ VeloNet Unificado carregado com sucesso!');
+    </script>
+</body>
+</html> 
