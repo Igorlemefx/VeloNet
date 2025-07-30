@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeloNet - Portal Corporativo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background: #000000;
+            color: #ffffff;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+        }
+        
+        .sidebar {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .menu-item {
+            background: transparent;
+            color: #ffffff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 12px;
+        }
+        
+        .menu-item:hover {
+            background: rgba(0, 122, 255, 0.1);
+            color: #007AFF;
+        }
+        
+        .menu-item.active {
+            background: rgba(0, 122, 255, 0.2);
+            color: #007AFF;
+        }
+        
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 122, 255, 0.3);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #007AFF 0%, #0056CC 100%);
+            color: white;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
+        }
+        
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        .login-container {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #007AFF;
+            outline: none;
+        }
+        
+        .status-online {
+            background: linear-gradient(135deg, #34C759 0%, #30D158 100%);
+        }
+        
+        .status-pause {
+            background: linear-gradient(135deg, #FF9500 0%, #FF9F0A 100%);
+        }
+        
+        .status-offline {
+            background: linear-gradient(135deg, #FF3B30 0%, #FF453A 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Login Screen -->
+    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="login-container p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-building text-white text-3xl"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-white mb-2">VeloNet</h1>
+                <p class="text-gray-400">Portal Corporativo Velotax</p>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">E-mail</label>
+                    <input type="email" id="email" class="input-field w-full px-4 py-3" placeholder="seu.email@velotax.com.br" required>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-300 text-sm font-medium mb-2">Senha</label>
+                    <input type="password" id="password" class="input-field w-full px-4 py-3" placeholder="Sua senha" required>
+                </div>
+                
+                <button type="submit" class="btn-primary w-full py-3 font-medium">
+                    <i class="fas fa-sign-in-alt mr-2"></i>
+                    Entrar no Sistema
+                </button>
+            </form>
+            
+            <div class="text-center text-sm text-gray-400 mt-4">
+                <p>Apenas e-mails @velotax.com.br</p>
+                <p class="mt-2 text-xs">Demo: admin@velotax.com.br / admin123</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="hidden">
+        <!-- Sidebar -->
+        <div class="fixed inset-y-0 left-0 w-64 sidebar z-40">
+            <div class="flex flex-col h-full">
+                <!-- Logo -->
+                <div class="p-6 border-b border-gray-800">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-building text-white"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-semibold text-white">VeloNet</h1>
+                            <p class="text-xs text-gray-400">Portal Corporativo</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Menu -->
+                <nav class="flex-1 p-4 space-y-2">
+                    <button onclick="showSection('dashboard')" class="menu-item active w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-chart-line mr-3"></i>
+                        <span>Dashboard</span>
+                    </button>
+                    
+                    <button onclick="showSection('atendimentos')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-headset mr-3"></i>
+                        <span>Atendimentos</span>
+                    </button>
+                    
+                    <button onclick="showSection('noticias')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-newspaper mr-3"></i>
+                        <span>Notícias</span>
+                    </button>
+                    
+                    <button onclick="showSection('processos')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-cogs mr-3"></i>
+                        <span>Processos</span>
+                    </button>
+                    
+                    <button onclick="showSection('treinamentos')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-graduation-cap mr-3"></i>
+                        <span>Treinamentos</span>
+                    </button>
+                    
+                    <button onclick="showSection('ponto')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-clock mr-3"></i>
+                        <span>Ponto</span>
+                    </button>
+                    
+                    <button onclick="showSection('base')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-book mr-3"></i>
+                        <span>Base de Conhecimento</span>
+                    </button>
+                    
+                    <button onclick="showSection('admin')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-user-cog mr-3"></i>
+                        <span>Administração</span>
+                    </button>
+                </nav>
+                
+                <!-- User Info -->
+                <div class="p-4 border-t border-gray-800">
+                    <div class="flex items-center space-x-3">
+                        <img id="userAvatar" src="https://via.placeholder.com/40x40" alt="Avatar" class="w-10 h-10 rounded-full">
+                        <div class="flex-1">
+                            <p id="userName" class="text-sm font-medium text-white">Usuário</p>
+                            <p id="userEmail" class="text-xs text-gray-400">email@velotax.com.br</p>
+                        </div>
+                        <button onclick="logout()" class="text-gray-400 hover:text-red-500 transition-colors">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="ml-64 p-6">
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="content-section active">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Dashboard</h1>
+                    <p class="text-gray-400">Visão geral do sistema</p>
+                </div>
+                
+                <!-- Métricas Principais -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="metric-card p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">Atendimentos Hoje</p>
+                                <p class="text-3xl font-bold text-white">47</p>
+                                <p class="text-green-400 text-xs">+12% vs ontem</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-500 bg-opacity-20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-phone text-blue-400 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">Satisfação</p>
+                                <p class="text-3xl font-bold text-white">4.8</p>
+                                <p class="text-green-400 text-xs">⭐ ⭐ ⭐ ⭐ ⭐</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-500 bg-opacity-20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-star text-green-400 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">TMA</p>
+                                <p class="text-3xl font-bold text-white">3:45</p>
+                                <p class="text-gray-400 text-xs">min/atendimento</p>
+                            </div>
+                            <div class="w-12 h-12 bg-orange-500 bg-opacity-20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-stopwatch text-orange-400 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">Status</p>
+                                <p class="text-3xl font-bold text-white">Online</p>
+                                <p class="text-green-400 text-xs">Disponível</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-500 bg-opacity-20 rounded-full flex items-center justify-center">
+                                <i class="fas fa-circle text-green-400 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráficos -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Desempenho Semanal</h3>
+                        <div class="chart-container">
+                            <canvas id="desempenhoChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Distribuição de Atendimentos</h3>
+                        <div class="chart-container">
+                            <canvas id="distribuicaoChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Atividades Recentes -->
+                <div class="glass-panel p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">Atividades Recentes</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3 p-3 bg-gray-800 bg-opacity-50 rounded-lg">
+                            <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                            <span class="text-gray-300">Atendimento finalizado - Cliente satisfeito</span>
+                            <span class="text-gray-500 text-sm ml-auto">2 min atrás</span>
+                        </div>
+                        <div class="flex items-center space-x-3 p-3 bg-gray-800 bg-opacity-50 rounded-lg">
+                            <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                            <span class="text-gray-300">Novo ticket criado - Suporte técnico</span>
+                            <span class="text-gray-500 text-sm ml-auto">5 min atrás</span>
+                        </div>
+                        <div class="flex items-center space-x-3 p-3 bg-gray-800 bg-opacity-50 rounded-lg">
+                            <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
+                            <span class="text-gray-300">Pausa iniciada - Almoço</span>
+                            <span class="text-gray-500 text-sm ml-auto">1 hora atrás</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Atendimentos Section -->
+            <div id="atendimentos" class="content-section">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Atendimentos</h1>
+                    <p class="text-gray-400">Gestão de atendimentos e métricas</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Métricas do Dia</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Telefone</span>
+                                <span class="text-white font-semibold">47</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Tickets</span>
+                                <span class="text-white font-semibold">23</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Chat</span>
+                                <span class="text-white font-semibold">15</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Email</span>
+                                <span class="text-white font-semibold">8</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Tempo de Pausa</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Almoço</span>
+                                <span class="text-white font-semibold">1:00</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Treinamento</span>
+                                <span class="text-white font-semibold">0:30</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Feedback</span>
+                                <span class="text-white font-semibold">0:15</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 mt-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">Monitoria</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-white mb-1">12</div>
+                            <div class="text-gray-400 text-sm">Chamadas Gravadas</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-white mb-1">3</div>
+                            <div class="text-gray-400 text-sm">Avaliações Pendentes</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-white mb-1">8.5</div>
+                            <div class="text-gray-400 text-sm">Score Médio</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notícias Section -->
+            <div id="noticias" class="content-section">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Notícias</h1>
+                    <p class="text-gray-400">Comunicados e notícias da empresa</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="glass-panel p-6">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-white mb-2">Nova Política de Atendimento</h3>
+                                <p class="text-gray-400 text-sm mb-3">Implementamos novas diretrizes para melhorar a qualidade do atendimento ao cliente.</p>
+                                <div class="flex items-center text-xs text-gray-500">
+                                    <i class="fas fa-calendar mr-1"></i>
+                                    <span>15 de Janeiro, 2025</span>
+                                    <i class="fas fa-user ml-4 mr-1"></i>
+                                    <span>RH</span>
+                                </div>
+                            </div>
+                            <span class="bg-blue-500 bg-opacity-20 text-blue-400 text-xs px-2 py-1 rounded-full">Importante</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-white mb-2">Treinamento de Produtos</h3>
+                                <p class="text-gray-400 text-sm mb-3">Novo módulo de treinamento sobre produtos disponível na plataforma.</p>
+                                <div class="flex items-center text-xs text-gray-500">
+                                    <i class="fas fa-calendar mr-1"></i>
+                                    <span>14 de Janeiro, 2025</span>
+                                    <i class="fas fa-user ml-4 mr-1"></i>
+                                    <span>Treinamentos</span>
+                                </div>
+                            </div>
+                            <span class="bg-green-500 bg-opacity-20 text-green-400 text-xs px-2 py-1 rounded-full">Novo</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-white mb-2">Manutenção do Sistema</h3>
+                                <p class="text-gray-400 text-sm mb-3">Sistema ficará indisponível das 02:00 às 04:00 para manutenção.</p>
+                                <div class="flex items-center text-xs text-gray-500">
+                                    <i class="fas fa-calendar mr-1"></i>
+                                    <span>13 de Janeiro, 2025</span>
+                                    <i class="fas fa-user ml-4 mr-1"></i>
+                                    <span>TI</span>
+                                </div>
+                            </div>
+                            <span class="bg-orange-500 bg-opacity-20 text-orange-400 text-xs px-2 py-1 rounded-full">Aviso</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Processos Section -->
+            <div id="processos" class="content-section">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Processos</h1>
+                    <p class="text-gray-400">Procedimentos e processos da empresa</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass-panel p-6">
+                        <h3 class="font-semibold text-white mb-2">Processo de Atendimento</h3>
+                        <p class="text-gray-400 text-sm mb-3">Fluxo completo do atendimento ao cliente</p>
+                        <button class="btn-primary px-4 py-2 text-sm">
+                            Ver Processo
+                        </button>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="font-semibold text-white mb-2">Escalação de Problemas</h3>
+                        <p class="text-gray-400 text-sm mb-3">Como escalar problemas complexos</p>
+                        <button class="btn-primary px-4 py-2 text-sm">
+                            Ver Processo
+                        </button>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="font-semibold text-white mb-2">Gestão de Qualidade</h3>
+                        <p class="text-gray-400 text-sm mb-3">Controle de qualidade do atendimento</p>
+                        <button class="btn-primary px-4 py-2 text-sm">
+                            Ver Processo
+                        </button>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="font-semibold text-white mb-2">Procedimentos de Emergência</h3>
+                        <p class="text-gray-400 text-sm mb-3">Protocolos para situações críticas</p>
+                        <button class="btn-primary px-4 py-2 text-sm">
+                            Ver Processo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Treinamentos Section -->
+            <div id="treinamentos" class="content-section">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Treinamentos</h1>
+                    <p class="text-gray-400">Módulos educativos e certificações</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-2">Atendimento ao Cliente</h3>
+                        <p class="text-gray-400 text-sm mb-4">Aprenda as melhores práticas de atendimento</p>
+                        <button class="btn-primary w-full py-2">
+                            Iniciar Curso
+                        </button>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-2">Produtos e Serviços</h3>
+                        <p class="text-gray-400 text-sm mb-4">Conheça todos os produtos da empresa</p>
+                        <button class="btn-primary w-full py-2">
+                            Iniciar Curso
+                        </button>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-2">Sistema VeloNet</h3>
+                        <p class="text-gray-400 text-sm mb-4">Tutorial completo do sistema</p>
+                        <button class="btn-primary w-full py-2">
+                            Iniciar Curso
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ponto Section -->
+            <div id="ponto" class="content-section">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Controle de Ponto</h1>
+                    <p class="text-gray-400">Sistema de ponto eletrônico</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Status Atual</h3>
+                        <div class="text-center">
+                            <div class="w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-4 status-online">
+                                <span class="text-white text-2xl font-bold">Presente</span>
+                            </div>
+                            <p class="text-gray-400">Entrada: 08:00</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Horas Trabalhadas</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Hoje</span>
+                                <span class="text-white font-semibold">6h 45min</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Esta Semana</span>
+                                <span class="text-white font-semibold">32h 15min</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Este Mês</span>
+                                <span class="text-white font-semibold">145h 30min</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 mt-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">Controles</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button class="btn-primary py-3">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Registrar Entrada
+                        </button>
+                        <button class="btn-primary py-3">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Registrar Saída
+                        </button>
+                        <button class="btn-primary py-3">
+                            <i class="fas fa-pause mr-2"></i>Iniciar Pausa
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Base de Conhecimento Section -->
+            <div id="base" class="content-section">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Base de Conhecimento</h1>
+                    <p class="text-gray-400">Documentação e procedimentos</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="glass-panel p-6">
+                        <h3 class="font-semibold text-white mb-2">Manual de Atendimento</h3>
+                        <p class="text-gray-400 text-sm mb-3">Guia completo para atendimento ao cliente</p>
+                        <button class="btn-primary px-4 py-2 text-sm">
+                            Acessar
+                        </button>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="font-semibold text-white mb-2">Procedimentos Operacionais</h3>
+                        <p class="text-gray-400 text-sm mb-3">Procedimentos padrão da empresa</p>
+                        <button class="btn-primary px-4 py-2 text-sm">
+                            Acessar
+                        </button>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="font-semibold text-white mb-2">FAQ</h3>
+                        <p class="text-gray-400 text-sm mb-3">Perguntas frequentes</p>
+                        <button class="btn-primary px-4 py-2 text-sm">
+                            Acessar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Section -->
+            <div id="admin" class="content-section">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Administração</h1>
+                    <p class="text-gray-400">Gestão de usuários e configurações</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="glass-panel p-6">
+                        <h3 class="font-semibold text-white mb-2">Gestão de Usuários</h3>
+                        <p class="text-gray-400 text-sm mb-3">Criar, editar e gerenciar colaboradores</p>
+                        <button class="btn-primary px-4 py-2 text-sm">
+                            Acessar
+                        </button>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="font-semibold text-white mb-2">Relatórios</h3>
+                        <p class="text-gray-400 text-sm mb-3">Relatórios de desempenho e métricas</p>
+                        <button class="btn-primary px-4 py-2 text-sm">
+                            Acessar
+                        </button>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="font-semibold text-white mb-2">Configurações</h3>
+                        <p class="text-gray-400 text-sm mb-3">Configurações do sistema</p>
+                        <button class="btn-primary px-4 py-2 text-sm">
+                            Acessar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Login Handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Check if email is from velotax.com.br
+            if (email.endsWith('@velotax.com.br')) {
+                // Store user info
+                localStorage.setItem('userInfo', JSON.stringify({
+                    name: email.split('@')[0],
+                    email: email,
+                    picture: 'https://via.placeholder.com/40x40'
+                }));
+                
+                // Show main app
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                
+                // Update user info
+                updateUserInfo();
+                
+                console.log('✅ Login realizado com sucesso!');
+            } else {
+                alert('Apenas e-mails @velotax.com.br são permitidos.');
+            }
+        });
+
+        // Update user info
+        function updateUserInfo() {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            if (userInfo) {
+                document.getElementById('userName').textContent = userInfo.name;
+                document.getElementById('userEmail').textContent = userInfo.email;
+                document.getElementById('userAvatar').src = userInfo.picture;
+            }
+        }
+
+        // Check if user is already logged in
+        function checkLoginStatus() {
+            const userInfo = localStorage.getItem('userInfo');
+            if (userInfo) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                updateUserInfo();
+            }
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Deseja realmente sair do sistema?')) {
+                localStorage.removeItem('userInfo');
+                document.getElementById('mainApp').classList.add('hidden');
+                document.getElementById('loginScreen').classList.remove('hidden');
+            }
+        }
+
+        // Show section function
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all menu items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked menu item
+            event.target.closest('.menu-item').classList.add('active');
+        }
+
+        // Charts
+        function initCharts() {
+            // Desempenho Chart
+            const desempenhoCtx = document.getElementById('desempenhoChart').getContext('2d');
+            new Chart(desempenhoCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'],
+                    datasets: [{
+                        label: 'Atendimentos',
+                        data: [45, 52, 48, 61, 47],
+                        borderColor: '#007AFF',
+                        backgroundColor: 'rgba(0, 122, 255, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Distribuição Chart
+            const distribuicaoCtx = document.getElementById('distribuicaoChart').getContext('2d');
+            new Chart(distribuicaoCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Telefone', 'Tickets', 'Chat', 'Email'],
+                    datasets: [{
+                        data: [47, 23, 15, 8],
+                        backgroundColor: [
+                            '#007AFF',
+                            '#34C759',
+                            '#FF9500',
+                            '#FF3B30'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            initCharts();
+        });
+
+        console.log('✅ VeloNet Final carregado com sucesso!');
+    </script>
+</body>
+</html> 
