@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeloNet - Menu Principal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #000058 0%, #1634FF 50%, #791DD0 100%);
+            color: #333;
+        }
+        
+        .menu-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .menu-item {
+            background: linear-gradient(135deg, #1634FF 0%, #791DD0 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .news-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-left: 4px solid #667eea;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4">
+    <!-- Header -->
+    <header class="mb-6">
+        <div class="menu-card rounded-2xl p-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas fa-building text-3xl mr-3" style="color: #1634FF;"></i>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">VeloNet</h1>
+                        <p class="text-gray-600">Menu Principal - Portal Corporativo</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <img src="https://via.placeholder.com/32x32" alt="Avatar" class="w-8 h-8 rounded-full">
+                        <span class="text-sm text-gray-600">Suporte Manha</span>
+                    </div>
+                    <button onclick="logout()" class="text-white px-4 py-2 rounded-lg transition-colors" style="background: linear-gradient(135deg, #FF8400 0%, #FF00D7 100%);">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Sair
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menu Principal -->
+    <section class="mb-8">
+        <h2 class="text-xl font-bold text-white mb-4 flex items-center">
+            <i class="fas fa-th-large mr-2"></i>
+            Menu Principal
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dashboard -->
+            <a href="dashboard_atendimento.html" class="menu-item rounded-2xl p-6 block">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-chart-line text-2xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-xl opacity-60"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Dashboard</h3>
+                <p class="text-white text-opacity-80 text-sm">Métricas de atendimento, desempenho e monitoria em tempo real</p>
+            </a>
+
+            <!-- Notícias -->
+            <a href="#noticias" onclick="showSection('noticias')" class="menu-item rounded-2xl p-6 block">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-newspaper text-2xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-xl opacity-60"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Notícias</h3>
+                <p class="text-white text-opacity-80 text-sm">Últimas notícias da empresa e comunicados importantes</p>
+            </a>
+
+            <!-- Processos -->
+            <a href="#processos" onclick="showSection('processos')" class="menu-item rounded-2xl p-6 block">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-cogs text-2xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-xl opacity-60"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Processos</h3>
+                <p class="text-white text-opacity-80 text-sm">Procedimentos e processos da empresa (Gabriel)</p>
+            </a>
+
+            <!-- Treinamentos -->
+            <a href="treinamentos_nova.html" class="menu-item rounded-2xl p-6 block">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-2xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-xl opacity-60"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Treinamentos</h3>
+                <p class="text-white text-opacity-80 text-sm">Cursos, módulos e certificações disponíveis</p>
+            </a>
+
+            <!-- Ponto Mais -->
+            <a href="#ponto" onclick="showSection('ponto')" class="menu-item rounded-2xl p-6 block">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-clock text-2xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-xl opacity-60"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Ponto Mais</h3>
+                <p class="text-white text-opacity-80 text-sm">Sistema completo de controle de ponto eletrônico</p>
+            </a>
+
+            <!-- Base de Conhecimento -->
+            <a href="base_conhecimento.html" class="menu-item rounded-2xl p-6 block">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-book text-2xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-xl opacity-60"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Base de Conhecimento</h3>
+                <p class="text-white text-opacity-80 text-sm">Documentação e guias de procedimentos</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Seção de Notícias -->
+    <section id="noticias" class="mb-8 hidden">
+        <div class="menu-card rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-newspaper mr-2"></i>
+                    Notícias da Empresa
+                </h2>
+                <button onclick="hideSection('noticias')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="news-card rounded-lg p-4">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-800 mb-2">Nova Política de Atendimento</h3>
+                            <p class="text-gray-600 text-sm mb-2">Implementamos novas diretrizes para melhorar a qualidade do atendimento ao cliente.</p>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <i class="fas fa-calendar mr-1"></i>
+                                <span>15 de Janeiro, 2025</span>
+                                <i class="fas fa-user ml-4 mr-1"></i>
+                                <span>RH</span>
+                            </div>
+                        </div>
+                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Importante</span>
+                    </div>
+                </div>
+
+                <div class="news-card rounded-lg p-4">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-800 mb-2">Treinamento de Produtos</h3>
+                            <p class="text-gray-600 text-sm mb-2">Novo módulo de treinamento sobre produtos disponível na plataforma.</p>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <i class="fas fa-calendar mr-1"></i>
+                                <span>14 de Janeiro, 2025</span>
+                                <i class="fas fa-user ml-4 mr-1"></i>
+                                <span>Treinamentos</span>
+                            </div>
+                        </div>
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Novo</span>
+                    </div>
+                </div>
+
+                <div class="news-card rounded-lg p-4">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-gray-800 mb-2">Manutenção do Sistema</h3>
+                            <p class="text-gray-600 text-sm mb-2">Sistema ficará indisponível das 02:00 às 04:00 para manutenção.</p>
+                            <div class="flex items-center text-xs text-gray-500">
+                                <i class="fas fa-calendar mr-1"></i>
+                                <span>13 de Janeiro, 2025</span>
+                                <i class="fas fa-user ml-4 mr-1"></i>
+                                <span>TI</span>
+                            </div>
+                        </div>
+                        <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">Aviso</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Processos -->
+    <section id="processos" class="mb-8 hidden">
+        <div class="menu-card rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-cogs mr-2"></i>
+                    Processos da Empresa
+                </h2>
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm text-gray-600">Responsável: Gabriel</span>
+                    <button onclick="hideSection('processos')" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="rounded-lg p-4" style="background-color: rgba(22, 52, 255, 0.1); border-left: 4px solid #1634FF;">
+                    <h3 class="font-semibold mb-2" style="color: #1634FF;">Processo de Atendimento</h3>
+                    <p class="text-sm mb-3" style="color: #1634FF;">Fluxo completo do atendimento ao cliente</p>
+                    <button class="text-white px-4 py-2 rounded-lg text-sm" style="background: linear-gradient(135deg, #1634FF 0%, #791DD0 100%);">
+                        Ver Processo
+                    </button>
+                </div>
+
+                <div class="rounded-lg p-4" style="background-color: rgba(29, 253, 185, 0.1); border-left: 4px solid #1DFDB9;">
+                    <h3 class="font-semibold mb-2" style="color: #1DFDB9;">Escalação de Problemas</h3>
+                    <p class="text-sm mb-3" style="color: #1DFDB9;">Como escalar problemas complexos</p>
+                    <button class="text-white px-4 py-2 rounded-lg text-sm" style="background: linear-gradient(135deg, #1DFDB9 0%, #1634FF 100%);">
+                        Ver Processo
+                    </button>
+                </div>
+
+                <div class="rounded-lg p-4" style="background-color: rgba(255, 0, 215, 0.1); border-left: 4px solid #FF00D7;">
+                    <h3 class="font-semibold mb-2" style="color: #FF00D7;">Gestão de Qualidade</h3>
+                    <p class="text-sm mb-3" style="color: #FF00D7;">Controle de qualidade do atendimento</p>
+                    <button class="text-white px-4 py-2 rounded-lg text-sm" style="background: linear-gradient(135deg, #FF00D7 0%, #791DD0 100%);">
+                        Ver Processo
+                    </button>
+                </div>
+
+                <div class="rounded-lg p-4" style="background-color: rgba(255, 132, 0, 0.1); border-left: 4px solid #FF8400;">
+                    <h3 class="font-semibold mb-2" style="color: #FF8400;">Procedimentos de Emergência</h3>
+                    <p class="text-sm mb-3" style="color: #FF8400;">Protocolos para situações críticas</p>
+                    <button class="text-white px-4 py-2 rounded-lg text-sm" style="background: linear-gradient(135deg, #FF8400 0%, #FF00D7 100%);">
+                        Ver Processo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Ponto Mais -->
+    <section id="ponto" class="mb-8 hidden">
+        <div class="menu-card rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-clock mr-2"></i>
+                    Ponto Mais - Controle de Ponto
+                </h2>
+                <button onclick="hideSection('ponto')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Status Atual -->
+                <div class="text-white rounded-lg p-6" style="background: linear-gradient(135deg, #1DFDB9 0%, #1634FF 100%);">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">Status Atual</h3>
+                        <i class="fas fa-check-circle text-2xl"></i>
+                    </div>
+                    <p class="text-2xl font-bold mb-2">Presente</p>
+                    <p class="text-white text-opacity-80">Entrada: 08:00</p>
+                </div>
+
+                <!-- Horas Trabalhadas -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Horas Trabalhadas</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Hoje</span>
+                            <span class="font-semibold">6h 45min</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Esta Semana</span>
+                            <span class="font-semibold">32h 15min</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Este Mês</span>
+                            <span class="font-semibold">145h 30min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controles -->
+                <div class="bg-blue-50 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-blue-800 mb-4">Controles</h3>
+                    <div class="space-y-3">
+                        <button class="w-full text-white py-3 rounded-lg transition-colors" style="background: linear-gradient(135deg, #1634FF 0%, #791DD0 100%);">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Registrar Entrada
+                        </button>
+                        <button class="w-full text-white py-3 rounded-lg transition-colors" style="background: linear-gradient(135deg, #FF8400 0%, #FF00D7 100%);">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Registrar Saída
+                        </button>
+                        <button class="w-full text-white py-3 rounded-lg transition-colors" style="background: linear-gradient(135deg, #1DFDB9 0%, #1634FF 100%);">
+                            <i class="fas fa-pause mr-2"></i>Iniciar Pausa
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Histórico -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Histórico Recente</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">15/01 - Entrada</span>
+                            <span class="font-medium">08:00</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">15/01 - Pausa</span>
+                            <span class="font-medium">12:00 - 13:00</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">14/01 - Saída</span>
+                            <span class="font-medium">17:30</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function showSection(sectionId) {
+            // Esconder todas as seções
+            document.querySelectorAll('section[id]').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Mostrar a seção selecionada
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        function hideSection(sectionId) {
+            document.getElementById(sectionId).classList.add('hidden');
+        }
+
+        function logout() {
+            if (confirm('Deseja realmente sair do sistema?')) {
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeloNet - Dashboard de Atendimento</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #000058 0%, #1634FF 50%, #791DD0 100%);
+            color: #333;
+        }
+        
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #1634FF 0%, #791DD0 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .status-online {
+            background: linear-gradient(135deg, #1DFDB9 0%, #1634FF 100%);
+        }
+        
+        .status-pause {
+            background: linear-gradient(135deg, #FF8400 0%, #FF00D7 100%);
+        }
+        
+        .status-offline {
+            background: linear-gradient(135deg, #FF00D7 0%, #791DD0 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4">
+    <!-- Header -->
+    <header class="mb-6">
+        <div class="dashboard-card rounded-2xl p-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas fa-headset text-3xl text-blue-600 mr-3" style="color: #1634FF;"></i>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">Dashboard de Atendimento</h1>
+                        <p class="text-gray-600">Métricas em tempo real - VeloNet</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                        <span class="text-sm text-gray-600">Online</span>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        <i class="fas fa-clock mr-1"></i>
+                        <span id="currentTime"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Atendimentos do Dia -->
+    <section class="mb-8">
+        <h2 class="text-xl font-bold text-white mb-4 flex items-center">
+            <i class="fas fa-calendar-day mr-2"></i>
+            Atendimentos do Dia
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <!-- Total de Telefone -->
+            <div class="metric-card rounded-2xl p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-white text-opacity-80 text-sm">Telefone</p>
+                        <p class="text-3xl font-bold">47</p>
+                        <p class="text-white text-opacity-60 text-xs">+12% vs ontem</p>
+                    </div>
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-phone text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total de Tickets -->
+            <div class="metric-card rounded-2xl p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-white text-opacity-80 text-sm">Tickets</p>
+                        <p class="text-3xl font-bold">23</p>
+                        <p class="text-white text-opacity-60 text-xs">+8% vs ontem</p>
+                    </div>
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-ticket-alt text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Satisfação -->
+            <div class="metric-card rounded-2xl p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-white text-opacity-80 text-sm">Satisfação</p>
+                        <p class="text-3xl font-bold">4.8</p>
+                        <p class="text-white text-opacity-60 text-xs">⭐ ⭐ ⭐ ⭐ ⭐</p>
+                    </div>
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-star text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TMA -->
+            <div class="metric-card rounded-2xl p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-white text-opacity-80 text-sm">TMA</p>
+                        <p class="text-3xl font-bold">3:45</p>
+                        <p class="text-white text-opacity-60 text-xs">min/atendimento</p>
+                    </div>
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-stopwatch text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tempo de Pausa Acumulado -->
+        <div class="dashboard-card rounded-2xl p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-pause-circle mr-2"></i>
+                Tempo de Pausa Acumulado
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-orange-100 rounded-lg p-4" style="background-color: rgba(255, 132, 0, 0.1); border-left: 4px solid #FF8400;">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-medium" style="color: #FF8400;">Almoço</p>
+                            <p class="text-2xl font-bold" style="color: #FF8400;">1:00</p>
+                        </div>
+                        <i class="fas fa-utensils text-2xl" style="color: #FF8400;"></i>
+                    </div>
+                </div>
+                <div class="bg-blue-100 rounded-lg p-4" style="background-color: rgba(29, 253, 185, 0.1); border-left: 4px solid #1DFDB9;">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-medium" style="color: #1DFDB9;">Treinamento</p>
+                            <p class="text-2xl font-bold" style="color: #1DFDB9;">0:30</p>
+                        </div>
+                        <i class="fas fa-graduation-cap text-2xl" style="color: #1DFDB9;"></i>
+                    </div>
+                </div>
+                <div class="bg-green-100 rounded-lg p-4" style="background-color: rgba(255, 0, 215, 0.1); border-left: 4px solid #FF00D7;">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-medium" style="color: #FF00D7;">Feedback</p>
+                            <p class="text-2xl font-bold" style="color: #FF00D7;">0:15</p>
+                        </div>
+                        <i class="fas fa-comments text-2xl" style="color: #FF00D7;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monitoria -->
+        <div class="dashboard-card rounded-2xl p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-eye mr-2"></i>
+                Monitoria
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <canvas id="monitoriaChart" width="400" height="200"></canvas>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span class="text-gray-700">Chamadas Gravadas</span>
+                        <span class="font-semibold text-green-600">12</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span class="text-gray-700">Avaliações Pendentes</span>
+                        <span class="font-semibold text-orange-600">3</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span class="text-gray-700">Score Médio</span>
+                        <span class="font-semibold text-blue-600">8.5/10</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Atendimentos do Mês -->
+    <section class="mb-8">
+        <h2 class="text-xl font-bold text-white mb-4 flex items-center">
+            <i class="fas fa-calendar-alt mr-2"></i>
+            Atendimentos do Mês
+        </h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Resumo Mensal -->
+            <div class="dashboard-card rounded-2xl p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Resumo Mensal</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-600">Total de Atendimentos</span>
+                        <span class="font-bold text-2xl" style="color: #1634FF;">1,247</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-600">Satisfação Média</span>
+                        <span class="font-bold text-2xl" style="color: #1DFDB9;">4.7</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-600">TMA Médio</span>
+                        <span class="font-bold text-2xl" style="color: #791DD0;">4:12</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Posição Comparativa -->
+            <div class="dashboard-card rounded-2xl p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Minha Posição</h3>
+                <div class="text-center">
+                                    <div class="w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, #1634FF 0%, #791DD0 100%);">
+                    <span class="text-white text-3xl font-bold">3º</span>
+                </div>
+                <p class="text-gray-600 mb-2">Você está entre os</p>
+                <p class="text-2xl font-bold" style="color: #1634FF;">Top 10%</p>
+                    <p class="text-sm text-gray-500 mt-2">dos colaboradores</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico de Desempenho -->
+        <div class="dashboard-card rounded-2xl p-6 mt-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Desempenho Semanal</h3>
+            <canvas id="desempenhoChart" width="800" height="300"></canvas>
+        </div>
+    </section>
+
+    <!-- Menu de Navegação -->
+    <nav class="fixed bottom-4 left-1/2 transform -translate-x-1/2">
+        <div class="dashboard-card rounded-full p-2 shadow-lg">
+            <div class="flex space-x-2">
+                <a href="index.html" class="w-12 h-12 text-white rounded-full flex items-center justify-center transition-colors" style="background: linear-gradient(135deg, #1634FF 0%, #791DD0 100%);">
+                    <i class="fas fa-home"></i>
+                </a>
+                <a href="menu_principal.html" class="w-12 h-12 text-white rounded-full flex items-center justify-center transition-colors" style="background: linear-gradient(135deg, #1DFDB9 0%, #1634FF 100%);">
+                    <i class="fas fa-bars"></i>
+                </a>
+                <a href="admin.html" class="w-12 h-12 text-white rounded-full flex items-center justify-center transition-colors" style="background: linear-gradient(135deg, #FF8400 0%, #FF00D7 100%);">
+                    <i class="fas fa-cog"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        // Atualizar hora atual
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('pt-BR');
+            document.getElementById('currentTime').textContent = timeString;
+        }
+        
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Gráfico de Monitoria
+        const monitoriaCtx = document.getElementById('monitoriaChart').getContext('2d');
+        new Chart(monitoriaCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Excelente', 'Bom', 'Regular', 'Precisa Melhorar'],
+                datasets: [{
+                    data: [45, 35, 15, 5],
+                    backgroundColor: [
+                        '#10b981',
+                        '#3b82f6',
+                        '#f59e0b',
+                        '#ef4444'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Desempenho
+        const desempenhoCtx = document.getElementById('desempenhoChart').getContext('2d');
+        new Chart(desempenhoCtx, {
+            type: 'line',
+            data: {
+                labels: ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'],
+                datasets: [{
+                    label: 'Atendimentos',
+                    data: [280, 320, 290, 357],
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    tension: 0.4
+                }, {
+                    label: 'Satisfação',
+                    data: [4.5, 4.7, 4.6, 4.8],
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.4,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Atendimentos'
+                        }
+                    },
+                    y1: {
+                        position: 'right',
+                        beginAtZero: true,
+                        max: 5,
+                        title: {
+                            display: true,
+                            text: 'Satisfação'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html> 
