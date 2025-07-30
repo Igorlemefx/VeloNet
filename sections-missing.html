@@ -1,0 +1,389 @@
+<!-- Seções que devem ser adicionadas ao velonet-avancado.html -->
+
+<!-- Atendimentos Section -->
+<div id="atendimentos" class="content-section">
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-white mb-2">Atendimentos</h1>
+        <p class="text-gray-400">Gestão de atendimentos e métricas</p>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="glass-panel p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">Métricas do Dia</h3>
+            <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-400">Telefone</span>
+                    <span class="text-white font-semibold">47</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-400">Tickets</span>
+                    <span class="text-white font-semibold">23</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-400">Chat</span>
+                    <span class="text-white font-semibold">15</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-400">Email</span>
+                    <span class="text-white font-semibold">8</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-panel p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">Tempo de Pausa</h3>
+            <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-400">Almoço</span>
+                    <span class="text-white font-semibold">1:00</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-400">Treinamento</span>
+                    <span class="text-white font-semibold">0:30</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-400">Feedback</span>
+                    <span class="text-white font-semibold">0:15</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass-panel p-6 mt-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Monitoria</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="text-center">
+                <div class="text-2xl font-bold text-white mb-1">12</div>
+                <div class="text-gray-400 text-sm">Chamadas Gravadas</div>
+            </div>
+            <div class="text-center">
+                <div class="text-2xl font-bold text-white mb-1">3</div>
+                <div class="text-gray-400 text-sm">Avaliações Pendentes</div>
+            </div>
+            <div class="text-center">
+                <div class="text-2xl font-bold text-white mb-1">8.5</div>
+                <div class="text-gray-400 text-sm">Score Médio</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Notícias Section -->
+<div id="noticias" class="content-section">
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-white mb-2">Notícias</h1>
+        <p class="text-gray-400">Comunicados e notícias da empresa</p>
+    </div>
+    
+    <div class="space-y-4">
+        <div class="glass-panel p-6">
+            <div class="flex items-start justify-between">
+                <div class="flex-1">
+                    <h3 class="font-semibold text-white mb-2">Nova Política de Atendimento</h3>
+                    <p class="text-gray-400 text-sm mb-3">Implementamos novas diretrizes para melhorar a qualidade do atendimento ao cliente.</p>
+                    <div class="flex items-center text-xs text-gray-500">
+                        <i class="fas fa-calendar mr-1"></i>
+                        <span>15 de Janeiro, 2025</span>
+                        <i class="fas fa-user ml-4 mr-1"></i>
+                        <span>RH</span>
+                    </div>
+                </div>
+                <span class="bg-blue-500 bg-opacity-20 text-blue-400 text-xs px-2 py-1 rounded-full">Importante</span>
+            </div>
+            <div class="mt-4 flex space-x-2">
+                <button class="reaction-btn" onclick="reactToNews(1, 'like')">
+                    <i class="fas fa-thumbs-up mr-1"></i>Like
+                </button>
+                <button class="reaction-btn" onclick="reactToNews(1, 'love')">
+                    <i class="fas fa-heart mr-1"></i>Love
+                </button>
+                <button class="reaction-btn" onclick="reactToNews(1, 'helpful')">
+                    <i class="fas fa-check mr-1"></i>Helpful
+                </button>
+                <button class="btn-primary text-xs px-3 py-1" onclick="markAsRead(1)">
+                    <i class="fas fa-check-double mr-1"></i>Marcar como Lida
+                </button>
+            </div>
+        </div>
+
+        <div class="glass-panel p-6">
+            <div class="flex items-start justify-between">
+                <div class="flex-1">
+                    <h3 class="font-semibold text-white mb-2">Treinamento de Produtos</h3>
+                    <p class="text-gray-400 text-sm mb-3">Novo módulo de treinamento sobre produtos disponível na plataforma.</p>
+                    <div class="flex items-center text-xs text-gray-500">
+                        <i class="fas fa-calendar mr-1"></i>
+                        <span>14 de Janeiro, 2025</span>
+                        <i class="fas fa-user ml-4 mr-1"></i>
+                        <span>Treinamentos</span>
+                    </div>
+                </div>
+                <span class="bg-green-500 bg-opacity-20 text-green-400 text-xs px-2 py-1 rounded-full">Novo</span>
+            </div>
+            <div class="mt-4 flex space-x-2">
+                <button class="reaction-btn" onclick="reactToNews(2, 'like')">
+                    <i class="fas fa-thumbs-up mr-1"></i>Like
+                </button>
+                <button class="reaction-btn" onclick="reactToNews(2, 'love')">
+                    <i class="fas fa-heart mr-1"></i>Love
+                </button>
+                <button class="reaction-btn" onclick="reactToNews(2, 'helpful')">
+                    <i class="fas fa-check mr-1"></i>Helpful
+                </button>
+                <button class="btn-primary text-xs px-3 py-1" onclick="markAsRead(2)">
+                    <i class="fas fa-check-double mr-1"></i>Marcar como Lida
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Processos Section -->
+<div id="processos" class="content-section">
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-white mb-2">Processos</h1>
+        <p class="text-gray-400">Procedimentos e processos da empresa</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass-panel p-6">
+            <h3 class="font-semibold text-white mb-2">Processo de Atendimento</h3>
+            <p class="text-gray-400 text-sm mb-3">Fluxo completo do atendimento ao cliente</p>
+            <button class="btn-primary px-4 py-2 text-sm" onclick="openProcess('atendimento')">
+                Ver Processo
+            </button>
+        </div>
+
+        <div class="glass-panel p-6">
+            <h3 class="font-semibold text-white mb-2">Escalação de Problemas</h3>
+            <p class="text-gray-400 text-sm mb-3">Como escalar problemas complexos</p>
+            <button class="btn-primary px-4 py-2 text-sm" onclick="openProcess('escalacao')">
+                Ver Processo
+            </button>
+        </div>
+
+        <div class="glass-panel p-6">
+            <h3 class="font-semibold text-white mb-2">Gestão de Qualidade</h3>
+            <p class="text-gray-400 text-sm mb-3">Controle de qualidade do atendimento</p>
+            <button class="btn-primary px-4 py-2 text-sm" onclick="openProcess('qualidade')">
+                Ver Processo
+            </button>
+        </div>
+
+        <div class="glass-panel p-6">
+            <h3 class="font-semibold text-white mb-2">Procedimentos de Emergência</h3>
+            <p class="text-gray-400 text-sm mb-3">Protocolos para situações críticas</p>
+            <button class="btn-primary px-4 py-2 text-sm" onclick="openProcess('emergencia')">
+                Ver Processo
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Treinamentos Section -->
+<div id="treinamentos" class="content-section">
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-white mb-2">Treinamentos</h1>
+        <p class="text-gray-400">Módulos educativos e certificações</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="glass-panel p-6">
+            <h3 class="text-lg font-semibold text-white mb-2">Atendimento ao Cliente</h3>
+            <p class="text-gray-400 text-sm mb-4">Aprenda as melhores práticas de atendimento</p>
+            <button class="btn-primary w-full py-2" onclick="startTraining('atendimento')">
+                Iniciar Curso
+            </button>
+        </div>
+
+        <div class="glass-panel p-6">
+            <h3 class="text-lg font-semibold text-white mb-2">Produtos e Serviços</h3>
+            <p class="text-gray-400 text-sm mb-4">Conheça todos os produtos da empresa</p>
+            <button class="btn-primary w-full py-2" onclick="startTraining('produtos')">
+                Iniciar Curso
+            </button>
+        </div>
+
+        <div class="glass-panel p-6">
+            <h3 class="text-lg font-semibold text-white mb-2">Sistema VeloNet</h3>
+            <p class="text-gray-400 text-sm mb-4">Tutorial completo do sistema</p>
+            <button class="btn-primary w-full py-2" onclick="startTraining('sistema')">
+                Iniciar Curso
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Ponto Section -->
+<div id="ponto" class="content-section">
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-white mb-2">Controle de Ponto</h1>
+        <p class="text-gray-400">Sistema de ponto eletrônico</p>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="glass-panel p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">Status Atual</h3>
+            <div class="text-center">
+                <div class="w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-4 status-online">
+                    <span class="text-white text-2xl font-bold">Presente</span>
+                </div>
+                <p class="text-gray-400">Entrada: 08:00</p>
+            </div>
+        </div>
+
+        <div class="glass-panel p-6">
+            <h3 class="text-lg font-semibold text-white mb-4">Horas Trabalhadas</h3>
+            <div class="space-y-3">
+                <div class="flex justify-between">
+                    <span class="text-gray-400">Hoje</span>
+                    <span class="text-white font-semibold">6h 45min</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-400">Esta Semana</span>
+                    <span class="text-white font-semibold">32h 15min</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-400">Este Mês</span>
+                    <span class="text-white font-semibold">145h 30min</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass-panel p-6 mt-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Controles</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <button class="btn-primary py-3" onclick="registerEntry()">
+                <i class="fas fa-sign-in-alt mr-2"></i>Registrar Entrada
+            </button>
+            <button class="btn-primary py-3" onclick="registerExit()">
+                <i class="fas fa-sign-out-alt mr-2"></i>Registrar Saída
+            </button>
+            <button class="btn-primary py-3" onclick="startPause()">
+                <i class="fas fa-pause mr-2"></i>Iniciar Pausa
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Base de Conhecimento Section -->
+<div id="base" class="content-section">
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-white mb-2">Base de Conhecimento</h1>
+        <p class="text-gray-400">Documentação e procedimentos</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="glass-panel p-6">
+            <h3 class="font-semibold text-white mb-2">Manual de Atendimento</h3>
+            <p class="text-gray-400 text-sm mb-3">Guia completo para atendimento ao cliente</p>
+            <button class="btn-primary px-4 py-2 text-sm" onclick="openDocument('manual')">
+                Acessar
+            </button>
+        </div>
+
+        <div class="glass-panel p-6">
+            <h3 class="font-semibold text-white mb-2">Procedimentos Operacionais</h3>
+            <p class="text-gray-400 text-sm mb-3">Procedimentos padrão da empresa</p>
+            <button class="btn-primary px-4 py-2 text-sm" onclick="openDocument('procedimentos')">
+                Acessar
+            </button>
+        </div>
+
+        <div class="glass-panel p-6">
+            <h3 class="font-semibold text-white mb-2">FAQ</h3>
+            <p class="text-gray-400 text-sm mb-3">Perguntas frequentes</p>
+            <button class="btn-primary px-4 py-2 text-sm" onclick="openDocument('faq')">
+                Acessar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Mídia Section -->
+<div id="media" class="content-section">
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-white mb-2">Mídia</h1>
+        <p class="text-gray-400">Upload e organização de arquivos</p>
+    </div>
+    
+    <div class="glass-panel p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Upload de Mídia</h3>
+        <div class="media-upload" id="mediaDropZone">
+            <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+            <p class="text-gray-400 mb-2">Arraste e solte arquivos aqui</p>
+            <p class="text-gray-500 text-sm">ou</p>
+            <button class="btn-primary mt-4" onclick="selectMediaFiles()">
+                <i class="fas fa-folder-open mr-2"></i>
+                Selecionar Arquivos
+            </button>
+        </div>
+    </div>
+    
+    <div class="glass-panel p-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Arquivos Recentes</h3>
+        <div id="mediaContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Media items will be added here -->
+        </div>
+    </div>
+</div>
+
+<!-- Gemini AI Section -->
+<div id="gemini" class="content-section">
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-white mb-2">Gemini AI</h1>
+        <p class="text-gray-400">Assistente de IA integrado</p>
+    </div>
+    
+    <div class="glass-panel p-6 text-center">
+        <div class="mb-6">
+            <i class="fas fa-robot text-6xl text-blue-400 mb-4"></i>
+            <h3 class="text-2xl font-bold text-white mb-2">Gemini AI</h3>
+            <p class="text-gray-400 mb-6">Acesse o assistente de IA mais avançado do Google</p>
+        </div>
+        
+        <button class="gemini-btn text-lg px-8 py-4" onclick="openGemini()">
+            <i class="fas fa-external-link-alt mr-2"></i>
+            Abrir Gemini AI
+        </button>
+        
+        <div class="mt-6 text-sm text-gray-400">
+            <p>O Gemini AI será aberto em uma nova aba</p>
+        </div>
+    </div>
+</div>
+
+<!-- Administração Section -->
+<div id="admin" class="content-section">
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-white mb-2">Administração</h1>
+        <p class="text-gray-400">Gestão de usuários e configurações</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="glass-panel p-6">
+            <h3 class="font-semibold text-white mb-2">Gestão de Usuários</h3>
+            <p class="text-gray-400 text-sm mb-3">Criar, editar e gerenciar colaboradores</p>
+            <button class="btn-primary px-4 py-2 text-sm" onclick="openUserManagement()">
+                Acessar
+            </button>
+        </div>
+
+        <div class="glass-panel p-6">
+            <h3 class="font-semibold text-white mb-2">Relatórios</h3>
+            <p class="text-gray-400 text-sm mb-3">Relatórios de desempenho e métricas</p>
+            <button class="btn-primary px-4 py-2 text-sm" onclick="openReports()">
+                Acessar
+            </button>
+        </div>
+
+        <div class="glass-panel p-6">
+            <h3 class="font-semibold text-white mb-2">Configurações</h3>
+            <p class="text-gray-400 text-sm mb-3">Configurações do sistema</p>
+            <button class="btn-primary px-4 py-2 text-sm" onclick="openSettings()">
+                Acessar
+            </button>
+        </div>
+    </div>
+</div> 

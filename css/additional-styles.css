@@ -1,0 +1,390 @@
+/* Estilos adicionais para as seções do VeloNet */
+
+/* Animações */
+@keyframes fadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.9); }
+}
+
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Estilos para seções específicas */
+.content-section {
+    animation: slideInUp 0.3s ease-out;
+}
+
+/* Estilos para notícias */
+.news-card {
+    transition: all 0.3s ease;
+}
+
+.news-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.news-card.read {
+    opacity: 0.6;
+    border-color: #34C759;
+}
+
+/* Estilos para reações */
+.reaction-btn {
+    transition: all 0.2s ease;
+}
+
+.reaction-btn:hover {
+    transform: scale(1.1);
+}
+
+.reaction-btn.active {
+    animation: pulse 0.3s ease;
+}
+
+/* Estilos para mídia */
+.media-item {
+    transition: all 0.3s ease;
+}
+
+.media-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.media-upload.drag-over {
+    border-color: #007AFF;
+    background: rgba(0, 122, 255, 0.1);
+    transform: scale(1.02);
+}
+
+/* Estilos para status de ponto */
+.status-online, .status-pause, .status-offline {
+    transition: all 0.3s ease;
+}
+
+.status-online:hover, .status-pause:hover, .status-offline:hover {
+    transform: scale(1.05);
+}
+
+/* Estilos para botões de processo */
+.process-btn {
+    transition: all 0.3s ease;
+}
+
+.process-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+}
+
+/* Estilos para treinamentos */
+.training-card {
+    transition: all 0.3s ease;
+}
+
+.training-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para documentos */
+.document-card {
+    transition: all 0.3s ease;
+}
+
+.document-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 122, 255, 0.2);
+}
+
+/* Estilos para admin */
+.admin-card {
+    transition: all 0.3s ease;
+}
+
+.admin-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 122, 255, 0.2);
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .content-section {
+        padding: 1rem;
+    }
+    
+    .glass-panel {
+        margin-bottom: 1rem;
+    }
+    
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Estilos para loading */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #007AFF;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Estilos para tooltips */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Estilos para badges */
+.badge {
+    display: inline-block;
+    padding: 0.25em 0.6em;
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.375rem;
+}
+
+.badge-primary {
+    background-color: #007AFF;
+    color: white;
+}
+
+.badge-success {
+    background-color: #34C759;
+    color: white;
+}
+
+.badge-warning {
+    background-color: #FF9500;
+    color: white;
+}
+
+.badge-danger {
+    background-color: #FF3B30;
+    color: white;
+}
+
+/* Estilos para progress bars */
+.progress {
+    width: 100%;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #007AFF, #34C759);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+/* Estilos para modais */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: none;
+}
+
+.modal-backdrop.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-dialog {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: slideInUp 0.3s ease;
+}
+
+/* Estilos para formulários */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+/* Estilos para tabelas */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table th {
+    font-weight: 600;
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+}
+
+.table tbody tr:hover {
+    background: var(--bg-secondary);
+}
+
+/* Estilos para cards */
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.card-body {
+    color: var(--text-secondary);
+}
+
+/* Estilos para listas */
+.list-group {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.list-group-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease;
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+.list-group-item:hover {
+    background: var(--bg-secondary);
+}
+
+/* Estilos para alertas */
+.alert {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+}
+
+.alert-success {
+    background: rgba(52, 199, 89, 0.1);
+    border-color: #34C759;
+    color: #34C759;
+}
+
+.alert-warning {
+    background: rgba(255, 149, 0, 0.1);
+    border-color: #FF9500;
+    color: #FF9500;
+}
+
+.alert-danger {
+    background: rgba(255, 59, 48, 0.1);
+    border-color: #FF3B30;
+    color: #FF3B30;
+}
+
+.alert-info {
+    background: rgba(0, 122, 255, 0.1);
+    border-color: #007AFF;
+    color: #007AFF;
+} 
