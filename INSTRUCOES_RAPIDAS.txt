@@ -1,0 +1,39 @@
+🚀 VELONET - INSTRUÇÕES RÁPIDAS DE COMPARTILHAMENTO
+====================================================
+
+📁 ARQUIVO PRINCIPAL: velonet-melhorado.html (359KB)
+
+🎯 COMO COMPARTILHAR:
+1. Copie o arquivo velonet-melhorado.html
+2. Envie por email, WhatsApp, Google Drive, etc.
+3. A pessoa abre o arquivo no navegador
+
+🔐 CREDENCIAIS DE ACESSO:
+Email: admin@velotax.com.br
+Senha: admin123
+
+📱 FUNCIONALIDADES:
+✅ Dashboard Executivo
+✅ VeloNews (Notícias)
+✅ Processos
+✅ VeloAcademy (Treinamentos)
+✅ VeloPonto (Controle de Ponto)
+✅ VeloChat (Chat Interno)
+✅ Gemini AI (Assistente)
+✅ Administração
+✅ Calendário
+✅ Base de Conhecimento
+✅ Mídia
+
+🌐 COMPARTILHAMENTO ONLINE (OPCIONAL):
+- GitHub Pages: https://seuusuario.github.io/intranet-velotax/
+- Netlify: Arraste o arquivo para netlify.com
+- Vercel: Conecte com GitHub
+
+📞 SUPORTE:
+Email: suporte@velotax.com.br
+WhatsApp: (11) 99999-9999
+
+✅ O SISTEMA FUNCIONA OFFLINE!
+✅ ARQUIVO ÚNICO - SEM INSTALAÇÃO!
+✅ RESPONSIVO - FUNCIONA EM CELULAR! 

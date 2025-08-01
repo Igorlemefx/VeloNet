@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeloNet - Portal Corporativo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background: #000000;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+        }
+        
+        .sidebar {
+            background: #1c1c1e;
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .menu-item {
+            background: transparent;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .menu-item:hover {
+            background: rgba(0, 122, 255, 0.1);
+            color: #007AFF;
+        }
+        
+        .menu-item.active {
+            background: rgba(0, 122, 255, 0.2);
+            color: #007AFF;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #007AFF 0%, #0056CC 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 12px 24px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
+        }
+        
+        .btn-google {
+            background: #ffffff;
+            color: #333333;
+            border: 1px solid #dadce0;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn-google:hover {
+            background: #f8f9fa;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .input-field {
+            background: #1c1c1e;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #ffffff;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #007AFF;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+        
+        .login-container {
+            background: #1c1c1e;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #1c1c1e;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            z-index: 1000;
+            animation: slideInRight 0.3s ease;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .reaction-btn {
+            background: #1c1c1e;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 4px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .reaction-btn:hover {
+            background: #007AFF;
+            color: white;
+        }
+        
+        .reaction-btn.active {
+            background: #007AFF;
+            color: white;
+        }
+        
+        .media-upload {
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .media-upload:hover {
+            border-color: #007AFF;
+            background: rgba(0, 122, 255, 0.05);
+        }
+        
+        .gemini-btn {
+            background: linear-gradient(135deg, #4285f4 0%, #34a853 50%, #fbbc05 75%, #ea4335 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 12px 24px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .gemini-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(66, 133, 244, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="login-container p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-building text-white text-3xl"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-white mb-2">VeloNet</h1>
+                <p class="text-gray-400">Portal Corporativo</p>
+            </div>
+            
+            <!-- Login Options -->
+            <div class="space-y-4">
+                <!-- Google Login Button -->
+                <button onclick="loginWithGoogle()" class="btn-google w-full py-3 px-4 rounded-lg flex items-center justify-center font-medium">
+                    <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" class="w-5 h-5 mr-3">
+                    <span>Continuar com Google</span>
+                </button>
+                
+                <!-- Divider -->
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-600"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-gray-900 text-gray-400">ou</span>
+                    </div>
+                </div>
+                
+                <!-- Demo Login -->
+                <button onclick="loginWithDemo()" class="btn-primary w-full py-3 font-medium">
+                    <i class="fas fa-rocket mr-2"></i>
+                    Acesso Demo
+                </button>
+                
+                <!-- Manual Login Form -->
+                <div class="mt-4">
+                    <button onclick="toggleManualLogin()" class="text-blue-400 hover:text-blue-300 text-sm">
+                        <i class="fas fa-key mr-1"></i>
+                        Login Manual
+                    </button>
+                </div>
+                
+                <!-- Manual Login Form (Hidden by default) -->
+                <div id="manualLoginForm" class="hidden space-y-4 mt-4">
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-2">E-mail</label>
+                        <input type="email" id="manualEmail" class="input-field w-full px-4 py-3" placeholder="seu.email@velotax.com.br">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-2">Senha</label>
+                        <input type="password" id="manualPassword" class="input-field w-full px-4 py-3" placeholder="Sua senha">
+                    </div>
+                    
+                    <button onclick="loginWithManual()" class="btn-primary w-full py-3 font-medium">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Entrar
+                    </button>
+                </div>
+            </div>
+            
+            <div class="text-center text-sm text-gray-400 mt-6">
+                <p>Apenas e-mails @velotax.com.br</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="hidden">
+        <!-- Sidebar -->
+        <div class="fixed inset-y-0 left-0 w-64 sidebar z-40">
+            <div class="flex flex-col h-full">
+                <!-- Logo -->
+                <div class="p-6 border-b border-gray-800">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-building text-white"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-semibold text-white">VeloNet</h1>
+                            <p class="text-xs text-gray-400">Portal Avançado</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Menu -->
+                <nav class="flex-1 p-4 space-y-2">
+                    <button onclick="showSection('dashboard')" class="menu-item active w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-chart-line mr-3"></i>
+                        <span>Dashboard</span>
+                    </button>
+                    
+                    <button onclick="showSection('atendimentos')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-headset mr-3"></i>
+                        <span>Atendimentos</span>
+                    </button>
+                    
+                    <button onclick="showSection('noticias')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-newspaper mr-3"></i>
+                        <span>Notícias</span>
+                    </button>
+                    
+                    <button onclick="showSection('processos')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-cogs mr-3"></i>
+                        <span>Processos</span>
+                    </button>
+                    
+                    <button onclick="showSection('treinamentos')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-graduation-cap mr-3"></i>
+                        <span>Treinamentos</span>
+                    </button>
+                    
+                    <button onclick="showSection('ponto')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-clock mr-3"></i>
+                        <span>Ponto</span>
+                    </button>
+                    
+                    <button onclick="showSection('perfil')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-user mr-3"></i>
+                        <span>Meu Perfil</span>
+                    </button>
+                </nav>
+                
+                <!-- User Info -->
+                <div class="p-4 border-t border-gray-800">
+                    <div class="flex items-center">
+                        <img id="userAvatar" src="https://via.placeholder.com/40x40" alt="Avatar" class="w-10 h-10 rounded-full mr-3">
+                        <div class="flex-1">
+                            <p id="userName" class="text-sm font-medium text-white">Usuário</p>
+                            <p id="userEmail" class="text-xs text-gray-400">usuario@velotax.com.br</p>
+                        </div>
+                        <button onclick="logout()" class="text-gray-400 hover:text-red-400">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="ml-64 p-8">
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="content-section active">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Dashboard</h1>
+                    <p class="text-gray-400">Visão geral do desempenho</p>
+                </div>
+                
+                <!-- Metrics Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="glass-panel p-6">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-blue-500 bg-opacity-20 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-phone text-blue-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">Telefone</p>
+                                <p class="text-2xl font-bold text-white">47</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-panel p-6">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-green-500 bg-opacity-20 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-ticket-alt text-green-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">Tickets</p>
+                                <p class="text-2xl font-bold text-white">23</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-panel p-6">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-yellow-500 bg-opacity-20 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-star text-yellow-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">Satisfação</p>
+                                <p class="text-2xl font-bold text-white">8.5</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-panel p-6">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-purple-500 bg-opacity-20 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-clock text-purple-400"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 text-sm">TMA</p>
+                                <p class="text-2xl font-bold text-white">4:30</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Desempenho Semanal</h3>
+                        <canvas id="desempenhoChart" height="300"></canvas>
+                    </div>
+                    
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Distribuição de Atendimentos</h3>
+                        <canvas id="distribuicaoChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Atendimentos Section -->
+            <div id="atendimentos" class="content-section">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Atendimentos</h1>
+                    <p class="text-gray-400">Gestão de atendimentos e métricas</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Métricas do Dia</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Telefone</span>
+                                <span class="text-white font-semibold">47</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Tickets</span>
+                                <span class="text-white font-semibold">23</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Chat</span>
+                                <span class="text-white font-semibold">15</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Email</span>
+                                <span class="text-white font-semibold">8</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Tempo de Pausa</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Almoço</span>
+                                <span class="text-white font-semibold">1:00</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Treinamento</span>
+                                <span class="text-white font-semibold">0:30</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400">Feedback</span>
+                                <span class="text-white font-semibold">0:15</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notícias Section -->
+            <div id="noticias" class="content-section">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Notícias</h1>
+                    <p class="text-gray-400">Comunicados e notícias da empresa</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="glass-panel p-6">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-white mb-2">Nova Política de Atendimento</h3>
+                                <p class="text-gray-400 text-sm mb-3">Implementamos novas diretrizes para melhorar a qualidade do atendimento ao cliente.</p>
+                                <div class="flex items-center text-xs text-gray-500">
+                                    <i class="fas fa-calendar mr-1"></i>
+                                    <span>15 de Janeiro, 2025</span>
+                                    <i class="fas fa-user ml-4 mr-1"></i>
+                                    <span>RH</span>
+                                </div>
+                            </div>
+                            <span class="bg-blue-500 bg-opacity-20 text-blue-400 text-xs px-2 py-1 rounded-full">Importante</span>
+                        </div>
+                        <div class="mt-4 flex space-x-2">
+                            <button class="reaction-btn" onclick="reactToNews(1, 'like')">
+                                <i class="fas fa-thumbs-up mr-1"></i>Like
+                            </button>
+                            <button class="reaction-btn" onclick="reactToNews(1, 'love')">
+                                <i class="fas fa-heart mr-1"></i>Love
+                            </button>
+                            <button class="reaction-btn" onclick="reactToNews(1, 'helpful')">
+                                <i class="fas fa-check mr-1"></i>Helpful
+                            </button>
+                            <button class="btn-primary text-xs px-3 py-1" onclick="markAsRead(1)">
+                                <i class="fas fa-check-double mr-1"></i>Marcar como Lida
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-white mb-2">Treinamento de Produtos</h3>
+                                <p class="text-gray-400 text-sm mb-3">Novo módulo de treinamento sobre produtos disponível na plataforma.</p>
+                                <div class="flex items-center text-xs text-gray-500">
+                                    <i class="fas fa-calendar mr-1"></i>
+                                    <span>14 de Janeiro, 2025</span>
+                                    <i class="fas fa-user ml-4 mr-1"></i>
+                                    <span>Treinamentos</span>
+                                </div>
+                            </div>
+                            <span class="bg-green-500 bg-opacity-20 text-green-400 text-xs px-2 py-1 rounded-full">Novo</span>
+                        </div>
+                        <div class="mt-4 flex space-x-2">
+                            <button class="reaction-btn" onclick="reactToNews(2, 'like')">
+                                <i class="fas fa-thumbs-up mr-1"></i>Like
+                            </button>
+                            <button class="reaction-btn" onclick="reactToNews(2, 'love')">
+                                <i class="fas fa-heart mr-1"></i>Love
+                            </button>
+                            <button class="reaction-btn" onclick="reactToNews(2, 'helpful')">
+                                <i class="fas fa-check mr-1"></i>Helpful
+                            </button>
+                            <button class="btn-primary text-xs px-3 py-1" onclick="markAsRead(2)">
+                                <i class="fas fa-check-double mr-1"></i>Marcar como Lida
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Processos Section -->
+            <div id="processos" class="content-section">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Processos</h1>
+                    <p class="text-gray-400">Procedimentos e processos da empresa</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass-panel p-6">
+                        <h3 class="font-semibold text-white mb-2">Processo de Atendimento</h3>
+                        <p class="text-gray-400 text-sm mb-3">Fluxo completo do atendimento ao cliente</p>
+                        <button class="btn-primary px-4 py-2 text-sm" onclick="openProcess('atendimento')">
+                            Ver Processo
+                        </button>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="font-semibold text-white mb-2">Escalação de Problemas</h3>
+                        <p class="text-gray-400 text-sm mb-3">Como escalar problemas complexos</p>
+                        <button class="btn-primary px-4 py-2 text-sm" onclick="openProcess('escalacao')">
+                            Ver Processo
+                        </button>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="font-semibold text-white mb-2">Gestão de Qualidade</h3>
+                        <p class="text-gray-400 text-sm mb-3">Controle de qualidade do atendimento</p>
+                        <button class="btn-primary px-4 py-2 text-sm" onclick="openProcess('qualidade')">
+                            Ver Processo
+                        </button>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="font-semibold text-white mb-2">Procedimentos de Emergência</h3>
+                        <p class="text-gray-400 text-sm mb-3">Protocolos para situações críticas</p>
+                        <button class="btn-primary px-4 py-2 text-sm" onclick="openProcess('emergencia')">
+                            Ver Processo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Treinamentos Section -->
+            <div id="treinamentos" class="content-section">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Treinamentos</h1>
+                    <p class="text-gray-400">Módulos educativos e certificações</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-2">Atendimento ao Cliente</h3>
+                        <p class="text-gray-400 text-sm mb-4">Aprenda as melhores práticas de atendimento</p>
+                        <button class="btn-primary w-full py-2" onclick="startTraining('atendimento')">
+                            Iniciar Curso
+                        </button>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-2">Produtos e Serviços</h3>
+                        <p class="text-gray-400 text-sm mb-4">Conheça todos os produtos da empresa</p>
+                        <button class="btn-primary w-full py-2" onclick="startTraining('produtos')">
+                            Iniciar Curso
+                        </button>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-2">Sistema VeloNet</h3>
+                        <p class="text-gray-400 text-sm mb-4">Tutorial completo do sistema</p>
+                        <button class="btn-primary w-full py-2" onclick="startTraining('sistema')">
+                            Iniciar Curso
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ponto Section -->
+            <div id="ponto" class="content-section">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Controle de Ponto</h1>
+                    <p class="text-gray-400">Sistema de ponto eletrônico</p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Status Atual</h3>
+                        <div class="text-center">
+                            <div class="w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-4" style="background: linear-gradient(135deg, #34C759 0%, #30D158 100%);">
+                                <span class="text-white text-2xl font-bold">Presente</span>
+                            </div>
+                            <p class="text-gray-400">Entrada: 08:00</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Horas Trabalhadas</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Hoje</span>
+                                <span class="text-white font-semibold">6h 45min</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Esta Semana</span>
+                                <span class="text-white font-semibold">32h 15min</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Este Mês</span>
+                                <span class="text-white font-semibold">145h 30min</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 mt-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">Controles</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button class="btn-primary py-3" onclick="registerEntry()">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Registrar Entrada
+                        </button>
+                        <button class="btn-primary py-3" onclick="registerExit()">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Registrar Saída
+                        </button>
+                        <button class="btn-primary py-3" onclick="startPause()">
+                            <i class="fas fa-pause mr-2"></i>Iniciar Pausa
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Perfil Section -->
+            <div id="perfil" class="content-section">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white mb-2">Meu Perfil</h1>
+                    <p class="text-gray-400">Gerencie suas informações pessoais</p>
+                </div>
+                
+                <div class="glass-panel p-6">
+                    <div class="text-center mb-6">
+                        <img id="profileAvatar" src="https://via.placeholder.com/120x120" alt="Avatar" class="w-32 h-32 rounded-full mx-auto mb-4">
+                        <h2 id="profileName" class="text-2xl font-bold text-white mb-2">Usuário</h2>
+                        <p class="text-gray-400">Colaborador VeloTax</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-lg font-semibold text-white mb-4">Informações Pessoais</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">Nome Completo</label>
+                                    <input type="text" class="input-field w-full" value="Usuário Demo">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">E-mail</label>
+                                    <input type="email" class="input-field w-full" value="demo@velotax.com.br">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">Departamento</label>
+                                    <input type="text" class="input-field w-full" value="Atendimento">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-semibold text-white mb-4">Preferências</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">Tema</label>
+                                    <select class="input-field w-full">
+                                        <option>Escuro</option>
+                                        <option>Claro</option>
+                                        <option>Azul</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-300 text-sm font-medium mb-2">Idioma</label>
+                                    <select class="input-field w-full">
+                                        <option>Português</option>
+                                        <option>English</option>
+                                    </select>
+                                </div>
+                                <button class="btn-primary w-full" onclick="changeAvatar()">
+                                    <i class="fas fa-camera mr-2"></i>Alterar Foto
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Login Functions
+        function loginWithGoogle() {
+            const userInfo = {
+                name: 'Usuário Google',
+                email: 'usuario.google@velotax.com.br',
+                picture: 'https://via.placeholder.com/40x40',
+                loginMethod: 'google'
+            };
+            
+            performLogin(userInfo);
+            showNotification('Login com Google realizado com sucesso!', 'success');
+        }
+
+        function loginWithDemo() {
+            const userInfo = {
+                name: 'Demo User',
+                email: 'demo@velotax.com.br',
+                picture: 'https://via.placeholder.com/40x40',
+                loginMethod: 'demo'
+            };
+            
+            performLogin(userInfo);
+            showNotification('Login demo realizado com sucesso!', 'success');
+        }
+
+        function loginWithManual() {
+            const email = document.getElementById('manualEmail').value;
+            const password = document.getElementById('manualPassword').value;
+            
+            if (!email || !password) {
+                showNotification('Preencha todos os campos!', 'error');
+                return;
+            }
+            
+            if (!email.endsWith('@velotax.com.br')) {
+                showNotification('Apenas e-mails @velotax.com.br são permitidos.', 'error');
+                return;
+            }
+            
+            const userInfo = {
+                name: email.split('@')[0],
+                email: email,
+                picture: 'https://via.placeholder.com/40x40',
+                loginMethod: 'manual'
+            };
+            
+            performLogin(userInfo);
+            showNotification('Login manual realizado com sucesso!', 'success');
+        }
+
+        function performLogin(userInfo) {
+            localStorage.setItem('velonet-user', JSON.stringify(userInfo));
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainApp').classList.remove('hidden');
+            updateUserInfo();
+        }
+
+        function toggleManualLogin() {
+            const form = document.getElementById('manualLoginForm');
+            form.classList.toggle('hidden');
+        }
+
+        // Notifications
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            
+            let icon, color;
+            switch(type) {
+                case 'error':
+                    icon = 'exclamation-triangle';
+                    color = '#ff3b30';
+                    break;
+                case 'success':
+                    icon = 'check-circle';
+                    color = '#34c759';
+                    break;
+                case 'warning':
+                    icon = 'exclamation-circle';
+                    color = '#ff9500';
+                    break;
+                default:
+                    icon = 'info-circle';
+                    color = '#007AFF';
+            }
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center;">
+                    <i class="fas fa-${icon}" style="margin-right: 8px; color: ${color};"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Adicionar animação de entrada
+            notification.style.animation = 'slideInRight 0.3s ease';
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Profile Management
+        function updateUserInfo() {
+            const userInfo = JSON.parse(localStorage.getItem('velonet-user'));
+            if (userInfo) {
+                const userName = document.getElementById('userName');
+                const userEmail = document.getElementById('userEmail');
+                const userAvatar = document.getElementById('userAvatar');
+                const profileName = document.getElementById('profileName');
+                const profileAvatar = document.getElementById('profileAvatar');
+                
+                if (userName) userName.textContent = userInfo.name;
+                if (userEmail) userEmail.textContent = userInfo.email;
+                if (userAvatar) userAvatar.src = userInfo.picture;
+                if (profileName) profileName.textContent = userInfo.name;
+                if (profileAvatar) profileAvatar.src = userInfo.picture;
+            }
+        }
+
+        // Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all menu items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+            
+            // Add active class to clicked menu item
+            const clickedItem = event.target.closest('.menu-item');
+            if (clickedItem) {
+                clickedItem.classList.add('active');
+            }
+        }
+
+        function logout() {
+            if (confirm('Deseja realmente sair do sistema?')) {
+                localStorage.removeItem('velonet-user');
+                document.getElementById('mainApp').classList.add('hidden');
+                document.getElementById('loginScreen').classList.remove('hidden');
+                showNotification('Logout realizado com sucesso!', 'success');
+            }
+        }
+
+        // Section Functions
+        function reactToNews(newsId, reaction) {
+            showNotification(`Reação "${reaction}" adicionada à notícia!`, 'success');
+            
+            // Adicionar efeito visual ao botão
+            const button = event.target.closest('.reaction-btn');
+            if (button) {
+                button.classList.add('active');
+                setTimeout(() => button.classList.remove('active'), 1000);
+            }
+        }
+
+        function markAsRead(newsId) {
+            showNotification('Notícia marcada como lida!', 'success');
+            
+            // Marcar visualmente como lida
+            const newsCard = event.target.closest('.glass-panel');
+            if (newsCard) {
+                newsCard.style.opacity = '0.6';
+                newsCard.style.borderColor = '#34C759';
+            }
+        }
+
+        function openProcess(processType) {
+            const processes = {
+                'atendimento': 'Processo de Atendimento ao Cliente',
+                'escalacao': 'Escalação de Problemas',
+                'qualidade': 'Gestão de Qualidade',
+                'emergencia': 'Procedimentos de Emergência'
+            };
+            
+            showNotification(`Abrindo ${processes[processType]}...`, 'info');
+            
+            // Simular carregamento
+            setTimeout(() => {
+                showNotification(`${processes[processType]} carregado com sucesso!`, 'success');
+            }, 1000);
+        }
+
+        function startTraining(trainingType) {
+            const trainings = {
+                'atendimento': 'Atendimento ao Cliente',
+                'produtos': 'Produtos e Serviços',
+                'sistema': 'Sistema VeloNet'
+            };
+            
+            showNotification(`Iniciando treinamento: ${trainings[trainingType]}`, 'info');
+            
+            // Simular carregamento do treinamento
+            setTimeout(() => {
+                showNotification(`Treinamento "${trainings[trainingType]}" iniciado!`, 'success');
+            }, 1500);
+        }
+
+        function registerEntry() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            
+            showNotification(`Entrada registrada às ${time}`, 'success');
+            
+            // Atualizar status visual
+            const statusElement = document.querySelector('.w-32.h-32');
+            if (statusElement) {
+                statusElement.style.background = 'linear-gradient(135deg, #34C759 0%, #30D158 100%)';
+                statusElement.innerHTML = '<span class="text-white text-2xl font-bold">Presente</span>';
+            }
+        }
+
+        function registerExit() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            
+            showNotification(`Saída registrada às ${time}`, 'success');
+            
+            // Atualizar status visual
+            const statusElement = document.querySelector('.w-32.h-32');
+            if (statusElement) {
+                statusElement.style.background = 'linear-gradient(135deg, #FF3B30 0%, #FF453A 100%)';
+                statusElement.innerHTML = '<span class="text-white text-2xl font-bold">Ausente</span>';
+            }
+        }
+
+        function startPause() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            
+            showNotification(`Pausa iniciada às ${time}`, 'info');
+            
+            // Atualizar status visual
+            const statusElement = document.querySelector('.w-32.h-32');
+            if (statusElement) {
+                statusElement.style.background = 'linear-gradient(135deg, #FF9500 0%, #FF9F0A 100%)';
+                statusElement.innerHTML = '<span class="text-white text-2xl font-bold">Pausa</span>';
+            }
+        }
+
+        function changeAvatar() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const profileAvatar = document.getElementById('profileAvatar');
+                        const userAvatar = document.getElementById('userAvatar');
+                        if (profileAvatar) profileAvatar.src = e.target.result;
+                        if (userAvatar) userAvatar.src = e.target.result;
+                        showNotification('Foto de perfil atualizada!', 'success');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        }
+
+        // Charts
+        function initCharts() {
+            // Performance Chart
+            const desempenhoCtx = document.getElementById('desempenhoChart');
+            if (desempenhoCtx) {
+                new Chart(desempenhoCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex'],
+                        datasets: [{
+                            label: 'Atendimentos',
+                            data: [45, 52, 48, 61, 47],
+                            borderColor: '#007AFF',
+                            backgroundColor: 'rgba(0, 122, 255, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: { color: '#ffffff' }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: { color: '#ffffff' },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                            },
+                            y: {
+                                ticks: { color: '#ffffff' },
+                                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Distribution Chart
+            const distribuicaoCtx = document.getElementById('distribuicaoChart');
+            if (distribuicaoCtx) {
+                new Chart(distribuicaoCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Telefone', 'Tickets', 'Chat', 'Email'],
+                        datasets: [{
+                            data: [47, 23, 15, 8],
+                            backgroundColor: [
+                                '#007AFF',
+                                '#34C759',
+                                '#FF9500',
+                                '#FF3B30'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: '#ffffff' }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check login status
+            const userInfo = localStorage.getItem('velonet-user');
+            if (userInfo) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                updateUserInfo();
+            }
+            
+            // Initialize charts
+            initCharts();
+            
+            console.log('✅ VeloNet corrigido carregado com sucesso!');
+        });
+    </script>
+</body>
+</html> 
