@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "velonet-melhorado.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/velonet-melhorado.html"
+    }
+  ],
+  "functions": {},
+  "outputDirectory": ".",
+  "public": true
+} 
