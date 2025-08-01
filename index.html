@@ -1,9 +1,1170 @@
 <!DOCTYPE html>
+<!-- VeloNet v4.0 - Última atualização: 31/07/2025 17:00 -->
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VeloNet - Portal Corporativo Avançado</title>
+    <title>VeloNet - Portal Corporativo Avançado v4.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .glass-panel:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(0, 122, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .sidebar {
+            background: linear-gradient(145deg, #1c1c1e 0%, #2c2c2e 100%);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .menu-item {
+            background: transparent;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .menu-item:hover::before {
+            left: 100%;
+        }
+        
+        .menu-item:hover {
+            background: rgba(0, 122, 255, 0.15);
+            color: #007AFF;
+            transform: translateX(5px);
+        }
+        
+        .menu-item.active {
+            background: rgba(0, 122, 255, 0.25);
+            color: #007AFF;
+            border-left: 3px solid #007AFF;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #007AFF 0%, #0056CC 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 12px 24px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 122, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .btn-google {
+            background: #ffffff;
+            color: #333333;
+            border: 1px solid #dadce0;
+            border-radius: 12px;
+            padding: 12px 24px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn-google:hover {
+            background: #f8f9fa;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .input-field {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #ffffff;
+            padding: 12px 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #007AFF;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .login-container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 16px;
+            z-index: 1000;
+            min-width: 300px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .reaction-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 4px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .reaction-btn:hover {
+            background: #007AFF;
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .reaction-btn.active {
+            background: #007AFF;
+            color: white;
+            animation: pulse 0.5s ease;
+        }
+        
+        .metric-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 122, 255, 0.4);
+            box-shadow: 0 15px 40px rgba(0, 122, 255, 0.2);
+        }
+        
+        .status-online {
+            background: linear-gradient(135deg, #34C759 0%, #30D158 100%);
+            box-shadow: 0 0 20px rgba(52, 199, 89, 0.3);
+        }
+        
+        .status-offline {
+            background: linear-gradient(135deg, #FF3B30 0%, #FF453A 100%);
+            box-shadow: 0 0 20px rgba(255, 59, 48, 0.3);
+        }
+        
+        .status-pause {
+            background: linear-gradient(135deg, #FF9500 0%, #FF9F0A 100%);
+            box-shadow: 0 0 20px rgba(255, 149, 0, 0.3);
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #007AFF, #00C7FF);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .user-avatar {
+            border: 2px solid #007AFF;
+            transition: all 0.3s ease;
+        }
+        
+        .user-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 122, 255, 0.5);
+        }
+        
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid #007AFF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            width: 50px;
+            height: 24px;
+            background: #374151;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #007AFF;
+        }
+
+        .toggle-slider {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(26px);
+        }
+
+        /* Media Actions */
+        .media-action {
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 4px;
+            color: #9CA3AF;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .media-action:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #007AFF;
+        }
+
+        /* View Toggle */
+        .view-toggle {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 6px;
+            color: #9CA3AF;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .view-toggle.active,
+        .view-toggle:hover {
+            background: #007AFF;
+            color: white;
+        }
+
+        /* Folder Items */
+        .folder-item.active {
+            background: rgba(0, 122, 255, 0.1);
+            border: 1px solid #007AFF;
+        }
+
+        /* Chat Styles */
+        .chat-message {
+            margin-bottom: 1rem;
+        }
+
+        .chat-bubble {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 16px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .chat-message.user .chat-bubble {
+            background: #007AFF;
+            margin-left: auto;
+        }
+
+        .chat-message.assistant .chat-bubble {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .chat-container::-webkit-scrollbar-thumb {
+            background: #007AFF;
+            border-radius: 3px;
+        }
+
+        /* Quick Command Buttons */
+        .quick-command-btn {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #E5E7EB;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .quick-command-btn:hover {
+            background: rgba(0, 122, 255, 0.1);
+            border-color: #007AFF;
+            color: #007AFF;
+        }
+
+        /* Badge Styles */
+        .badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-info {
+            background: rgba(0, 122, 255, 0.2);
+            color: #007AFF;
+        }
+
+        .badge-success {
+            background: rgba(52, 199, 89, 0.2);
+            color: #34C759;
+        }
+
+        .badge-warning {
+            background: rgba(255, 149, 0, 0.2);
+            color: #FF9500;
+        }
+
+                .badge-error {
+            background: rgba(255, 59, 48, 0.2);
+            color: #FF3B30;
+        }
+
+        /* Admin Tabs */
+        .admin-tab {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .admin-tab.active {
+            border-bottom-color: #007AFF;
+        }
+
+        .admin-tab:hover {
+            color: white !important;
+        }
+
+        /* Admin Table */
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        table thead th {
+            position: sticky;
+            top: 0;
+            background: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        table tbody tr:hover {
+            transform: translateY(-1px);
+            transition: all 0.2s ease;
+        }
+
+        /* Admin Cards */
+        .glass-panel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 122, 255, 0.1);
+        }
+         
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .badge-success {
+            background: rgba(52, 199, 89, 0.2);
+            color: #34C759;
+        }
+        
+        .badge-warning {
+            background: rgba(255, 149, 0, 0.2);
+            color: #FF9500;
+        }
+        
+        .badge-error {
+            background: rgba(255, 59, 48, 0.2);
+            color: #FF3B30;
+        }
+        
+        .badge-info {
+            background: rgba(0, 122, 255, 0.2);
+            color: #007AFF;
+        }
+        
+        .scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        
+        .scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 122, 255, 0.6);
+            border-radius: 3px;
+        }
+        
+        .scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 122, 255, 0.8);
+        }
+
+        /* Mobile Responsiveness Improvements */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                position: fixed;
+                z-index: 1000;
+                height: 100vh;
+                width: 280px;
+            }
+            
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0 !important;
+                padding: 1rem;
+            }
+            
+            .glass-panel {
+                margin: 0.5rem 0;
+                padding: 1rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr !important;
+                gap: 1rem;
+            }
+            
+            .widget-panel {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 0.5rem;
+            }
+            
+            .chat-main-area {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .chat-sidebar {
+                width: 100% !important;
+                margin-right: 0 !important;
+                margin-bottom: 1rem;
+                max-height: 300px;
+                overflow-y: auto;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .widget-panel {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.875rem;
+            }
+            
+            .header-actions {
+                flex-wrap: wrap;
+                gap: 0.25rem;
+            }
+        }
+
+        /* Accessibility Improvements */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus styles for accessibility */
+        button:focus,
+        input:focus,
+        select:focus {
+            outline: 2px solid #007AFF !important;
+            outline-offset: 2px;
+        }
+
+        /* Error handling styles */
+        .error-boundary {
+            border: 2px solid #ff3b30;
+            background: rgba(255, 59, 48, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        /* Loading states */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Widget Enhanced Styles */
+        .widget-drag-over {
+            border: 2px dashed #007AFF !important;
+            background: rgba(0, 122, 255, 0.1) !important;
+            transform: scale(1.05) !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .widget-dragging {
+            opacity: 0.7 !important;
+            transform: rotate(2deg) scale(0.95) !important;
+            z-index: 1000 !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .drag-enabled {
+            cursor: move !important;
+            position: relative;
+        }
+
+        .drag-enabled:hover {
+            border: 2px solid rgba(0, 122, 255, 0.5) !important;
+        }
+
+        .widget-controls {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 8px;
+            padding: 4px;
+            z-index: 10;
+        }
+
+        .metric-card:hover .widget-actions {
+            display: block !important;
+        }
+
+        .widget-value {
+            transition: all 0.3s ease;
+        }
+
+        .metric-card {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        /* === SISTEMA DE TEMAS === */
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+        }
+
+        /* Tema Claro */
+        .theme-light {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%) !important;
+        }
+
+        .theme-light .glass-panel {
+            background: rgba(255, 255, 255, 0.25) !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-light .text-white {
+            color: #2d3748 !important;
+        }
+
+        .theme-light .text-gray-400 {
+            color: #4a5568 !important;
+        }
+
+        .theme-light .text-gray-300 {
+            color: #2d3748 !important;
+        }
+
+        .theme-light .bg-gray-800 {
+            background-color: rgba(255, 255, 255, 0.4) !important;
+        }
+
+        .theme-light .bg-gray-700 {
+            background-color: rgba(255, 255, 255, 0.3) !important;
+        }
+
+        .theme-light .border-gray-600 {
+            border-color: rgba(0, 0, 0, 0.2) !important;
+        }
+
+        /* Tema Azul */
+        .theme-blue {
+            background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%) !important;
+        }
+
+        .theme-blue .glass-panel {
+            background: rgba(27, 38, 59, 0.4) !important;
+            border: 1px solid rgba(168, 218, 220, 0.2) !important;
+        }
+
+        .theme-blue .text-gray-400 {
+            color: #a8dadc !important;
+        }
+
+        .theme-blue .text-gray-300 {
+            color: #e9ecef !important;
+        }
+
+        .theme-blue .bg-gray-800 {
+            background-color: rgba(27, 38, 59, 0.6) !important;
+        }
+
+        .theme-blue .bg-gray-700 {
+            background-color: rgba(27, 38, 59, 0.4) !important;
+        }
+
+        .theme-blue .border-gray-600 {
+            border-color: rgba(168, 218, 220, 0.3) !important;
+        }
+
+        /* Tema Escuro (padrão) */
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%);
+        }
+
+        .theme-dark {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%) !important;
+        }
+
+        /* === CORREÇÕES DE LAYOUT === */
+        .chart-container {
+            position: relative !important;
+            height: 300px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow: hidden !important;
+        }
+
+        .chart-container canvas {
+            max-width: 100% !important;
+            max-height: 100% !important;
+            width: auto !important;
+            height: auto !important;
+        }
+
+        /* Responsividade aprimorada */
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 250px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chart-container {
+                height: 200px !important;
+            }
+        }
+
+        /* Correção para containers de grid */
+        .grid {
+            display: grid !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow: hidden !important;
+        }
+
+        .grid > * {
+            min-width: 0 !important;
+            min-height: 0 !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-black">
+        <div class="text-center">
+            <div class="loading-spinner mx-auto mb-4"></div>
+            <h2 class="text-2xl font-bold text-white">Carregando VeloNet...</h2>
+            <p class="text-gray-400">Preparando sua experiência</p>
+        </div>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <div class="login-container p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <div class="w-24 h-24 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <i class="fas fa-building text-white text-4xl"></i>
+                </div>
+                <h1 class="text-4xl font-bold text-white mb-2">VeloNet</h1>
+                <p class="text-gray-400">Portal Corporativo Avançado</p>
+                <div class="mt-4 text-xs text-gray-500">
+                    <i class="fas fa-shield-alt mr-1"></i>
+                    Sistema Seguro e Confiável
+                </div>
+            </div>
+            
+            <!-- Login Options -->
+            <div class="space-y-4">
+                <!-- Google Login Button -->
+                <button onclick="loginWithGoogle()" class="btn-google w-full py-4 px-4 rounded-lg flex items-center justify-center font-medium">
+                    <svg width="20" height="20" viewBox="0 0 24 24" class="mr-3">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    <span>Continuar com Google</span>
+                </button>
+                
+                <!-- Divider -->
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-600"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-3 bg-black text-gray-400">ou</span>
+                    </div>
+                </div>
+                
+                <!-- Demo Login -->
+                <button onclick="loginWithDemo()" class="btn-primary w-full py-4 font-medium">
+                    <i class="fas fa-rocket mr-2"></i>
+                    Acesso Demo Completo
+                </button>
+                
+                <!-- Manual Login Form -->
+                <div class="mt-6">
+                    <button onclick="toggleManualLogin()" class="text-blue-400 hover:text-blue-300 text-sm transition-colors">
+                        <i class="fas fa-key mr-1"></i>
+                        Login com Credenciais
+                    </button>
+                </div>
+                
+                <!-- Manual Login Form (Hidden by default) -->
+                <div id="manualLoginForm" class="hidden space-y-4 mt-4">
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-2">E-mail Corporativo</label>
+                        <input type="email" id="manualEmail" class="input-field w-full px-4 py-3" placeholder="seu.email@velotax.com.br">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-2">Senha</label>
+                        <input type="password" id="manualPassword" class="input-field w-full px-4 py-3" placeholder="Sua senha segura">
+                    </div>
+                    
+                    <button onclick="loginWithManual()" class="btn-primary w-full py-3 font-medium">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Entrar no Sistema
+                    </button>
+                </div>
+            </div>
+            
+            <div class="text-center text-sm text-gray-400 mt-8 space-y-2">
+                <p><i class="fas fa-lock mr-1"></i> Apenas e-mails @velotax.com.br</p>
+                <p class="text-xs">Demo: admin@velotax.com.br | Senha: admin123</p>
+                <div class="flex items-center justify-center space-x-4 mt-4 text-xs">
+                    <span><i class="fas fa-shield-alt text-green-400 mr-1"></i>SSL Seguro</span>
+                    <span><i class="fas fa-clock text-blue-400 mr-1"></i>24/7 Online</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="hidden">
+        <!-- Sidebar -->
+        <div class="fixed inset-y-0 left-0 w-72 sidebar z-40">
+            <div class="flex flex-col h-full">
+                <!-- Logo -->
+                <div class="p-6 border-b border-gray-700">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                            <i class="fas fa-building text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold text-white">VeloNet</h1>
+                            <p class="text-xs text-gray-400">Portal Corporativo</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center text-xs text-gray-500">
+                        <div class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                        Sistema Online
+                    </div>
+                </div>
+                
+                <!-- Menu -->
+                <nav class="flex-1 p-4 space-y-2 scrollbar overflow-y-auto">
+                    <button onclick="showSection('dashboard')" class="menu-item active w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-chart-line mr-3 text-lg"></i>
+                        <span>Dash</span>
+                        <span class="ml-auto badge badge-info">Live</span>
+                    </button>
+                    
+                    <button onclick="showSection('velonews')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-newspaper mr-3 text-lg"></i>
+                        <span>VeloNews</span>
+                        <span class="ml-auto badge badge-success">5</span>
+                    </button>
+                    
+                    <button onclick="showSection('processos')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-cogs mr-3 text-lg"></i>
+                        <span>Processos</span>
+                        <span class="ml-auto badge badge-info">8</span>
+                    </button>
+                    
+                    <button onclick="showSection('veloacademy')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-graduation-cap mr-3 text-lg"></i>
+                        <span>VeloAcademy</span>
+                        <span class="ml-auto badge badge-warning">6</span>
+                    </button>
+                    
+                    <button onclick="showSection('veloponto')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-clock mr-3 text-lg"></i>
+                        <span>VeloPonto</span>
+                        <span class="ml-auto badge badge-primary">Live</span>
+                    </button>
+                    
+                    <div class="border-t border-gray-700 my-4"></div>
+                    
+                    <button onclick="showSection('atendimentos')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-headset mr-3 text-lg"></i>
+                        <span>Atendimentos</span>
+                        <span class="ml-auto text-xs text-gray-400">93</span>
+                    </button>
+                    
+                    <button onclick="showSection('base')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-book mr-3 text-lg"></i>
+                        <span>Base de Conhecimento</span>
+                    </button>
+                    
+                    <button onclick="showSection('media')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-cloud-upload-alt mr-3 text-lg"></i>
+                        <span>Mídia</span>
+                    </button>
+                    
+                    <button onclick="showSection('gemini')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-robot mr-3 text-lg"></i>
+                        <span>Gemini AI</span>
+                        <span class="ml-auto badge badge-info">Beta</span>
+                    </button>
+                    
+                    <button onclick="showSection('calendario')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-calendar-alt mr-3 text-lg"></i>
+                        <span>Calendário</span>
+                        <span class="ml-auto badge badge-info">3</span>
+                    </button>
+                    
+                    <button onclick="showSection('admin')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-shield-alt mr-3 text-lg"></i>
+                        <span>Administração</span>
+                    </button>
+                    
+                    <button onclick="showSection('chat')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-comments mr-3 text-lg"></i>
+                        <span>VeloChat</span>
+                        <span class="ml-auto badge badge-success">Online</span>
+                    </button>
+                    
+                    <button onclick="showSection('perfil')" class="menu-item w-full text-left p-4 rounded-lg flex items-center">
+                        <i class="fas fa-user mr-3 text-lg"></i>
+                        <span>Meu Perfil</span>
+                    </button>
+                </nav>
+                
+                <!-- User Info -->
+                <div class="p-4 border-t border-gray-700">
+                    <div class="flex items-center">
+                        <img id="userAvatar" src="https://via.placeholder.com/50x50" alt="Avatar" class="w-12 h-12 rounded-full mr-3 user-avatar">
+                        <div class="flex-1">
+                            <p id="userName" class="text-sm font-bold text-white">Usuário</p>
+                            <p id="userEmail" class="text-xs text-gray-400">usuario@velotax.com.br</p>
+                            <div class="flex items-center mt-1">
+                                <div class="w-2 h-2 bg-green-400 rounded-full mr-1"></div>
+                                <span class="text-xs text-green-400">Online</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col space-y-1">
+                            <button onclick="showThemeSelector()" class="text-gray-400 hover:text-blue-400 transition-colors">
+                                <i class="fas fa-palette text-sm"></i>
+                            </button>
+                            <button onclick="logout()" class="text-gray-400 hover:text-red-400 transition-colors">
+                                <i class="fas fa-sign-out-alt text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="ml-72 min-h-screen">
+            <!-- Header -->
+            <header class="bg-black bg-opacity-30 backdrop-filter backdrop-blur-lg border-b border-gray-800 p-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <!-- Mobile Menu Button -->
+                        <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-white hover:bg-white hover:bg-opacity-10 rounded-lg">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div>
+                            <h1 id="pageTitle" class="text-2xl font-bold text-white">Dashboard</h1>
+                            <p id="pageSubtitle" class="text-gray-400">Visão geral do desempenho</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <!-- Global Search -->
+                        <div class="relative">
+                            <input type="text" id="globalSearch" placeholder="Buscar em todo o sistema..." 
+                                   class="glass-input pl-10 pr-4 py-2 w-80 focus:w-96 transition-all duration-300"
+                                   onkeyup="performGlobalSearch()" onfocus="showSearchSuggestions()">
+                            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            
+                            <!-- Search Results Dropdown -->
+                            <div id="searchResults" class="absolute top-full left-0 right-0 mt-2 glass-panel max-h-96 overflow-y-auto hidden z-50">
+                                <div class="p-4">
+                                    <div class="text-gray-400 text-sm mb-3">Resultados da busca</div>
+                                    <div id="searchContent" class="space-y-2">
+                                        <!-- Search results will be populated here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-right">
+                            <p class="text-sm text-white" id="currentTime">00:00</p>
+                            <p class="text-xs text-gray-400" id="currentDate">Data</p>
+                        </div>
+                        
+                        <!-- Voice Commands Button -->
+                        <button onclick="toggleVoiceCommands()" id="voiceBtn" class="relative p-2 rounded-lg bg-white bg-opacity-10 hover:bg-opacity-20 transition-all">
+                            <i class="fas fa-microphone text-gray-400 hover:text-white transition-colors text-lg"></i>
+                            <span id="voiceIndicator" class="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full hidden animate-pulse"></span>
+                        </button>
+                        <button onclick="showNotificationCenter()" class="relative">
+                            <i class="fas fa-bell text-gray-400 hover:text-white transition-colors text-lg"></i>
+                            <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">5</span>
+                        </button>
+                        
+                        <!-- Notification Center Modal -->
+                        <div id="notificationCenter" class="fixed inset-0 bg-black bg-opacity-50 backdrop-filter backdrop-blur-sm z-50 hidden">
+                            <div class="absolute right-4 top-20 w-96 max-h-96 glass-panel">
+                                <div class="p-6">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h3 class="text-xl font-bold text-white">Centro de Notificações</h3>
+                                        <div class="flex space-x-2">
+                                            <button onclick="markAllAsRead()" class="text-blue-400 hover:text-blue-300 text-sm">
+                                                <i class="fas fa-check-double mr-1"></i>Marcar todas como lidas
+                                            </button>
+                                            <button onclick="closeNotificationCenter()" class="text-gray-400 hover:text-white">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Notification Filters -->
+                                    <div class="flex space-x-2 mb-4">
+                                        <button onclick="filterNotifications('all')" class="notification-filter active text-xs px-3 py-1 rounded-full bg-blue-500 text-white">
+                                            Todas
+                                        </button>
+                                        <button onclick="filterNotifications('system')" class="notification-filter text-xs px-3 py-1 rounded-full bg-gray-600 text-gray-300">
+                                            Sistema
+                                        </button>
+                                        <button onclick="filterNotifications('user')" class="notification-filter text-xs px-3 py-1 rounded-full bg-gray-600 text-gray-300">
+                                            Usuários
+                                        </button>
+                                        <button onclick="filterNotifications('alert')" class="notification-filter text-xs px-3 py-1 rounded-full bg-gray-600 text-gray-300">
+                                            Alertas
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Notifications List -->
+                                    <div id="notificationsList" class="space-y-3 max-h-64 overflow-y-auto">
+                                        <!-- Notifications will be populated here -->
+                                    </div>
+                                    
+                                    <div class="mt-4 pt-4 border-t border-gray-600">
+                                        <button onclick="openNotificationSettings()" class="text-blue-400 hover:text-blue-300 text-sm">
+                                            <i class="fas fa-cog mr-1"></i>Configurações de Notificação
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="p-8">
+<!DOCTYPE html>
+<!-- VeloNet v4.0 - Última atualização: 31/07/2025 17:00 -->
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeloNet - Portal Corporativo Avançado v4.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
