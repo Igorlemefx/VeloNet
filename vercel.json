@@ -2,18 +2,18 @@
   "version": 2,
   "builds": [
     {
-      "src": "index.html",
+      "src": "app.html",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/",
-      "dest": "/index.html"
+      "dest": "/app.html"
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/app.html"
     }
   ],
   "headers": [
@@ -22,7 +22,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
+          "value": "no-cache, no-store, must-revalidate, max-age=0"
         },
         {
           "key": "Pragma",
@@ -31,6 +31,10 @@
         {
           "key": "Expires",
           "value": "0"
+        },
+        {
+          "key": "ETag",
+          "value": "W/\"2025-08-01-1130\""
         }
       ]
     }
