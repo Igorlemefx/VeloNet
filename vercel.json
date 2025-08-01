@@ -22,7 +22,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate, max-age=0"
+          "value": "no-cache, no-store, must-revalidate, max-age=0, s-maxage=0"
         },
         {
           "key": "Pragma",
@@ -34,12 +34,18 @@
         },
         {
           "key": "ETag",
-          "value": "W/\"2025-08-01-1130\""
+          "value": "W/\"2025-08-01-1200\""
+        },
+        {
+          "key": "Last-Modified",
+          "value": "Thu, 01 Aug 2025 12:00:00 GMT"
         }
       ]
     }
   ],
   "functions": {},
   "outputDirectory": ".",
-  "public": true
+  "public": true,
+  "cleanUrls": true,
+  "trailingSlash": false
 } 
