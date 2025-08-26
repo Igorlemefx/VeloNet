@@ -3,29 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VeloNet - Portal Corporativo</title>
+    <title>VeloIGP - Índice Geral de Produtividade</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="app">
+        <!-- Header com Login -->
         <header class="header">
-            <h1>🚀 VeloNet</h1>
-            <p>Portal Corporativo</p>
+            <div class="header-content">
+                <div class="logo">
+                    <h1>🚀 VeloIGP</h1>
+                    <p>Índice Geral de Produtividade</p>
+                </div>
+                <div class="auth-section">
+                    <button id="loginBtn" class="login-btn">
+                        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" class="google-icon">
+                        Entrar com Google
+                    </button>
+                    <div id="userInfo" class="user-info hidden">
+                        <span id="userName"></span>
+                        <button id="logoutBtn" class="logout-btn">Sair</button>
+                    </div>
+                </div>
+            </div>
         </header>
         
+        <!-- Main Content -->
         <main class="main">
-            <div class="sidebar">
-                <nav>
-                    <button class="nav-btn">🏠 Dashboard</button>
-                    <button class="nav-btn">👥 Usuários</button>
-                    <button class="nav-btn">📊 Relatórios</button>
-                    <button class="nav-btn">⚙️ Configurações</button>
+            <!-- Sidebar de Navegação -->
+            <aside class="sidebar">
+                <nav class="nav-menu">
+                    <div class="nav-section">
+                        <h3>📊 Dashboard</h3>
+                        <button class="nav-btn active" data-section="overview">
+                            <span class="nav-icon">📈</span>
+                            Visão Geral
+                        </button>
+                        <button class="nav-btn" data-section="performance">
+                            <span class="nav-icon">🎯</span>
+                            Performance
+                        </button>
+                        <button class="nav-btn" data-section="metrics">
+                            <span class="nav-icon">📊</span>
+                            Métricas
+                        </button>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <h3>🔍 Consultas</h3>
+                        <button class="nav-btn" data-section="realtime">
+                            <span class="nav-icon">⚡</span>
+                            Tempo Real
+                        </button>
+                        <button class="nav-btn" data-section="spreadsheets">
+                            <span class="nav-icon">📋</span>
+                            Planilhas
+                        </button>
+                        <button class="nav-btn" data-section="reports">
+                            <span class="nav-icon">📄</span>
+                            Relatórios
+                        </button>
+                    </div>
                 </nav>
-            </div>
+            </aside>
             
+            <!-- Content Area -->
             <div class="content">
-                <h2>Bem-vindo ao VeloNet!</h2>
-                <p>Sistema corporativo moderno e funcional.</p>
+                <div id="overview" class="content-section active">
+                    <h2>📊 Visão Geral da Produtividade</h2>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon">🚀</div>
+                            <h3>Produtividade Geral</h3>
+                            <div class="metric-value">87.5%</div>
+                            <div class="metric-trend positive">+2.3%</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">⏰</div>
+                            <h3>Eficiência</h3>
+                            <div class="metric-value">92.1%</div>
+                            <div class="metric-trend positive">+1.8%</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">🎯</div>
+                            <h3>Metas Atingidas</h3>
+                            <div class="metric-value">78.9%</div>
+                            <div class="metric-trend negative">-0.5%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="performance" class="content-section">
+                    <h2>🎯 Análise de Performance</h2>
+                    <p>Dados de performance em tempo real serão carregados aqui.</p>
+                </div>
+                
+                <div id="metrics" class="content-section">
+                    <h2>📊 Métricas Detalhadas</h2>
+                    <p>Métricas detalhadas de produtividade serão exibidas aqui.</p>
+                </div>
+                
+                <div id="realtime" class="content-section">
+                    <h2>⚡ Consulta em Tempo Real</h2>
+                    <p>API de consulta em tempo real será integrada aqui.</p>
+                </div>
+                
+                <div id="spreadsheets" class="content-section">
+                    <h2>📋 Consulta de Planilhas</h2>
+                    <p>Integração com planilhas será implementada aqui.</p>
+                </div>
+                
+                <div id="reports" class="content-section">
+                    <h2>📄 Relatórios</h2>
+                    <p>Geração de relatórios será implementada aqui.</p>
+                </div>
             </div>
         </main>
     </div>
