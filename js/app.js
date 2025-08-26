@@ -84,7 +84,7 @@ function handleGoogleLogin() {
         currentUser = {
             name: 'João Silva',
             email: 'joao.silva@velotax.com.br',
-            avatar: 'https://ui-avatars.com/api/?name=João+Silva&background=1634FF&color=fff'
+            avatar: 'https://ui-avatars.com/api/?name=João+Silva&background=007BFF&color=fff'
         };
         
         updateAuthUI();
@@ -300,11 +300,18 @@ function showNotification(message, type = 'info') {
         <span class="notification-message">${message}</span>
     `;
     
+    // Cores mais sutis e profissionais
+    const colors = {
+        success: '#28A745',
+        error: '#DC3545',
+        info: '#007BFF'
+    };
+    
     notification.style.cssText = `
         position: fixed;
         top: 20px;
         right: 20px;
-        background: ${type === 'success' ? '#15A237' : type === 'error' ? '#FCC200' : '#1634FF'};
+        background: ${colors[type]};
         color: white;
         padding: 1rem 1.5rem;
         border-radius: 8px;
@@ -314,7 +321,7 @@ function showNotification(message, type = 'info') {
         gap: 0.5rem;
         font-family: 'Poppins', sans-serif;
         font-weight: 500;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         animation: slideIn 0.3s ease;
     `;
     
@@ -345,49 +352,51 @@ style.textContent = `
     .performance-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
+        gap: 1.5rem;
         margin-top: 2rem;
     }
     
     .performance-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 16px;
-        padding: 2rem;
+        background: var(--primary-white);
+        border: 1px solid var(--border-light);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px var(--shadow-light);
     }
     
     .chart-placeholder {
-        background: rgba(255, 255, 255, 0.1);
+        background: var(--primary-light-gray);
         height: 200px;
         border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: rgba(255, 255, 255, 0.6);
+        color: var(--primary-gray);
         margin-top: 1rem;
+        border: 1px dashed var(--border-light);
     }
     
     .api-status {
-        background: rgba(22, 148, 255, 0.2);
-        color: var(--primary-light-blue);
+        background: rgba(0, 123, 255, 0.1);
+        color: var(--primary-blue);
         padding: 1rem;
         border-radius: 8px;
         margin-top: 1rem;
         text-align: center;
+        border: 1px solid rgba(0, 123, 255, 0.2);
     }
     
     .status-dot {
         display: inline-block;
         width: 8px;
         height: 8px;
-        background: #15A237;
+        background: #28A745;
         border-radius: 50%;
         margin-right: 0.5rem;
     }
     
     .generate-btn {
-        background: var(--primary-bright-blue);
+        background: var(--primary-blue);
         color: white;
         border: none;
         padding: 1rem 2rem;
@@ -396,11 +405,34 @@ style.textContent = `
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
+        box-shadow: 0 2px 4px var(--shadow-light);
     }
     
     .generate-btn:hover {
-        background: var(--primary-light-blue);
-        transform: translateY(-2px);
+        background: var(--primary-dark-blue);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px var(--shadow-light);
+    }
+    
+    .spreadsheet-select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--border-light);
+        border-radius: 6px;
+        font-family: 'Poppins', sans-serif;
+        margin-top: 0.5rem;
+    }
+    
+    .table-placeholder {
+        background: var(--primary-light-gray);
+        height: 150px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-gray);
+        margin-top: 1rem;
+        border: 1px dashed var(--border-light);
     }
 `;
 document.head.appendChild(style);
