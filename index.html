@@ -11,114 +11,304 @@
 </head>
 <body>
     <div id="app">
-        <!-- Header com Login -->
+        <!-- Header Profissional -->
         <header class="header">
-            <div class="header-content">
-                <div class="logo">
-                    <h1>🚀 VeloIGP</h1>
-                    <p>Índice Geral de Produtividade</p>
+            <div class="header-container">
+                <div class="header-left">
+                    <div class="logo">
+                        <div class="logo-icon">📊</div>
+                        <div class="logo-text">
+                            <h1>VeloIGP</h1>
+                            <span>Índice Geral de Produtividade</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="auth-section">
-                    <button id="loginBtn" class="login-btn">
-                        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" class="google-icon">
-                        Entrar com Google
-                    </button>
-                    <div id="userInfo" class="user-info hidden">
-                        <span id="userName"></span>
-                        <button id="logoutBtn" class="logout-btn">Sair</button>
+                
+                <div class="header-center">
+                    <nav class="main-nav">
+                        <a href="#" class="nav-link active">
+                            <svg class="nav-icon" viewBox="0 0 24 24">
+                                <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                            </svg>
+                            Dashboard
+                        </a>
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                            </svg>
+                            Analytics
+                        </a>
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24">
+                                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8V4h5v5h5v9z"/>
+                            </svg>
+                            Reports
+                        </a>
+                        <a href="#" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            Insights
+                        </a>
+                    </nav>
+                </div>
+                
+                <div class="header-right">
+                    <div class="user-section">
+                        <button id="loginBtn" class="btn-primary">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            Entrar
+                        </button>
+                        <div id="userInfo" class="user-info hidden">
+                            <div class="user-avatar">
+                                <span id="userInitials">JS</span>
+                            </div>
+                            <div class="user-details">
+                                <span id="userName">João Silva</span>
+                                <small>Administrador</small>
+                            </div>
+                            <button id="logoutBtn" class="btn-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </header>
         
         <!-- Main Content -->
-        <main class="main">
-            <!-- Sidebar de Navegação -->
+        <main class="main-content">
+            <!-- Sidebar Profissional -->
             <aside class="sidebar">
-                <nav class="nav-menu">
-                    <div class="nav-section">
-                        <h3>📊 Dashboard</h3>
-                        <button class="nav-btn active" data-section="overview">
-                            <span class="nav-icon">📈</span>
-                            Visão Geral
+                <div class="sidebar-header">
+                    <h3>Navegação</h3>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <div class="nav-group">
+                        <h4>Visão Geral</h4>
+                        <button class="nav-item active" data-section="overview">
+                            <svg class="nav-icon" viewBox="0 0 24 24">
+                                <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                            </svg>
+                            <span>Dashboard</span>
                         </button>
-                        <button class="nav-btn" data-section="performance">
-                            <span class="nav-icon">🎯</span>
-                            Performance
-                        </button>
-                        <button class="nav-btn" data-section="metrics">
-                            <span class="nav-icon">📊</span>
-                            Métricas
+                        <button class="nav-item" data-section="performance">
+                            <svg class="nav-icon" viewBox="0 0 24 24">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                            </svg>
+                            <span>Performance</span>
                         </button>
                     </div>
                     
-                    <div class="nav-section">
-                        <h3>🔍 Consultas</h3>
-                        <button class="nav-btn" data-section="realtime">
-                            <span class="nav-icon">⚡</span>
-                            Tempo Real
+                    <div class="nav-group">
+                        <h4>Análises</h4>
+                        <button class="nav-item" data-section="metrics">
+                            <svg class="nav-icon" viewBox="0 0 24 24">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                            </svg>
+                            <span>Métricas</span>
                         </button>
-                        <button class="nav-btn" data-section="spreadsheets">
-                            <span class="nav-icon">📋</span>
-                            Planilhas
+                        <button class="nav-item" data-section="realtime">
+                            <svg class="nav-icon" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            <span>Tempo Real</span>
                         </button>
-                        <button class="nav-btn" data-section="reports">
-                            <span class="nav-icon">📄</span>
-                            Relatórios
+                    </div>
+                    
+                    <div class="nav-group">
+                        <h4>Relatórios</h4>
+                        <button class="nav-item" data-section="spreadsheets">
+                            <svg class="nav-icon" viewBox="0 0 24 24">
+                                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8V4h5v5h5v9z"/>
+                            </svg>
+                            <span>Planilhas</span>
+                        </button>
+                        <button class="nav-item" data-section="reports">
+                            <svg class="nav-icon" viewBox="0 0 24 24">
+                                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8V4h5v5h5v9z"/>
+                            </svg>
+                            <span>Relatórios</span>
                         </button>
                     </div>
                 </nav>
             </aside>
             
-            <!-- Content Area -->
-            <div class="content">
+            <!-- Content Area Profissional -->
+            <div class="content-area">
                 <div id="overview" class="content-section active">
-                    <h2>📊 Visão Geral da Produtividade</h2>
-                    <div class="metrics-grid">
-                        <div class="metric-card">
-                            <div class="metric-icon">🚀</div>
-                            <h3>Produtividade Geral</h3>
-                            <div class="metric-value">87.5%</div>
-                            <div class="metric-trend positive">+2.3%</div>
+                    <div class="section-header">
+                        <div class="header-content">
+                            <div class="title-section">
+                                <h2>Executive Performance Dashboard</h2>
+                                <p>Real-time insights for strategic decision making</p>
+                            </div>
+                            <div class="header-actions">
+                                <div class="date-display">
+                                    <svg class="icon" viewBox="0 0 24 24">
+                                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                                    </svg>
+                                    <span id="currentDate">Loading...</span>
+                                </div>
+                                <button class="btn-refresh">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
-                        <div class="metric-card">
-                            <div class="metric-icon">⏰</div>
-                            <h3>Eficiência</h3>
-                            <div class="metric-value">92.1%</div>
-                            <div class="metric-trend positive">+1.8%</div>
+                    </div>
+                    
+                    <div class="metrics-overview">
+                        <div class="metric-row">
+                            <div class="metric-card executive primary">
+                                <div class="metric-header">
+                                    <div class="metric-icon">
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="metric-info">
+                                        <div class="metric-label">Overall Productivity</div>
+                                        <div class="metric-subtitle">Corporate Performance Index</div>
+                                    </div>
+                                </div>
+                                <div class="metric-value">87.5%</div>
+                                <div class="metric-trend positive">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M7 14l5-5 5 5z"/>
+                                    </svg>
+                                    <span>+2.3%</span>
+                                    <small>vs last month</small>
+                                </div>
+                                <div class="metric-chart">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 87.5%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-card executive success">
+                                <div class="metric-header">
+                                    <div class="metric-icon">
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="metric-info">
+                                        <div class="metric-label">Operational Efficiency</div>
+                                        <div class="metric-subtitle">Process Optimization Score</div>
+                                    </div>
+                                </div>
+                                <div class="metric-value">92.1%</div>
+                                <div class="metric-trend positive">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M7 14l5-5 5 5z"/>
+                                    </svg>
+                                    <span>+1.8%</span>
+                                    <small>vs last month</small>
+                                </div>
+                                <div class="metric-chart">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 92.1%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-card executive warning">
+                                <div class="metric-header">
+                                    <div class="metric-icon">
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="metric-info">
+                                        <div class="metric-label">Goal Achievement</div>
+                                        <div class="metric-subtitle">Strategic Objectives Progress</div>
+                                    </div>
+                                </div>
+                                <div class="metric-value">78.9%</div>
+                                <div class="metric-trend negative">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M7 10l5 5 5-5z"/>
+                                    </svg>
+                                    <span>-0.5%</span>
+                                    <small>vs last month</small>
+                                </div>
+                                <div class="metric-chart">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 78.9%"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="metric-card">
-                            <div class="metric-icon">🎯</div>
-                            <h3>Metas Atingidas</h3>
-                            <div class="metric-value">78.9%</div>
-                            <div class="metric-trend negative">-0.5%</div>
+                        
+                        <div class="executive-summary">
+                            <div class="summary-card">
+                                <h3>Executive Summary</h3>
+                                <p>Overall corporate performance shows positive trends with productivity and efficiency gains. Goal achievement requires attention and strategic adjustments.</p>
+                                <div class="summary-actions">
+                                    <button class="btn-secondary">View Detailed Report</button>
+                                    <button class="btn-secondary">Export Data</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
                 <div id="performance" class="content-section">
-                    <h2>🎯 Análise de Performance</h2>
-                    <p>Dados de performance em tempo real serão carregados aqui.</p>
+                    <div class="section-header">
+                        <h2>Análise de Performance</h2>
+                        <p>Métricas detalhadas de performance e tendências</p>
+                    </div>
+                    <div class="placeholder-content">
+                        <p>Dados de performance em tempo real serão carregados aqui.</p>
+                    </div>
                 </div>
                 
                 <div id="metrics" class="content-section">
-                    <h2>📊 Métricas Detalhadas</h2>
-                    <p>Métricas detalhadas de produtividade serão exibidas aqui.</p>
+                    <div class="section-header">
+                        <h2>Métricas Detalhadas</h2>
+                        <p>Análise profunda dos indicadores de produtividade</p>
+                    </div>
+                    <div class="placeholder-content">
+                        <p>Métricas detalhadas de produtividade serão exibidas aqui.</p>
+                    </div>
                 </div>
                 
                 <div id="realtime" class="content-section">
-                    <h2>⚡ Consulta em Tempo Real</h2>
-                    <p>API de consulta em tempo real será integrada aqui.</p>
+                    <div class="section-header">
+                        <h2>Consulta em Tempo Real</h2>
+                        <p>Dados atualizados via API em tempo real</p>
+                    </div>
+                    <div class="placeholder-content">
+                        <p>API de consulta em tempo real será integrada aqui.</p>
+                    </div>
                 </div>
                 
                 <div id="spreadsheets" class="content-section">
-                    <h2>📋 Consulta de Planilhas</h2>
-                    <p>Integração com planilhas será implementada aqui.</p>
+                    <div class="section-header">
+                        <h2>Consulta de Planilhas</h2>
+                        <p>Integração com planilhas para análise de dados</p>
+                    </div>
+                    <div class="placeholder-content">
+                        <p>Integração com planilhas será implementada aqui.</p>
+                    </div>
                 </div>
                 
                 <div id="reports" class="content-section">
-                    <h2>📄 Relatórios</h2>
-                    <p>Geração de relatórios será implementada aqui.</p>
+                    <div class="section-header">
+                        <h2>Relatórios</h2>
+                        <p>Geração e visualização de relatórios executivos</p>
+                    </div>
+                    <div class="placeholder-content">
+                        <p>Geração de relatórios será implementada aqui.</p>
+                    </div>
                 </div>
             </div>
         </main>
