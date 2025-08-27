@@ -1,10 +1,12 @@
-/* === VELOIGP APP.JS === */
+/* === VELOIGP APP.JS - INTEGRAÇÃO COM API 55PBX === */
 
-console.log('🚀 VeloIGP iniciando...');
+console.log('🚀 VeloIGP iniciando com integração 55PBX...');
 
 // Estado da aplicação
 let currentUser = null;
 let currentSection = 'overview';
+let dadosAtuais = null;
+let graficos = {};
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
@@ -16,7 +18,14 @@ document.addEventListener('DOMContentLoaded', () => {
 function initializeApp() {
     setupNavigation();
     setupAuthentication();
+    setupAPIIntegration();
     loadMetrics();
+    setupThemeToggle();
+    
+    // Carregar tema salvo
+    if (window.VeloIGP_Charts) {
+        window.VeloIGP_Charts.carregarTemaSalvo();
+    }
 }
 
 // Configuração da navegação
@@ -39,7 +48,9 @@ function navigateToSection(section) {
     });
     
     // Adicionar classe active ao botão clicado
-    document.querySelector(`[data-section="${section}"]`).classList.add('active');
+    document.querySelectorAll(`[data-section="${section}"]`).forEach(btn => {
+        btn.classList.add('active');
+    });
     
     // Esconder todas as seções
     document.querySelectorAll('.content-section').forEach(sec => {
@@ -77,18 +88,22 @@ function handleGoogleLogin() {
     console.log('🔐 Iniciando login com Google...');
     
     // Simular processo de login
-    showNotification('🔐 Conectando com Google...', 'info');
+    if (window.VeloIGP_Charts) {
+        window.VeloIGP_Charts.mostrarMensagemSucesso('🔐 Conectando com Google...');
+    }
     
     setTimeout(() => {
         // Simular usuário logado
         currentUser = {
             name: 'João Silva',
             email: 'joao.silva@velotax.com.br',
-            avatar: 'https://ui-avatars.com/api/?name=João+Silva&background=007BFF&color=fff'
+            avatar: 'https://ui-avatars.com/api/?name=João+Silva&background=0074E8&color=fff'
         };
         
         updateAuthUI();
-        showNotification('✅ Login realizado com sucesso!', 'success');
+        if (window.VeloIGP_Charts) {
+            window.VeloIGP_Charts.mostrarMensagemSucesso('✅ Login realizado com sucesso!');
+        }
         
         // Carregar dados do usuário
         loadUserData();
@@ -99,7 +114,9 @@ function handleGoogleLogin() {
 function handleLogout() {
     currentUser = null;
     updateAuthUI();
-    showNotification('👋 Logout realizado com sucesso!', 'info');
+    if (window.VeloIGP_Charts) {
+        window.VeloIGP_Charts.mostrarMensagemSucesso('👋 Logout realizado com sucesso!');
+    }
 }
 
 // Verificar status da autenticação
@@ -123,6 +140,184 @@ function updateAuthUI() {
         loginBtn.classList.remove('hidden');
         userInfo.classList.add('hidden');
     }
+}
+
+// Configuração da integração com API
+function setupAPIIntegration() {
+    // Verificar se a API está disponível
+    if (window.VeloIGP_API) {
+        console.log('🔌 API 55PBX configurada e disponível');
+        setupAPIControls();
+    } else {
+        console.warn('⚠️ API 55PBX não configurada');
+    }
+}
+
+// Configurar controles da API
+function setupAPIControls() {
+    const refreshBtn = document.querySelector('.btn-refresh');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => {
+            atualizarDashboardComAPI();
+        });
+    }
+    
+    // Atualizar data atual
+    atualizarDataAtual();
+}
+
+// Atualizar data atual
+function atualizarDataAtual() {
+    const dateElement = document.getElementById('currentDate');
+    if (dateElement) {
+        const hoje = new Date();
+        const dataFormatada = hoje.toLocaleDateString('pt-BR', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        dateElement.textContent = dataFormatada;
+    }
+}
+
+// Atualizar dashboard com dados da API
+async function atualizarDashboardComAPI() {
+    if (!window.VeloIGP_API) {
+        console.warn('⚠️ API não disponível');
+        return;
+    }
+    
+    try {
+        // Mostrar loading
+        if (window.VeloIGP_Charts) {
+            window.VeloIGP_Charts.mostrarLoading('overview');
+        }
+        
+        // Buscar dados dos últimos 7 dias
+        const dataFim = window.VeloIGP_API.obterDataHoje();
+        const dataInicio = new Date(dataFim);
+        dataInicio.setDate(dataInicio.getDate() + window.VeloIGP_API.PERIODOS.ULTIMOS_7_DIAS);
+        
+        const dataInicioStr = window.VeloIGP_API.formatarDataParaAPI(dataInicio);
+        const dataFimStr = window.VeloIGP_API.formatarDataParaAPI(dataFim);
+        
+        console.log('📊 Buscando dados de:', dataInicioStr, 'até', dataFimStr);
+        
+        const resultado = await window.VeloIGP_API.buscarRelatorioAPI(
+            dataInicioStr, 
+            dataFimStr, 
+            'report_01'
+        );
+        
+        if (resultado.sucesso && resultado.dados) {
+            dadosAtuais = resultado.dados;
+            const indicadores = window.VeloIGP_API.calcularIndicadores(resultado.dados);
+            atualizarDashboardComIndicadores(indicadores);
+            
+            if (window.VeloIGP_Charts) {
+                window.VeloIGP_Charts.mostrarMensagemSucesso('✅ Dados atualizados com sucesso!');
+            }
+        } else {
+            throw new Error(resultado.erro || 'Erro desconhecido na API');
+        }
+        
+    } catch (erro) {
+        console.error('❌ Erro ao atualizar dashboard:', erro);
+        
+        if (window.VeloIGP_Charts) {
+            window.VeloIGP_Charts.mostrarMensagemErro(`Erro ao carregar dados: ${erro.message}`);
+        }
+        
+        // Carregar dados simulados em caso de erro
+        carregarDadosSimulados();
+        
+    } finally {
+        // Esconder loading
+        if (window.VeloIGP_Charts) {
+            window.VeloIGP_Charts.esconderLoading('overview');
+        }
+    }
+}
+
+// Atualizar dashboard com indicadores calculados
+function atualizarDashboardComIndicadores(indicadores) {
+    if (!indicadores) return;
+    
+    // Atualizar métricas principais
+    atualizarMetrica('produtividade', indicadores.indice_qualidade);
+    atualizarMetrica('eficiencia', indicadores.tma);
+    atualizarMetrica('metas', indicadores.nota_satisfacao);
+    
+    // Criar gráficos se disponível
+    if (window.VeloIGP_Charts) {
+        criarGraficosDashboard(indicadores);
+    }
+}
+
+// Atualizar métrica específica
+function atualizarMetrica(tipo, valor) {
+    const metricCards = document.querySelectorAll('.metric-card');
+    
+    metricCards.forEach(card => {
+        if (card.classList.contains(tipo) || card.querySelector(`[data-metric="${tipo}"]`)) {
+            const valueElement = card.querySelector('.metric-value');
+            if (valueElement) {
+                valueElement.textContent = `${valor}%`;
+            }
+            
+            // Atualizar barra de progresso
+            const progressBar = card.querySelector('.progress-fill');
+            if (progressBar) {
+                progressBar.style.width = `${valor}%`;
+            }
+        }
+    });
+}
+
+// Criar gráficos do dashboard
+function criarGraficosDashboard(indicadores) {
+    // Dados simulados para gráficos (substituir por dados reais da API)
+    const dadosGraficos = {
+        volume: [
+            { label: 'Segunda', valor: 85 },
+            { label: 'Terça', valor: 92 },
+            { label: 'Quarta', valor: 78 },
+            { label: 'Quinta', valor: 88 },
+            { label: 'Sexta', valor: 95 }
+        ],
+        tma: [
+            { label: 'Segunda', valor: 3.2 },
+            { label: 'Terça', valor: 2.8 },
+            { label: 'Quarta', valor: 3.5 },
+            { label: 'Quinta', valor: 2.9 },
+            { label: 'Sexta', valor: 2.6 }
+        ],
+        satisfacao: [
+            { label: 'Excelente', valor: 45 },
+            { label: 'Bom', valor: 35 },
+            { label: 'Regular', valor: 15 },
+            { label: 'Ruim', valor: 5 }
+        ]
+    };
+    
+    // Criar gráficos
+    if (window.VeloIGP_Charts) {
+        graficos.volume = window.VeloIGP_Charts.criarGraficoVolume(dadosGraficos.volume, 'grafico-volume');
+        graficos.tma = window.VeloIGP_Charts.criarGraficoTMA(dadosGraficos.tma, 'grafico-tma');
+        graficos.satisfacao = window.VeloIGP_Charts.criarGraficoSatisfacao(dadosGraficos.satisfacao, 'grafico-satisfacao');
+    }
+}
+
+// Carregar dados simulados
+function carregarDadosSimulados() {
+    const indicadoresSimulados = {
+        indice_qualidade: 87.5,
+        tma: 92.1,
+        nota_satisfacao: 78.9
+    };
+    
+    atualizarDashboardComIndicadores(indicadoresSimulados);
 }
 
 // Carregar métricas iniciais
@@ -180,19 +375,26 @@ function loadSectionData(section) {
 
 // Carregar dados da visão geral
 function loadOverviewData() {
-    // Dados já estão no HTML
     console.log('📊 Dados da visão geral carregados');
+    
+    // Tentar carregar dados da API se disponível
+    if (window.VeloIGP_API) {
+        atualizarDashboardComAPI();
+    }
 }
 
 // Carregar dados de performance
 function loadPerformanceData() {
     const content = document.getElementById('performance');
     content.innerHTML = `
-        <h2>🎯 Análise de Performance</h2>
+        <div class="section-header">
+            <h2>Análise de Performance</h2>
+            <p>Métricas detalhadas de performance e tendências</p>
+        </div>
         <div class="performance-grid">
             <div class="performance-card">
                 <h3>📈 Tendência Mensal</h3>
-                <div class="chart-placeholder">Gráfico de performance será exibido aqui</div>
+                <div id="grafico-tendencia" class="chart-placeholder">Gráfico de performance será exibido aqui</div>
             </div>
             <div class="performance-card">
                 <h3>🎯 KPIs Principais</h3>
@@ -204,13 +406,30 @@ function loadPerformanceData() {
             </div>
         </div>
     `;
+    
+    // Criar gráfico se disponível
+    if (window.VeloIGP_Charts) {
+        const dadosTendencia = [
+            { label: 'Jan', valor: 75 },
+            { label: 'Fev', valor: 82 },
+            { label: 'Mar', valor: 87 },
+            { label: 'Abr', valor: 91 }
+        ];
+        
+        window.VeloIGP_Charts.criarGrafico(dadosTendencia, 'linha', 'grafico-tendencia', {
+            label: 'Tendência Mensal'
+        });
+    }
 }
 
 // Carregar métricas detalhadas
 function loadDetailedMetrics() {
     const content = document.getElementById('metrics');
     content.innerHTML = `
-        <h2>📊 Métricas Detalhadas</h2>
+        <div class="section-header">
+            <h2>Métricas Detalhadas</h2>
+            <p>Análise profunda dos indicadores de produtividade</p>
+        </div>
         <div class="metrics-detail">
             <p>Métricas detalhadas de produtividade serão carregadas via API.</p>
             <div class="api-status">Status: Conectando...</div>
@@ -222,7 +441,10 @@ function loadDetailedMetrics() {
 function loadRealtimeData() {
     const content = document.getElementById('realtime');
     content.innerHTML = `
-        <h2>⚡ Consulta em Tempo Real</h2>
+        <div class="section-header">
+            <h2>Consulta em Tempo Real</h2>
+            <p>Dados atualizados via API em tempo real</p>
+        </div>
         <div class="realtime-dashboard">
             <div class="api-connection">
                 <span class="status-dot"></span>
@@ -242,7 +464,10 @@ function loadRealtimeData() {
 function loadSpreadsheetData() {
     const content = document.getElementById('spreadsheets');
     content.innerHTML = `
-        <h2>📋 Consulta de Planilhas</h2>
+        <div class="section-header">
+            <h2>Consulta de Planilhas</h2>
+            <p>Integração com planilhas para análise de dados</p>
+        </div>
         <div class="spreadsheet-interface">
             <div class="file-selector">
                 <h3>Selecionar Planilha</h3>
@@ -264,7 +489,10 @@ function loadSpreadsheetData() {
 function loadReportsData() {
     const content = document.getElementById('reports');
     content.innerHTML = `
-        <h2>📄 Relatórios</h2>
+        <div class="section-header">
+            <h2>Relatórios</h2>
+            <p>Geração e visualização de relatórios executivos</p>
+        </div>
         <div class="reports-interface">
             <div class="report-generator">
                 <h3>Gerar Relatório</h3>
@@ -286,6 +514,28 @@ function loadReportsData() {
 function loadUserData() {
     console.log('👤 Carregando dados do usuário:', currentUser.name);
     // Aqui você pode carregar dados específicos do usuário logado
+}
+
+// Configurar toggle de tema
+function setupThemeToggle() {
+    // Adicionar botão de tema ao header se não existir
+    const headerActions = document.querySelector('.header-actions');
+    if (headerActions && !document.querySelector('.theme-toggle')) {
+        const themeToggle = document.createElement('button');
+        themeToggle.className = 'theme-toggle btn-icon';
+        themeToggle.innerHTML = `
+            <svg viewBox="0 0 24 24">
+                <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+            </svg>
+        `;
+        themeToggle.addEventListener('click', () => {
+            if (window.VeloIGP_Charts) {
+                window.VeloIGP_Charts.alternarTema();
+            }
+        });
+        
+        headerActions.appendChild(themeToggle);
+    }
 }
 
 // Sistema de notificações
@@ -361,7 +611,7 @@ style.textContent = `
         border: 1px solid var(--border-light);
         border-radius: 12px;
         padding: 1.5rem;
-        box-shadow: 0 2px 4px var(--shadow-light);
+        box-shadow: var(--shadow-sm);
     }
     
     .chart-placeholder {
@@ -373,7 +623,7 @@ style.textContent = `
         justify-content: center;
         color: var(--primary-gray);
         margin-top: 1rem;
-        border: 1px dashed var(--border-light);
+        border: 1px dashed var(--border-medium);
     }
     
     .api-status {
@@ -405,13 +655,13 @@ style.textContent = `
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 2px 4px var(--shadow-light);
+        box-shadow: var(--shadow-sm);
     }
     
     .generate-btn:hover {
         background: var(--primary-dark-blue);
         transform: translateY(-1px);
-        box-shadow: 0 4px 8px var(--shadow-light);
+        box-shadow: var(--shadow-md);
     }
     
     .spreadsheet-select {
@@ -432,7 +682,18 @@ style.textContent = `
         justify-content: center;
         color: var(--primary-gray);
         margin-top: 1rem;
-        border: 1px dashed var(--border-light);
+        border: 1px dashed var(--border-medium);
+    }
+    
+    .theme-toggle {
+        background: var(--primary-light-gray);
+        border: 1px solid var(--border-light);
+        color: var(--primary-gray);
+    }
+    
+    .theme-toggle:hover {
+        background: var(--primary-blue);
+        color: white;
     }
 `;
 document.head.appendChild(style);
