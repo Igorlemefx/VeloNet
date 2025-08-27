@@ -92,11 +92,24 @@ body {
     justify-content: center;
     box-shadow: var(--shadow-lg);
     transition: all 0.3s ease;
+    overflow: hidden;
 }
 
 .logo-icon:hover {
     transform: scale(1.05);
     box-shadow: var(--shadow-xl);
+}
+
+.logo-image {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    transition: all 0.3s ease;
+}
+
+.logo-icon:hover .logo-image {
+    transform: scale(1.1);
 }
 
 .logo-icon svg {
